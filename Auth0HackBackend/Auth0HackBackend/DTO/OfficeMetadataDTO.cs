@@ -19,14 +19,15 @@ namespace Auth0HackBackend.DTO
         public string OfficeCity { get; set; }
         public string OfficeState { get; set; }
         public string OfficeZip { get; set; }
-        public int OfficeCapacity { get; set; }
+        public int OfficeMaxCapacity { get; set; }
+        public int OfficeSafeCapacity { get; set; }
         public Point OfficeLocation { get; set; }
 
         public static Expression<Func<Office, OfficeMetadataDTO>> MapToDTO = (v) =>
         new OfficeMetadataDTO
         {
-            OfficeAddress = v.OfficeAddress,
-            OfficeCapacity = v.OfficeCapacity,
+            OfficeMaxCapacity = v.OfficeMaxCapacity,
+            OfficeSafeCapacity = v.OfficeSafeCapacity,
             OfficeCity = v.OfficeCity,
             OfficeId = v.OfficeId,
             OfficeLocation = v.OfficeLocation,

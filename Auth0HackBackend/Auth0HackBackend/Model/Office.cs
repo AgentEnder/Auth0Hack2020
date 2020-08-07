@@ -11,8 +11,7 @@ namespace Auth0HackBackend.Model
     {
         public Guid OfficeId { get; set; }
         public virtual ICollection<Section> Sections { get; set; }
-        public string OfficeName { get; set; }
-        public string OfficeAddress { get; set; }
+        public string OfficeName { get; set; }        
         public string OfficeStreet { get; set; }
         public string OfficeCity { get; set; }
         public string OfficeState { get; set; }
