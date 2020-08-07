@@ -33,7 +33,8 @@ namespace Auth0HackBackend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<HackEntities>(options => options.UseSqlServer(Configuration.GetConnectionString("HackEntities")));
+            services.AddDbContext<HackEntities>(options => options.UseSqlServer(Configuration.GetConnectionString("HackEntities"), 
+                                                x => x.UseNetTopologySuite()));
             services.AddControllers();
         }
 

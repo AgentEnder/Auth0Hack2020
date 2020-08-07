@@ -11,7 +11,10 @@ namespace Auth0HackBackend.Model
     {
         public void Configure(EntityTypeBuilder<Employee> builder)
         {
-            builder.HasKey("EmployeeId"); // This one would be picked up by convention ({ClassnameId} would be autodetected, but this is a good example of configuring.
+            builder.HasKey(x => x.EmployeeId); // This one would be picked up by convention ({ClassnameId} would be autodetected, but this is a good example of configuring.
+            builder.Property(x => x.Title).HasMaxLength(60);
+            builder.Property(x => x.FirstName).HasMaxLength(60);
+            builder.Property(x => x.LastName).HasMaxLength(60);
         }
     }
 }

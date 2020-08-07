@@ -4,15 +4,16 @@ using Auth0HackBackend.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using NetTopologySuite.Geometries;
 
 namespace Auth0HackBackend.Migrations
 {
     [DbContext(typeof(HackEntities))]
-    partial class HackEntitiesModelSnapshot : ModelSnapshot
+    [Migration("20200807205315_SectionFKFixMigration")]
+    partial class SectionFKFixMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,9 +62,6 @@ namespace Auth0HackBackend.Migrations
                     b.Property<string>("OfficeCity")
                         .HasColumnType("nvarchar(60)")
                         .HasMaxLength(60);
-
-                    b.Property<Point>("OfficeLocation")
-                        .HasColumnType("geography");
 
                     b.Property<string>("OfficeName")
                         .HasColumnType("nvarchar(max)");
