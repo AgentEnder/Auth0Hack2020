@@ -23,10 +23,12 @@ namespace Auth0HackBackend.Model
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Office> Offices { get; set; }
         public DbSet<Section> Sections { get; set; }
+        public DbSet<WorkRequest> WorkRequests { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             // Do configurations here.                     
+            
             builder.ApplyConfiguration(new EmployeeConfiguration());
             builder.ApplyConfiguration(new OfficeConfiguration());
             builder.ApplyConfiguration(new EmployeeConfiguration());

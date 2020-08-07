@@ -12,5 +12,8 @@ namespace Auth0HackBackend.Model
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Title { get; set; }
+        public virtual ICollection<WorkRequest> Requests { get; set; }
+        public virtual ICollection<WorkRequest> Approvals { get; set; }
+        public virtual ICollection<WorkRequest> PersonalWorkRequests { get; set; }
     }
 }

@@ -9,9 +9,11 @@ namespace Auth0HackBackend.Model
     {
         public Guid SectionId { get; set; }
         public Guid OfficeId { get; set; }
-        public Office Office { get; set; }       
+        public virtual Office Office { get; set; }       
         public int MaxCapacity { get; set; }
+        public int SafeCapacity { get; set; }
         public string SectionName { get; set; }
-        public string DescriptionName { get; set; }        
+        public string DescriptionName { get; set; }      
+        public virtual ICollection<WorkRequest> WorkRequests { get; set; }
     }
 }
