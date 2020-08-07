@@ -5,12 +5,15 @@ import { AppComponent } from './app.component';
 import { AuthService } from './core/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthInterceptorService } from './core/services/auth-interceptor.service';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { RandomUserService } from './core/services/random-user.service';
 
 const Routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    // component: ''
+    loadChildren: () => import('./home/home.module').then(x => x.HomePageModule)
   }
 ];
 
@@ -21,9 +24,18 @@ const Routes: Routes = [
   imports: [
     BrowserModule,
     CommonModule,
-    RouterModule.forRoot([])
+    HttpClientModule,
+    RouterModule.forRoot(Routes)
   ],
-  providers: [AuthService],
+  providers: [
+    AuthService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true
+    },
+    RandomUserService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
