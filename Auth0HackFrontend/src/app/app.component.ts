@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from './core/services/auth.service';
+import { RandomUserService } from './core/services/random-user.service';
 
 @Component({
   selector: 'app-root',
@@ -10,10 +11,13 @@ export class AppComponent implements OnInit {
   title = 'Auth0HackFrontend';
   user = {};
 
-  constructor(public auth: AuthService) {}
+  constructor(public auth: AuthService, private randomUserService: RandomUserService) {}
 
   ngOnInit(){
-    this.auth.userProfile$.subscribe(x => this.user = x);
+    this.auth.userProfile$.subscribe(x => {
+      this.user = x;
+      this.randomUserService.getNRandomUsers(5).subscribe();
+    });
   }
 
   login(){
