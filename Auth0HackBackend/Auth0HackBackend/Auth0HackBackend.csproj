@@ -5,8 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20200807220345_WorkRequestMigration.cs" />
-    <Compile Remove="Migrations\20200807220345_WorkRequestMigration.Designer.cs" />
+    <PackageReference Include="Microsoft.AspNet.OData" Version="7.4.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.6">

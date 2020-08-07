@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Auth0HackBackend.Model;
+using Auth0HackBackend.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -82,6 +83,8 @@ namespace Auth0HackBackend
                 options => options.UseSqlServer(Configuration.GetConnectionString("HackEntities"), 
                 x => x.UseNetTopologySuite()
             ));
+
+            services.AddScoped(typeof(OfficesRepository));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
