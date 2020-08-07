@@ -78,7 +78,10 @@ namespace Auth0HackBackend
             services.AddControllers();
 
             // Dependency Injection
-            services.AddDbContext<HackEntities>(options => options.UseSqlServer(Configuration.GetConnectionString("HackEntities")));
+            services.AddDbContext<HackEntities>(
+                options => options.UseSqlServer(Configuration.GetConnectionString("HackEntities"), 
+                x => x.UseNetTopologySuite()
+            ));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -4,15 +4,16 @@ using Auth0HackBackend.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using NetTopologySuite.Geometries;
 
 namespace Auth0HackBackend.Migrations
 {
     [DbContext(typeof(HackEntities))]
-    partial class HackEntitiesModelSnapshot : ModelSnapshot
+    [Migration("20200807204424_SectionFKMigration")]
+    partial class SectionFKMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,9 +63,6 @@ namespace Auth0HackBackend.Migrations
                         .HasColumnType("nvarchar(60)")
                         .HasMaxLength(60);
 
-                    b.Property<Point>("OfficeLocation")
-                        .HasColumnType("geography");
-
                     b.Property<string>("OfficeName")
                         .HasColumnType("nvarchar(max)");
 
@@ -96,26 +94,24 @@ namespace Auth0HackBackend.Migrations
                     b.Property<int>("MaxCapacity")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("OfficeId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("SectionName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("SectionOfficeOfficeId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("SectionId");
 
-                    b.HasIndex("OfficeId");
+                    b.HasIndex("SectionOfficeOfficeId");
 
                     b.ToTable("Sections");
                 });
 
             modelBuilder.Entity("Auth0HackBackend.Model.Section", b =>
                 {
-                    b.HasOne("Auth0HackBackend.Model.Office", "Office")
+                    b.HasOne("Auth0HackBackend.Model.Office", "SectionOffice")
                         .WithMany()
-                        .HasForeignKey("OfficeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SectionOfficeOfficeId");
                 });
 #pragma warning restore 612, 618
         }

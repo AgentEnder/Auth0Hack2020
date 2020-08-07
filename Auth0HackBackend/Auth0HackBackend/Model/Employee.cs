@@ -11,5 +11,6 @@ namespace Auth0HackBackend.Model
         public string Auth0Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string Title { get; set; }
     }
 }
