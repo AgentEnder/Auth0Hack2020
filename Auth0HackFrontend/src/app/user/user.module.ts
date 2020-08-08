@@ -1,8 +1,15 @@
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { UserSectionAvailabilityPageComponent } from './section-availability/section-availability.component';
+
+import { MatTabsModule } from '@angular/material/tabs';
+
+import { ScheduleModule } from '@syncfusion/ej2-angular-schedule';
+
 import { SharedModule } from '../shared/shared.module';
-import { CommonModule } from '@angular/common';
+import {
+    UserSectionAvailabilityPageComponent
+} from './section-availability/section-availability.component';
 
 const routes: Routes = [
     {
@@ -18,7 +25,9 @@ const routes: Routes = [
     imports: [
         CommonModule,
         RouterModule.forChild(routes),
-        SharedModule
+        SharedModule,
+        MatTabsModule,
+        ScheduleModule
     ],
     exports: [
 

@@ -22,6 +22,8 @@
     "@angular/platform-browser-dynamic": "~9.1.12",
     "@angular/router": "~9.1.12",
     "@auth0/auth0-spa-js": "^1.11.0",
+    "@syncfusion/ej2-angular-calendars": "^18.2.44",
+    "@syncfusion/ej2-angular-schedule": "^18.2.47",
     "bootstrap": "^4.5.2",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
