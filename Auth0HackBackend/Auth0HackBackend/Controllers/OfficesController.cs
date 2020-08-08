@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Auth0HackBackend.DTO;
 using Auth0HackBackend.Repositories;
 using Microsoft.AspNet.OData;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -61,14 +62,18 @@ namespace Auth0HackBackend.Controllers
             }
             return await Task.WhenAll<OfficeDetailDTO>(retObj);
         }
-                
+        
         [HttpPost("/close")] // .../api/offices/close/{id}/{startTime}/{endTime}
+        [Authorize]
+        [ScopeAuthorize("create:OfficeClosure")]
         public OfficeClosureDTO CloseOffice([FromBody] OfficeClosureDTO officeClosureDTO)
         {
             return Repository.CloseOffice(officeClosureDTO);
         }
 
         [HttpPost("/section/close")] // .../api/offices/close/{id}/{startTime}/{endTime}
+        [Authorize]
+        [ScopeAuthorize("create:SectionClosure")]
         public SectionClosureDTO SectionOffice([FromBody] SectionClosureDTO sectionClosureDTO)
         {
             return Repository.CloseSection(sectionClosureDTO);

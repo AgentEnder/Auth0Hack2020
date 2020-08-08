@@ -22,6 +22,13 @@ namespace Auth0HackBackend.Repositories
             return DbContext.WorkRequests.Select(WorkRequestMetadataDTO.MapToDTO);
         }
 
+        public IQueryable<WorkRequestMetadataDTO> GetOwnWorkRequestMetadata(string auth0Id)
+        {
+            return DbContext.WorkRequests.Where(x => 
+                   x.PersonId == EmpRepository.GetEmployeeByAuthId(auth0Id).EmployeeId).
+                   Select(WorkRequestMetadataDTO.MapToDTO);
+        }
+
         public async ValueTask<WorkRequestMetadataDTO> GetWorkRequestById(Guid WorkRequestId)
         {
             var workRequest = await DbContext.WorkRequests.FindAsync(WorkRequestId);

@@ -35,9 +35,7 @@ namespace Auth0HackBackend.Controllers
             return Repository.GetEmployeeById(EmployeeId);
         }
 
-        [HttpGet("current-user")] // .../api/employees/current-user
-        [Authorize]
-        [ScopeAuthorize("read:WorkRequestsSelf")]
+        [HttpGet("current-user")] // .../api/employees/current-user        
         public EmployeeMetadataDTO GetCurrentUser()
         {
             try
