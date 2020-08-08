@@ -68,6 +68,7 @@ namespace Auth0HackBackend.Repositories
                 (endTime >= x.StartTime && endTime <= x.EndTime)));
 
             officeDetail.Sections = GetSectionDetailsByOfficeId(officeId, workDate);
+            officeDetail.SnapshotDate = workDate;
             
 
             return officeDetail;

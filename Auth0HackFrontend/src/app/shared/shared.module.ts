@@ -7,7 +7,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { ScheduleModule } from '@syncfusion/ej2-angular-schedule';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/moment';
+import * as moment from 'moment';
 
 import {
     BuildingAvailabilityComponent
@@ -16,6 +18,10 @@ import {
     OfficeAvailabilityCalendarComponent
 } from './office-availability-calendar/office-availability-calendar.component';
 import { PercentageComponent } from './percentage/percentage.component';
+
+export function momentAdapterFactory() {
+  return adapterFactory(moment);
+};
 
 @NgModule({
     declarations: [
@@ -30,7 +36,7 @@ import { PercentageComponent } from './percentage/percentage.component';
         MatIconModule,
         MatButtonModule,
         MatTooltipModule,
-        ScheduleModule
+        CalendarModule.forRoot({ provide: DateAdapter, useFactory: momentAdapterFactory })
     ],
     exports: [
         BuildingAvailabilityComponent,
