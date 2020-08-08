@@ -4,8 +4,6 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { MatTabsModule } from '@angular/material/tabs';
 
-import { ScheduleModule } from '@syncfusion/ej2-angular-schedule';
-
 import { SharedModule } from '../shared/shared.module';
 import {
     UserSectionAvailabilityPageComponent
@@ -27,7 +25,6 @@ const routes: Routes = [
         RouterModule.forChild(routes),
         SharedModule,
         MatTabsModule,
-        ScheduleModule
     ],
     exports: [
 
