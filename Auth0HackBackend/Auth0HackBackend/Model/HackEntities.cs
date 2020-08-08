@@ -28,10 +28,13 @@ namespace Auth0HackBackend.Model
         protected override void OnModelCreating(ModelBuilder builder)
         {
             // Do configurations here.                     
-            
+            builder.ApplyConfiguration(new ApprovalStatusConfiguration());
             builder.ApplyConfiguration(new EmployeeConfiguration());
-            builder.ApplyConfiguration(new OfficeConfiguration());
-            builder.ApplyConfiguration(new EmployeeConfiguration());
+            builder.ApplyConfiguration(new OfficeConfiguration());                       
+            builder.ApplyConfiguration(new OfficeClosureConfiguration());
+            builder.ApplyConfiguration(new SectionConfiguration());
+            builder.ApplyConfiguration(new SectionClosureConfiguration());
+            builder.ApplyConfiguration(new WorkRequestConfiguration());
         }
     }
 }
