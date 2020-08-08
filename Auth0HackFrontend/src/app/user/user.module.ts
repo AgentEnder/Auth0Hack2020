@@ -10,6 +10,8 @@ import {
     UserSectionAvailabilityPageComponent
 } from './section-availability/section-availability.component';
 import { PendingRequestsComponent } from './pending-requests/pending-requests.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 
 const routes: Routes = [
     {
@@ -32,7 +34,9 @@ const routes: Routes = [
         RouterModule.forChild(routes),
         SharedModule,
         MatTabsModule,
-        MatTableModule
+        MatTableModule,
+        MatPaginatorModule,
+        MatSortModule
     ],
     exports: [
 
