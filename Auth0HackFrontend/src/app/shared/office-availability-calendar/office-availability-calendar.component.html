@@ -1,0 +1,13 @@
+<ejs-schedule 
+    width="100%" 
+    height="650px" 
+    [(currentView)]="currentView"
+    (navigating)="fetchAvailabilityForMonth($event)"
+>
+    <ng-template #cellTemplate let-data>
+        <div class="templatewrap" [innerHTML]="getCellContent(data.date)"></div>
+    </ng-template>
+    <e-views>
+        <e-view option="Month"></e-view>
+    </e-views>
+</ejs-schedule>

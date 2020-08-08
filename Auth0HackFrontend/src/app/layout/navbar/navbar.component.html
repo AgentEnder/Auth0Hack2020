@@ -1,0 +1,19 @@
+<mat-toolbar color="primary" class="position-sticky">
+  <button
+    mat-icon-button
+    class="example-icon"
+    aria-label="Example icon-button with menu icon"
+  >
+    <mat-icon (click)="navToggle.emit()">menu</mat-icon>
+  </button>
+  <span class="mr-auto">COVID19 - OfficeSpace</span>
+  <button
+    mat-icon-button
+    class="example-icon"
+    aria-label="Example icon-button with share icon"
+  >
+    <mat-icon>share</mat-icon>
+  </button>
+  <button mat-raised-button *ngIf="!auth.loggedIn" (click)="auth.login()">Log In!</button>
+  <button mat-raised-button *ngIf="auth.loggedIn" (click)="auth.logout()">Log Out</button>
+</mat-toolbar>

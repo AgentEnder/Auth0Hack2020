@@ -1,9 +1,6 @@
-<button class="btn btn-primary" (click)="login()">Login!</button>
-
-<div *ngIf="auth.loggedIn">
-  You are logged in!
-  <br>
-  {{user| json}}
+<div class="main-wrapper">
+  <app-navbar (navToggle)="sidebar.toggleSidenav()"></app-navbar>
+  <app-sidebar #sidebar>
+    <router-outlet></router-outlet>
+  </app-sidebar>
 </div>
-
-<router-outlet></router-outlet>

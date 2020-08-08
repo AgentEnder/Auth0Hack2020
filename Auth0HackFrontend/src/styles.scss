@@ -1,0 +1,76 @@
+/* You can add global styles to this file, and also import other style files */
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "~bootstrap/dist/css/bootstrap.min.css";
+
+@import '~@syncfusion/ej2-base/styles/material.css';
+@import '~@syncfusion/ej2-buttons/styles/material.css';
+@import '~@syncfusion/ej2-calendars/styles/material.css';
+@import '~@syncfusion/ej2-dropdowns/styles/material.css';
+@import '~@syncfusion/ej2-inputs/styles/material.css';
+@import '~@syncfusion/ej2-lists/styles/material.css';
+@import '~@syncfusion/ej2-popups/styles/material.css';
+@import '~@syncfusion/ej2-navigations/styles/material.css';
+@import '~@syncfusion/ej2-angular-schedule/styles/material.css';
+
+$primary: #3f51b5;
+$primary-transparent: #3f51b533;
+$accent: #ff4081;
+$accent-transparent: #ff408133;
+
+
+// layout
+.main-wrapper{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+    app-navbar{
+        position: sticky;
+        z-index: 1000;
+        top: 0;
+    }
+
+    app-sidebar{
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    
+        mat-sidenav-container{
+            flex-grow: 1;
+        }
+    }
+}
+
+a.mat-list-item.active {
+    border-left: 4px solid $accent;
+    background-color: $accent-transparent;
+}
+
+.nav-section {
+    .mat-expansion-panel-body {
+        padding: 0;
+    }
+}
+
+app-sidebar {
+    .mat-nav-list{
+        padding-top: 0;
+    }
+
+    .mat-expansion-panel{
+        border-radius: 0;
+    }
+}
+
+.category-header {
+    display: flex;
+    align-items: center;
+}
+
+.text-muted {
+    font-size: 80%;
+    color: lightslategray;
+}

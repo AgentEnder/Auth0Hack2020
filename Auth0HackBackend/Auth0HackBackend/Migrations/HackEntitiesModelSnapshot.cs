@@ -20,6 +20,23 @@ namespace Auth0HackBackend.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("Auth0HackBackend.Model.ApprovalStatus", b =>
+                {
+                    b.Property<Guid>("ApprovalStatusId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsFinal")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("StatusName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ApprovalStatusId");
+
+                    b.ToTable("ApprovalStatus");
+                });
+
             modelBuilder.Entity("Auth0HackBackend.Model.Employee", b =>
                 {
                     b.Property<Guid>("EmployeeId")
@@ -27,6 +44,9 @@ namespace Auth0HackBackend.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Auth0Id")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
@@ -52,12 +72,6 @@ namespace Auth0HackBackend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("OfficeAddress")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("OfficeCapacity")
-                        .HasColumnType("int");
-
                     b.Property<string>("OfficeCity")
                         .HasColumnType("nvarchar(60)")
                         .HasMaxLength(60);
@@ -65,8 +79,14 @@ namespace Auth0HackBackend.Migrations
                     b.Property<Point>("OfficeLocation")
                         .HasColumnType("geography");
 
+                    b.Property<int>("OfficeMaxCapacity")
+                        .HasColumnType("int");
+
                     b.Property<string>("OfficeName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OfficeSafeCapacity")
+                        .HasColumnType("int");
 
                     b.Property<string>("OfficeState")
                         .HasColumnType("nvarchar(2)")
@@ -90,17 +110,20 @@ namespace Auth0HackBackend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("DescriptionName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("MaxCapacity")
-                        .HasColumnType("int");
-
                     b.Property<Guid>("OfficeId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("SectionDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SectionMaxCapacity")
+                        .HasColumnType("int");
+
                     b.Property<string>("SectionName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SectionSafeCapacity")
+                        .HasColumnType("int");
 
                     b.HasKey("SectionId");
 
@@ -109,13 +132,96 @@ namespace Auth0HackBackend.Migrations
                     b.ToTable("Sections");
                 });
 
+            modelBuilder.Entity("Auth0HackBackend.Model.WorkRequest", b =>
+                {
+                    b.Property<Guid>("WorkRequestId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ApprovalStatusId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ApproverId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("EndTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid>("OfficeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PersonId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("RequestorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("SectionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("StartTime")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("WorkRequestId");
+
+                    b.HasIndex("ApprovalStatusId");
+
+                    b.HasIndex("ApproverId");
+
+                    b.HasIndex("OfficeId");
+
+                    b.HasIndex("PersonId");
+
+                    b.HasIndex("RequestorId");
+
+                    b.HasIndex("SectionId");
+
+                    b.ToTable("WorkRequests");
+                });
+
             modelBuilder.Entity("Auth0HackBackend.Model.Section", b =>
                 {
                     b.HasOne("Auth0HackBackend.Model.Office", "Office")
-                        .WithMany()
+                        .WithMany("Sections")
                         .HasForeignKey("OfficeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Auth0HackBackend.Model.WorkRequest", b =>
+                {
+                    b.HasOne("Auth0HackBackend.Model.ApprovalStatus", "ApprovalStatus")
+                        .WithMany("WorkRequests")
+                        .HasForeignKey("ApprovalStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Auth0HackBackend.Model.Employee", "Approver")
+                        .WithMany("Approvals")
+                        .HasForeignKey("ApproverId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("Auth0HackBackend.Model.Office", "Office")
+                        .WithMany("WorkRequests")
+                        .HasForeignKey("OfficeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Auth0HackBackend.Model.Employee", "Person")
+                        .WithMany("PersonalWorkRequests")
+                        .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Auth0HackBackend.Model.Employee", "Requestor")
+                        .WithMany("Requests")
+                        .HasForeignKey("RequestorId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Auth0HackBackend.Model.Section", "Section")
+                        .WithMany("WorkRequests")
+                        .HasForeignKey("SectionId");
                 });
 #pragma warning restore 612, 618
         }

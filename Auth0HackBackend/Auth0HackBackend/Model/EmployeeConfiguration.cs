@@ -15,6 +15,18 @@ namespace Auth0HackBackend.Model
             builder.Property(x => x.Title).HasMaxLength(60);
             builder.Property(x => x.FirstName).HasMaxLength(60);
             builder.Property(x => x.LastName).HasMaxLength(60);
+
+            builder.HasMany(x => x.PersonalWorkRequests)
+                .WithOne(y => y.Person)
+                .HasForeignKey(z => z.PersonId).OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasMany(x => x.Approvals)
+                .WithOne(y => y.Approver)
+                .HasForeignKey(z => z.ApproverId).OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasMany(x => x.Requests)
+                .WithOne(y => y.Requestor)
+                .HasForeignKey(z => z.RequestorId).OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

@@ -10,13 +10,15 @@ namespace Auth0HackBackend.Model
     public class Office
     {
         public Guid OfficeId { get; set; }
-        public string OfficeName { get; set; }
-        public string OfficeAddress { get; set; }
+        public virtual ICollection<Section> Sections { get; set; }
+        public string OfficeName { get; set; }        
         public string OfficeStreet { get; set; }
         public string OfficeCity { get; set; }
         public string OfficeState { get; set; }
         public string OfficeZip { get; set; }
-        public int OfficeCapacity { get; set; }        
-        public Point OfficeLocation { get; set; }             
+        public int OfficeMaxCapacity { get; set; }
+        public int OfficeSafeCapacity { get; set; }
+        public Point OfficeLocation { get; set; }
+        public virtual ICollection<WorkRequest> WorkRequests { get; set; }
     }
 }

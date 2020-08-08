@@ -1,0 +1,36 @@
+<mat-card class="mat-elevation-z2 m-1">
+    <mat-card-title-group>
+        <mat-card-title>
+            {{office.officeName}}
+            <app-percentage 
+                    [numerator]="office.officeUsedCapacity"
+                    [denominator]="office.officeSafeCapacity"
+                    [numeratorLabel]="'Used'"
+                    [denominatorLabel]="'Safe Capacity'"
+                    [customClass]="'text-muted'"
+                >
+            </app-percentage>
+        </mat-card-title>
+        <mat-card-subtitle>{{office.officeAddress}}</mat-card-subtitle>
+        <img matCardAvatar [src]="getRandomImgSrc()"/>
+    </mat-card-title-group>
+    <mat-card-content>
+        <mat-nav-list>
+            <mat-list-item *ngFor="let section of office.sections">
+                <mat-icon class="text-success" *ngIf="section.sectionUsedCapacity < section.sectionSafeCapacity">check_circle_outline</mat-icon>
+                <mat-icon class="text-danger" *ngIf="section.sectionUsedCapacity >= section.sectionSafeCapacity">error_outline</mat-icon>
+                <span class="mx-2">{{section.sectionName}}</span>
+                <app-percentage 
+                    [numerator]="section.sectionUsedCapacity"
+                    [denominator]="section.sectionSafeCapacity"
+                    [numeratorLabel]="'Used'"
+                    [denominatorLabel]="'Safe Capacity'"
+                    class="mr-auto"
+                >
+                </app-percentage>
+                <button *ngIf="showRequestBtn" mat-raised-button [color]="'primary'" [disabled]="section.sectionUsedCapacity >= section.sectionSafeCapacity" class="mr-2">Request</button>
+                <button *ngIf="showCloseBtn" mat-raised-button color="warn" >Close</button>
+            </mat-list-item>
+        </mat-nav-list>
+    </mat-card-content>
+</mat-card>
