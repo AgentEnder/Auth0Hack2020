@@ -14,6 +14,6 @@ namespace Auth0HackBackend.Model
         public Guid SectionId { get; set; }
         public DateTimeOffset StartTime { get; set; }
         public DateTimeOffset EndTime { get; set; }
-        public string Descripton { get; set; }
+        public string Description { get; set; }
     }
 }

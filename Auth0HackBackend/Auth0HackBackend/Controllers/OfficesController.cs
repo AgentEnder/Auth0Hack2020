@@ -67,6 +67,12 @@ namespace Auth0HackBackend.Controllers
         {
             return Repository.CloseOffice(officeClosureDTO);
         }
-        
+
+        [HttpPost("/section/close")] // .../api/offices/close/{id}/{startTime}/{endTime}
+        public SectionClosureDTO SectionOffice([FromBody] SectionClosureDTO sectionClosureDTO)
+        {
+            return Repository.CloseSection(sectionClosureDTO);
+        }
+
     }
 }

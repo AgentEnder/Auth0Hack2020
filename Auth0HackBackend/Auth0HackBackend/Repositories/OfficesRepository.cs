@@ -81,6 +81,14 @@ namespace Auth0HackBackend.Repositories
             DbContext.SaveChanges();
             return OfficeClosureDTO.MapToDTOFunc(oc);
         }
-        
+
+        public SectionClosureDTO CloseSection(SectionClosureDTO sectionClosureDTO)
+        {
+            SectionClosure sc = SectionClosureDTO.MapToBaseFunc(sectionClosureDTO);
+            DbContext.SectionClosures.Add(sc);
+            DbContext.SaveChanges();
+            return SectionClosureDTO.MapToDTOFunc(sc);
+        }
+
     }
 }
