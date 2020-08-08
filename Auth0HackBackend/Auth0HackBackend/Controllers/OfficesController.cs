@@ -27,19 +27,19 @@ namespace Auth0HackBackend.Controllers
             return Repository.GetOfficeMetadata();
         }
 
-        [HttpGet("by-id/{id}")] // .../api/offices/by-id/{id}
+        [HttpGet("by-id/{officeId}")] // .../api/offices/by-id/{id}
         public ValueTask<OfficeMetadataDTO> GetOfficeById([FromRoute] Guid officeId)
         {
             return Repository.GetOfficeById(officeId);
         }
 
-        [HttpGet("by-id/{id}/{date}")] // .../api/offices/by-id/{id}/{date}
+        [HttpGet("by-id/{officeId}/{workDate}")] // .../api/offices/by-id/{id}/{date}
         public OfficeDetailDTO GetOfficeDetailById([FromRoute] Guid officeId, [FromRoute] DateTimeOffset workDate)
         {
             return Repository.GetOfficeDetailById(officeId, workDate);
         }
 
-        [HttpGet("by-id/{id}/{startDate}/{endDate}")] // .../api/offices/by-id/{id}/{date}
+        [HttpGet("by-id/{officeId}/{startTime}/{endTime}")] // .../api/offices/by-id/{id}/{date}
         public List<OfficeDetailDTO> GetOfficeDetailByIdAndDateRange([FromRoute] Guid officeId, [FromRoute] DateTimeOffset startTime, DateTimeOffset endTime)
         {
             List<OfficeDetailDTO> retObj = new List<OfficeDetailDTO>();

@@ -66,3 +66,10 @@ app-sidebar {
     font-size: 80%;
     color: lightslategray;
 }
+
+.office-availability-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}

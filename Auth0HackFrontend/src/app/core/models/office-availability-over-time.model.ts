@@ -5,8 +5,8 @@ import { OfficeDetailModel } from './office-detail.model';
 export interface OfficeAvailabilityOverTime {
     startDate: Moment;
     endDate: Moment;
-    days: [{
+    days: {
         date: Moment
         offices: OfficeDetailModel[]
-    }];
+    }[];
 }

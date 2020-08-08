@@ -11,11 +11,18 @@
                 >
             </app-percentage>
         </mat-card-title>
-        <mat-card-subtitle>{{office.officeAddress}}</mat-card-subtitle>
+        <mat-card-subtitle>{{office.officeStreet}}, {{office.officeCity}}. {{office.officeState}}, {{office.officeZip}}</mat-card-subtitle>
         <img matCardAvatar [src]="getRandomImgSrc()"/>
     </mat-card-title-group>
     <mat-card-content>
-        <mat-nav-list>
+        <div class="d-flex justify-content-around w-100">
+            <button *ngIf="showRequestBtn" mat-raised-button [color]="'primary'" [disabled]="office.officeUsedCapacity >= office.officeSafeCapacity" class="mr-2" style="min-width: 8rem;">Request</button>
+            <button *ngIf="showCloseBtn" mat-raised-button color="warn" style="min-width: 8rem;">Close</button>
+        </div>
+        <div class="py-2 w-100" *ngIf="office.sections && office.sections.length">
+            <mat-divider></mat-divider>
+        </div>
+        <mat-nav-list class="pt-2" *ngIf="office.sections && office.sections.length">
             <mat-list-item *ngFor="let section of office.sections">
                 <mat-icon class="text-success" *ngIf="section.sectionUsedCapacity < section.sectionSafeCapacity">check_circle_outline</mat-icon>
                 <mat-icon class="text-danger" *ngIf="section.sectionUsedCapacity >= section.sectionSafeCapacity">error_outline</mat-icon>
