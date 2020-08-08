@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { OfficeDetailModel } from 'src/app/core/models/office-detail.model';
+import { OfficeDetailModel } from '../../core/models/office-detail.model';
 
 @Component({
     selector: 'app-building-availability',

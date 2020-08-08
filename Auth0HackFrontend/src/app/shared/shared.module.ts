@@ -1,21 +1,27 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
+import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
+import { ScheduleModule } from '@syncfusion/ej2-angular-schedule';
+
 import {
     BuildingAvailabilityComponent
-} from './building-availabilty/building-availability.component';
+} from './building-availabilty-card/building-availability.component';
+import {
+    OfficeAvailabilityCalendarComponent
+} from './office-availability-calendar/office-availability-calendar.component';
 import { PercentageComponent } from './percentage/percentage.component';
-import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
     declarations: [
         BuildingAvailabilityComponent,
-        PercentageComponent
+        PercentageComponent,
+        OfficeAvailabilityCalendarComponent
     ],
     imports: [
         CommonModule,
@@ -23,11 +29,13 @@ import { MatButtonModule } from '@angular/material/button';
         MatListModule,
         MatIconModule,
         MatButtonModule,
-        MatTooltipModule
+        MatTooltipModule,
+        ScheduleModule
     ],
     exports: [
         BuildingAvailabilityComponent,
-        PercentageComponent
+        PercentageComponent,
+        OfficeAvailabilityCalendarComponent
     ],
     providers: [
     ]
