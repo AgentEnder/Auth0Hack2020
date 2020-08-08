@@ -15,7 +15,7 @@ namespace Auth0HackBackend.DTO
         public Guid EmployeeId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string Title { get; set; }        
+        public string Title { get; set; }
 
         public static Expression<Func<Employee, EmployeeMetadataDTO>> MapToDTO = (v) =>
         new EmployeeMetadataDTO
@@ -26,8 +26,22 @@ namespace Auth0HackBackend.DTO
             Title = v.Title
         };
 
+        public static Expression<Func<EmployeeMetadataDTO, Employee>> MapToBase = (v) =>
+        new Employee
+        {
+            EmployeeId = v.EmployeeId,
+            FirstName = v.FirstName,
+            LastName = v.LastName,
+            Title = v.Title
+        };
+
         public static EmployeeMetadataDTO MapToDTOFunc(Employee e) {
             return MapToDTO.Compile().Invoke(e);
+        }
+
+        public static Employee MapToBaseFunc(EmployeeMetadataDTO e)
+        {
+            return MapToBase.Compile().Invoke(e);
         }
     }
 }

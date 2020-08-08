@@ -18,7 +18,7 @@ namespace Auth0HackBackend.Model
         public Office Office { get; set; }
         public Guid? SectionId { get; set; }
         public Section Section { get; set; }
-        public Guid ApprovalStatusId { get; set; }
+        public Guid? ApprovalStatusId { get; set; }
         public ApprovalStatus ApprovalStatus { get; set; }
         public DateTimeOffset StartTime { get; set; }
         public DateTimeOffset EndTime { get; set; }

@@ -27,8 +27,22 @@ namespace Auth0HackBackend.DTO
             SectionDescription = v.SectionDescription
         };
 
-        public static SectionMetadataDTO MapToDTOFunc(Section o) {
-            return MapToDTO.Compile().Invoke(o);
+        public static Expression<Func<SectionMetadataDTO, Section>> MapToBase = (v) =>
+        new Section
+        {
+            SectionId = v.SectionId,
+            SectionMaxCapacity = v.SectionMaxCapacity,
+            SectionSafeCapacity = v.SectionSafeCapacity,
+            SectionDescription = v.SectionDescription
+        };
+
+        public static SectionMetadataDTO MapToDTOFunc(Section s) {
+            return MapToDTO.Compile().Invoke(s);
+        }
+
+        public static Section MapToBaseFunc(SectionMetadataDTO s)
+        {
+            return MapToBase.Compile().Invoke(s);
         }
     }
 }

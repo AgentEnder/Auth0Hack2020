@@ -37,8 +37,27 @@ namespace Auth0HackBackend.DTO
             OfficeZip = v.OfficeZip
         };
 
+        public static Expression<Func<OfficeMetadataDTO, Office>> MapToBase = (v) =>
+        new Office
+        {
+            OfficeMaxCapacity = v.OfficeMaxCapacity,
+            OfficeSafeCapacity = v.OfficeSafeCapacity,
+            OfficeCity = v.OfficeCity,
+            OfficeId = v.OfficeId,
+            OfficeLocation = v.OfficeLocation,
+            OfficeName = v.OfficeName,
+            OfficeState = v.OfficeState,
+            OfficeStreet = v.OfficeStreet,
+            OfficeZip = v.OfficeZip
+        };
+
         public static OfficeMetadataDTO MapToDTOFunc(Office o) {
             return MapToDTO.Compile().Invoke(o);
+        }
+
+        public static Office MapToBaseFunc(OfficeMetadataDTO o)
+        {
+            return MapToBase.Compile().Invoke(o);
         }
     }
 }

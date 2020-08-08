@@ -16,15 +16,30 @@ namespace Auth0HackBackend.Repositories
             DbContext = entities;
         }
 
-        public IQueryable<WorkRequestMetadataDTO> GetRequestMetadata()
+        public IQueryable<WorkRequestMetadataDTO> GetWorkRequestMetadata()
         {
             return DbContext.WorkRequests.Select(WorkRequestMetadataDTO.MapToDTO);
         }
 
-        public async ValueTask<WorkRequestMetadataDTO> GetRequestById(Guid WorkRequestId)
+        public async ValueTask<WorkRequestMetadataDTO> GetWorkRequestById(Guid WorkRequestId)
         {
             var workRequest = await DbContext.WorkRequests.FindAsync(WorkRequestId);
             return WorkRequestMetadataDTO.MapToDTOFunc(workRequest);
+        }
+
+        public IQueryable<WorkRequestMetadataDTO> GetWorkRequestsByEmployeeId(Guid EmployeeId)
+        {
+            return DbContext.WorkRequests.Where(x => x.PersonId == EmployeeId).Select(WorkRequestMetadataDTO.MapToDTO);
+        }
+
+        public WorkRequestMetadataDTO SaveWorkRequest(WorkRequestMetadataDTO wr)
+        {
+            WorkRequest newWR = WorkRequestMetadataDTO.MapToBaseFunc(wr);
+            newWR.WorkRequestId = Guid.NewGuid();
+            DbContext.WorkRequests.Add(newWR);
+            DbContext.SaveChanges();
+
+            return WorkRequestMetadataDTO.MapToDTOFunc(newWR);
         }
     }
 }
