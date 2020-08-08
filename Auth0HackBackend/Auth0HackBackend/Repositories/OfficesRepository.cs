@@ -26,5 +26,51 @@ namespace Auth0HackBackend.Repositories
             var office = await DbContext.Offices.FindAsync(officeId);
             return OfficeMetadataDTO.MapToDTOFunc(office);
         }
+
+        public List<Section> GetSectionsByOfficeId(Guid officeId)
+        {
+            return DbContext.Sections.Where(x => x.OfficeId == officeId).ToList();
+        }
+
+        public List<SectionDetailDTO> GetSectionDetailsByOfficeId(Guid officeId, DateTimeOffset workDate)
+        {
+            DateTimeOffset startTime = new DateTimeOffset(workDate.Year, workDate.Month, workDate.Day, 0, 0, 0, 0, workDate.Offset);
+            DateTimeOffset endTime = startTime.AddDays(1);
+            List<Section> sections = DbContext.Sections.Where(x => x.OfficeId == officeId).ToList();
+            List<SectionDetailDTO> sectionDetails = new List<SectionDetailDTO>();
+            foreach (Section section in sections)
+            {
+                SectionDetailDTO secDetail = SectionDetailDTO.MapToDTOFunc(section);
+                secDetail.SectionUsedCapacity = DbContext.WorkRequests.Count(
+                x => x.SectionId == section.SectionId && x.ApprovalStatus.StatusName == "Approved" &&
+                        ((x.StartTime >= startTime && x.EndTime <= endTime) ||
+                (x.EndTime >= startTime && x.EndTime <= endTime) ||
+                (startTime >= x.StartTime && startTime <= x.EndTime) ||
+                (endTime >= x.StartTime && endTime <= x.EndTime)));
+                sectionDetails.Add(secDetail);
+                
+            }
+
+            return sectionDetails;
+        }
+
+        public async ValueTask<OfficeDetailDTO> GetOfficeDetailById(Guid officeId, DateTimeOffset workDate)
+        {
+            DateTimeOffset startTime = new DateTimeOffset(workDate.Year, workDate.Month, workDate.Day, 0, 0, 0, workDate.Offset);
+            DateTimeOffset endTime = startTime.AddDays(1);
+            var office = await DbContext.Offices.FindAsync(officeId);
+            OfficeDetailDTO officeDetail = OfficeDetailDTO.MapToDTOFunc(office);
+            officeDetail.OfficeUsedCapacity = DbContext.WorkRequests.Count(
+                x => x.OfficeId == officeId && x.ApprovalStatus.StatusName == "Approved" &&
+                        ((x.StartTime >= startTime && x.EndTime <= endTime) ||
+                (x.EndTime >= startTime && x.EndTime <= endTime) ||
+                (startTime >= x.StartTime && startTime <= x.EndTime) ||
+                (endTime >= x.StartTime && endTime <= x.EndTime)));
+
+            officeDetail.Sections = GetSectionDetailsByOfficeId(officeId, workDate);
+            
+
+            return officeDetail;
+        }
     }
 }

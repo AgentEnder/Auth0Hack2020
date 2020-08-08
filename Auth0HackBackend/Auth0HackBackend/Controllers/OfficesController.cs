@@ -32,5 +32,11 @@ namespace Auth0HackBackend.Controllers
         {
             return Repository.GetOfficeById(officeId);
         }
+
+        [HttpGet("by-id/{id}/{date}")] // .../api/offices/by-id/{id}/{date}
+        public ValueTask<OfficeDetailDTO> GetOfficeDetailById([FromRoute] Guid officeId, [FromRoute] DateTimeOffset workDate)
+        {
+            return Repository.GetOfficeDetailById(officeId, workDate);
+        }
     }
 }

@@ -12,25 +12,25 @@ namespace Auth0HackBackend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OfficesController : ControllerBase
+    public class EmployeesController : ControllerBase
     {
-        OfficesRepository Repository { get; }
-        public OfficesController(OfficesRepository officesRepository)
+        EmployeesRepository Repository { get; }
+        public EmployeesController(EmployeesRepository EmployeesRepository)
         {
-            Repository = officesRepository;
+            Repository = EmployeesRepository;
         }
 
-        [HttpGet()] // .../api/offices
+        [HttpGet()] // .../api/Employees
         [EnableQuery(EnsureStableOrdering = false)]
-        public IQueryable<OfficeMetadataDTO> RetrieveOffices()
+        public IQueryable<EmployeeMetadataDTO> RetrieveEmployees()
         {
-            return Repository.GetOfficeMetadata();
+            return Repository.GetEmployeeMetadata();
         }
 
-        [HttpGet("by-id/{id}")] // .../api/offices/by-id/{id}
-        public ValueTask<OfficeMetadataDTO> GetOfficeById([FromRoute] Guid officeId)
+        [HttpGet("by-id/{id}")] // .../api/Employees/by-id/{id}
+        public ValueTask<EmployeeMetadataDTO> GetEmployeeById([FromRoute] Guid EmployeeId)
         {
-            return Repository.GetOfficeById(officeId);
+            return Repository.GetEmployeeById(EmployeeId);
         }
     }
 }

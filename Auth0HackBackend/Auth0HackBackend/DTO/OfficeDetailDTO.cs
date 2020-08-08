@@ -10,7 +10,7 @@ using NetTopologySuite.Geometries;
 
 namespace Auth0HackBackend.DTO
 {
-    public class OfficeMetadataDTO
+    public class OfficeDetailDTO
     {
         public Guid OfficeId { get; set; }
         public string OfficeName { get; set; }
@@ -21,10 +21,12 @@ namespace Auth0HackBackend.DTO
         public string OfficeZip { get; set; }
         public int OfficeMaxCapacity { get; set; }
         public int OfficeSafeCapacity { get; set; }
-        public Point OfficeLocation { get; set; }        
+        public int OfficeUsedCapacity { get; set; }
+        public Point OfficeLocation { get; set; }
+        public List<SectionDetailDTO> Sections { get; set; }
 
-        public static Expression<Func<Office, OfficeMetadataDTO>> MapToDTO = (v) =>
-        new OfficeMetadataDTO
+        public static Expression<Func<Office, OfficeDetailDTO>> MapToDTO = (v) =>
+        new OfficeDetailDTO
         {
             OfficeMaxCapacity = v.OfficeMaxCapacity,
             OfficeSafeCapacity = v.OfficeSafeCapacity,
@@ -37,7 +39,7 @@ namespace Auth0HackBackend.DTO
             OfficeZip = v.OfficeZip
         };
 
-        public static Expression<Func<OfficeMetadataDTO, Office>> MapToBase = (v) =>
+        public static Expression<Func<OfficeDetailDTO, Office>> MapToBase = (v) =>
         new Office
         {
             OfficeMaxCapacity = v.OfficeMaxCapacity,
@@ -51,11 +53,11 @@ namespace Auth0HackBackend.DTO
             OfficeZip = v.OfficeZip
         };
 
-        public static OfficeMetadataDTO MapToDTOFunc(Office o) {
+        public static OfficeDetailDTO MapToDTOFunc(Office o) {
             return MapToDTO.Compile().Invoke(o);
         }
 
-        public static Office MapToBaseFunc(OfficeMetadataDTO o)
+        public static Office MapToBaseFunc(OfficeDetailDTO o)
         {
             return MapToBase.Compile().Invoke(o);
         }
