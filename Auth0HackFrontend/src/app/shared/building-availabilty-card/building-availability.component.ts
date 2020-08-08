@@ -44,6 +44,7 @@ export class BuildingAvailabilityComponent implements OnInit{
     }
 
     submitRequest() {
+        console.dir(this.submitReason);
         this.requestsService.submitRequest(
             'BC238306-9CB5-4731-A117-EC1A926E2659',
             '293E75E0-20CD-4855-B951-57067E26FA84',
