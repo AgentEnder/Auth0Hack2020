@@ -33,6 +33,7 @@ namespace Auth0HackBackend.DTO
         new Section
         {
             SectionId = v.SectionId,
+            SectionName = v.SectionName,
             SectionMaxCapacity = v.SectionMaxCapacity,
             SectionSafeCapacity = v.SectionSafeCapacity,
             SectionDescription = v.SectionDescription
