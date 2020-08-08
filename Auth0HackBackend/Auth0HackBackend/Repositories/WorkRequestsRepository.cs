@@ -10,10 +10,11 @@ namespace Auth0HackBackend.Repositories
     public class WorkRequestsRepository
     {
         HackEntities DbContext { get; set; }
-
-        public WorkRequestsRepository(HackEntities entities)
+        EmployeesRepository EmpRepository { get; }        
+        public WorkRequestsRepository(HackEntities entities, EmployeesRepository EmployeesRepository)
         {
             DbContext = entities;
+            EmpRepository = EmployeesRepository;
         }
 
         public IQueryable<WorkRequestMetadataDTO> GetWorkRequestMetadata()
@@ -58,6 +59,34 @@ namespace Auth0HackBackend.Repositories
             DbContext.SaveChanges();
 
             return WorkRequestMetadataDTO.MapToDTOFunc(newWorkRequest);
+        }
+
+        public WorkRequest SetStatusAndApprover(Guid approvalStatusId, WorkRequestApprovalDTO wra, string auth0Id)
+        {
+            WorkRequest wr = DbContext.WorkRequests.Find(wra.WorkRequestId);
+            if (wr != null)
+            {
+                wr.ApprovalStatus.ApprovalStatusId = approvalStatusId;
+                wr.Approver.EmployeeId = EmpRepository.GetEmployeeByAuthId(auth0Id).EmployeeId;
+                wr.ApproverNotes = wra.ApproverNotes;
+            }
+
+            DbContext.SaveChanges();
+
+            return wr;
+        }
+        public WorkRequestMetadataDTO ApproveWorkRequest(WorkRequestApprovalDTO wra, string auth0Id)
+        {
+            WorkRequest wr = SetStatusAndApprover(ApprovalStatusMetadataDTO._APPROVED, wra, auth0Id);
+            
+            return WorkRequestMetadataDTO.MapToDTOFunc(wr);
+        }
+
+        public WorkRequestMetadataDTO DenyWorkRequest(WorkRequestApprovalDTO wra, string auth0Id)
+        {
+            WorkRequest wr = SetStatusAndApprover(ApprovalStatusMetadataDTO._DENIED, wra, auth0Id);
+
+            return WorkRequestMetadataDTO.MapToDTOFunc(wr);
         }
     }
 }
