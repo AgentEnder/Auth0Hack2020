@@ -5,6 +5,27 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200808152418_OfficeClosureMigration.cs" />
+    <Compile Remove="Migrations\20200808152418_OfficeClosureMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200808152633_OfficeClosureMigration.cs" />
+    <Compile Remove="Migrations\20200808152633_OfficeClosureMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200808152651_OfficeClosureMigration.cs" />
+    <Compile Remove="Migrations\20200808152651_OfficeClosureMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200808152813_OfficeClosureMigration.cs" />
+    <Compile Remove="Migrations\20200808152813_OfficeClosureMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200808152959_OfficeClosureMigration.cs" />
+    <Compile Remove="Migrations\20200808152959_OfficeClosureMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200808153154_OfficeClosureMigration.cs" />
+    <Compile Remove="Migrations\20200808153154_OfficeClosureMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200808153319_OfficeClosureMigration.cs" />
+    <Compile Remove="Migrations\20200808153319_OfficeClosureMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200808153407_OfficeClosureMigration.cs" />
+    <Compile Remove="Migrations\20200808153407_OfficeClosureMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200808154537_OfficeClosureMigration.cs" />
+    <Compile Remove="Migrations\20200808154537_OfficeClosureMigration.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.OData" Version="7.4.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.6" />

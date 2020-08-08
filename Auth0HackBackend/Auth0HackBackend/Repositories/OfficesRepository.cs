@@ -72,6 +72,41 @@ namespace Auth0HackBackend.Repositories
             
 
             return officeDetail;
-        }       
+        }      
+        
+        public OfficeClosureDTO CloseOffice(OfficeClosureDTO officeClosureDTO)
+        {
+            OfficeClosure oc = null;
+
+            if (officeClosureDTO.OfficeClosureId != Guid.Empty)
+            {
+                oc = DbContext.OfficeClosures.Find(officeClosureDTO.OfficeClosureId);
+            }
+            if (oc != null)
+            {
+                oc.Description = officeClosureDTO.Description;
+                oc.EndTime = officeClosureDTO.EndTime;
+                oc.OfficeId = oc.OfficeId;
+                oc.StartTime = oc.StartTime;
+            }
+            else 
+            {
+                oc = OfficeClosureDTO.MapToBaseFunc(officeClosureDTO);
+                oc.OfficeClosureId = Guid.NewGuid();
+                DbContext.OfficeClosures.Add(oc);                
+            }
+            DbContext.SaveChanges();
+
+            return OfficeClosureDTO.MapToDTOFunc(oc);
+        }
+
+        public SectionClosureDTO CloseSection(SectionClosureDTO sectionClosureDTO)
+        {
+            SectionClosure sc = SectionClosureDTO.MapToBaseFunc(sectionClosureDTO);
+            DbContext.SectionClosures.Add(sc);
+            DbContext.SaveChanges();
+            return SectionClosureDTO.MapToDTOFunc(sc);
+        }
+
     }
 }
