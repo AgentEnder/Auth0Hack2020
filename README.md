@@ -8,6 +8,12 @@
 
 ## How to run locally, or experience in the cloud..
 
+### Sample Logins
+
+- User: milton.waadams@initech.com | Password: OSCovid19
+- User: peter.gibbons@initech.com | Password: OSCovid19
+- User: bill.lumbergh@initech.com |Password: OSCovid19
+
 ### Cloud Experience
 
 To preview this app in the cloud simply visit us at Vercel! [Covid19-OfficeSpace](https://auth0-hack2020.vercel.app/)
