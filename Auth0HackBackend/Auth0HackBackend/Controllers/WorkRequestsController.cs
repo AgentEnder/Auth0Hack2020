@@ -27,14 +27,14 @@ namespace Auth0HackBackend.Controllers
             return Repository.GetWorkRequestMetadata();
         }
 
-        [HttpGet("by-id/{id}")] // .../api/WorkRequests/by-id/{id}
+        [HttpGet("by-id/{WorkRequestId}")] // .../api/WorkRequests/by-id/{WorkRequestId}
         public ValueTask<WorkRequestMetadataDTO> GetWorkRequestById([FromRoute] Guid WorkRequestId)
         {
             return Repository.GetWorkRequestById(WorkRequestId);
         }
 
-        [HttpPost()] // .../api/WorkRequests/by-employee-id/{id}
-        public WorkRequestMetadataDTO SaveWorkRequest([FromRoute] WorkRequestMetadataDTO wr)
+        [HttpPost()] // .../api/WorkRequests/
+        public WorkRequestMetadataDTO SaveWorkRequest([FromBody] WorkRequestMetadataDTO wr)
         {
             return Repository.SaveWorkRequest(wr);
         }

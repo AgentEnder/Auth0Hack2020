@@ -27,7 +27,7 @@ namespace Auth0HackBackend.Controllers
             return Repository.GetEmployeeMetadata();
         }
 
-        [HttpGet("by-id/{id}")] // .../api/Employees/by-id/{id}
+        [HttpGet("by-id/{EmployeeId}")] // .../api/Employees/by-id/{EmployeeId}
         public ValueTask<EmployeeMetadataDTO> GetEmployeeById([FromRoute] Guid EmployeeId)
         {
             return Repository.GetEmployeeById(EmployeeId);

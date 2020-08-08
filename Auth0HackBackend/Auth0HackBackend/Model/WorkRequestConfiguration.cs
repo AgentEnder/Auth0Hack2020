@@ -11,19 +11,20 @@ namespace Auth0HackBackend.Model
     {
         public void Configure(EntityTypeBuilder<WorkRequest> builder)
         {
-            builder.HasKey(x => x.SectionId); // This one would be picked up by convention ({ClassnameId} would be autodetected, but this is a good example of configuring.            
-            
+            builder.HasKey(x => x.WorkRequestId); // This one would be picked up by convention ({ClassnameId} would be autodetected, but this is a good example of configuring.            
+            /*
             builder.HasOne(x => x.Approver)
                 .WithMany()
                 .HasForeignKey(z => z.ApproverId).OnDelete(DeleteBehavior.SetNull);
 
             builder.HasOne(x => x.Requestor)
                 .WithMany()
-                .HasForeignKey(z => z.RequestorId).OnDelete(DeleteBehavior.SetNull);
+                .HasForeignKey(z => z.RequestorId).OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(x => x.Person)
                 .WithMany()
-                .HasForeignKey(z => z.PersonId).OnDelete(DeleteBehavior.SetNull);
+                .HasForeignKey(z => z.PersonId).OnDelete(DeleteBehavior.NoAction);
+           */
         }
     }
 }

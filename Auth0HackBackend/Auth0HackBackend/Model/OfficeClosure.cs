@@ -9,6 +9,7 @@ namespace Auth0HackBackend.Model
 {
     public class OfficeClosure
     {
+        public Guid OfficeClosureId { get; set; }
         public Guid OfficeId { get; set; }
         public DateTimeOffset StartTime { get; set; }
         public DateTimeOffset EndTime { get; set; }

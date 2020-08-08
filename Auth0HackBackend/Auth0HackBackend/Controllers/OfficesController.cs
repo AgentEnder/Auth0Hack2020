@@ -27,39 +27,46 @@ namespace Auth0HackBackend.Controllers
             return Repository.GetOfficeMetadata();
         }
 
-        [HttpGet("by-id/{id}")] // .../api/offices/by-id/{id}
-        public ValueTask<OfficeMetadataDTO> GetOfficeById([FromRoute] Guid officeId)
+        [HttpGet("by-id/{OfficeId}")] // .../api/offices/by-id/{OfficeId}
+        public ValueTask<OfficeMetadataDTO> GetOfficeById([FromRoute] Guid OfficeId)
         {
-            return Repository.GetOfficeById(officeId);
+            return Repository.GetOfficeById(OfficeId);
         }
 
-        [HttpGet("by-id/{id}/{date}")] // .../api/offices/by-id/{id}/{date}
-        public OfficeDetailDTO GetOfficeDetailById([FromRoute] Guid officeId, [FromRoute] DateTimeOffset workDate)
+        [HttpGet("by-id/{OfficeId}/{WorkDate}")] // .../api/offices/by-id/{OfficeId}/{WorkDate}
+        public OfficeDetailDTO GetOfficeDetailById([FromRoute] Guid OfficeId, [FromRoute] DateTimeOffset WorkDate)
         {
-            return Repository.GetOfficeDetailById(officeId, workDate);
+            return Repository.GetOfficeDetailById(OfficeId, WorkDate);
         }
 
-        [HttpGet("by-id/{id}/{startTime}/{endTime}")] // .../api/offices/by-id/{id}/{date}
-        public List<OfficeDetailDTO> GetOfficeDetailByIdAndDateRange([FromRoute] Guid officeId, [FromRoute] DateTimeOffset startTime, DateTimeOffset endTime)
+        [HttpGet("by-id/{OfficeId}/{StartTime}/{EndTime}")] // .../api/offices/by-id/{id}/{date}
+        public List<OfficeDetailDTO> GetOfficeDetailByIdAndDateRange([FromRoute] Guid OfficeId, [FromRoute] DateTimeOffset StartTime, DateTimeOffset EndTime)
         {
             List<OfficeDetailDTO> retObj = new List<OfficeDetailDTO>();
-            for (DateTimeOffset workDate = startTime; workDate < endTime; workDate = workDate.AddDays(1))
+            for (DateTimeOffset workDate = StartTime; workDate < EndTime; workDate = workDate.AddDays(1))
             {
-                retObj.Add(GetOfficeDetailById(officeId, workDate));
+                retObj.Add(GetOfficeDetailById(OfficeId, workDate));
             }
             return retObj;
         }
 
-        [HttpGet("/{startTime}/{endTime}")] // .../api/offices/by-id/{id}/{date}
-        public List<OfficeDetailDTO> GetOfficeDetailsByDate([FromRoute] Guid officeId, [FromRoute] DateTimeOffset workDate)
+        [HttpGet("/{WorkDate}")] // .../api/offices/{workDate}
+        public List<OfficeDetailDTO> GetOfficeDetailsByDate([FromRoute] DateTimeOffset WorkDate)
         {
             List<OfficeDetailDTO> retObj = new List<OfficeDetailDTO>();
             IQueryable<OfficeMetadataDTO> offices = Repository.GetOfficeMetadata();
             foreach (OfficeMetadataDTO office in offices)
             {
-                retObj.Add(GetOfficeDetailById(office.OfficeId, workDate));
+                retObj.Add(GetOfficeDetailById(office.OfficeId, WorkDate));
             }
             return retObj;
         }
+        /*
+        [HttpGet("/close/{id}/{startTime}/{endTime}")] // .../api/offices/close/{id}/{startTime}/{endTime}
+        public OfficeClosure CloseOffice()
+        {
+
+        }
+        */
     }
 }
