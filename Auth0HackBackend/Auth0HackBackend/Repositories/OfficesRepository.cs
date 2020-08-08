@@ -54,11 +54,11 @@ namespace Auth0HackBackend.Repositories
             return sectionDetails;
         }
 
-        public async ValueTask<OfficeDetailDTO> GetOfficeDetailById(Guid officeId, DateTimeOffset workDate)
+        public OfficeDetailDTO GetOfficeDetailById(Guid officeId, DateTimeOffset workDate)
         {
             DateTimeOffset startTime = new DateTimeOffset(workDate.Year, workDate.Month, workDate.Day, 0, 0, 0, workDate.Offset);
             DateTimeOffset endTime = startTime.AddDays(1);
-            var office = await DbContext.Offices.FindAsync(officeId);
+            var office = DbContext.Offices.Find(officeId);
             OfficeDetailDTO officeDetail = OfficeDetailDTO.MapToDTOFunc(office);
             officeDetail.OfficeUsedCapacity = DbContext.WorkRequests.Count(
                 x => x.OfficeId == officeId && x.ApprovalStatus.StatusName == "Approved" &&
@@ -71,6 +71,6 @@ namespace Auth0HackBackend.Repositories
             
 
             return officeDetail;
-        }
+        }       
     }
 }

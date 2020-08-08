@@ -34,7 +34,7 @@ namespace Auth0HackBackend.Controllers
         }
 
         [HttpPost()] // .../api/WorkRequests/by-employee-id/{id}
-        public WorkRequestMetadataDTO GetWorkRequestByEmployeeId([FromRoute] WorkRequestMetadataDTO wr)
+        public WorkRequestMetadataDTO SaveWorkRequest([FromRoute] WorkRequestMetadataDTO wr)
         {
             return Repository.SaveWorkRequest(wr);
         }

@@ -34,9 +34,20 @@ namespace Auth0HackBackend.Controllers
         }
 
         [HttpGet("by-id/{id}/{date}")] // .../api/offices/by-id/{id}/{date}
-        public ValueTask<OfficeDetailDTO> GetOfficeDetailById([FromRoute] Guid officeId, [FromRoute] DateTimeOffset workDate)
+        public OfficeDetailDTO GetOfficeDetailById([FromRoute] Guid officeId, [FromRoute] DateTimeOffset workDate)
         {
             return Repository.GetOfficeDetailById(officeId, workDate);
+        }
+
+        [HttpGet("by-id/{id}/{startDate}/{endDate}")] // .../api/offices/by-id/{id}/{date}
+        public List<OfficeDetailDTO> GetOfficeDetailByIdAndDateRange([FromRoute] Guid officeId, [FromRoute] DateTimeOffset startTime, DateTimeOffset endTime)
+        {
+            List<OfficeDetailDTO> retObj = new List<OfficeDetailDTO>();
+            for (DateTimeOffset workDate = startTime; workDate < endTime; workDate = workDate.AddDays(1))
+            {
+                retObj.Add(GetOfficeDetailById(officeId, workDate));
+            }
+            return retObj;
         }
     }
 }
