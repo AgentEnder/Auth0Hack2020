@@ -21,6 +21,7 @@ import { SidebarComponent } from './layout/sidebar/sidebar.component';
 
 import {MatExpansionModule} from '@angular/material/expansion';
 import { OfficesService } from './core/services/offices.service';
+import { AuthGuard } from './core/services/auth.guard';
 
 const Routes: Routes = [
   {
@@ -30,11 +31,13 @@ const Routes: Routes = [
   },
   {
     path: 'admin',
-    loadChildren: () => import('./admin/admin.module').then(x => x.AdminModule)
+    loadChildren: () => import('./admin/admin.module').then(x => x.AdminModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'user',
-    loadChildren: () => import('./user/user.module').then(x => x.UserPagesModule)
+    loadChildren: () => import('./user/user.module').then(x => x.UserPagesModule),
+    canActivate: [AuthGuard]
   }
 ];
 
