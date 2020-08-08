@@ -21,6 +21,11 @@ export class SidebarComponent {
             label: 'Home'
         },
         {
+            path: 'user/available-space',
+            icon: 'business_center',
+            label: 'Availability'
+        },
+        {
             path: '/admin',
             icon: 'admin_panel_settings',
             label: 'Admin',

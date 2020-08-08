@@ -20,6 +20,7 @@ import { NavbarComponent } from './layout/navbar/navbar.component';
 import { SidebarComponent } from './layout/sidebar/sidebar.component';
 
 import {MatExpansionModule} from '@angular/material/expansion';
+import { OfficesService } from './core/services/offices.service';
 
 const Routes: Routes = [
   {
@@ -30,6 +31,10 @@ const Routes: Routes = [
   {
     path: 'admin',
     loadChildren: () => import('./admin/admin.module').then(x => x.AdminModule)
+  },
+  {
+    path: 'user',
+    loadChildren: () => import('./user/user.module').then(x => x.UserPagesModule)
   }
 ];
 
@@ -60,7 +65,8 @@ const Routes: Routes = [
       useClass: AuthInterceptorService,
       multi: true
     },
-    RandomUserService
+    RandomUserService,
+    OfficesService
   ],
   bootstrap: [AppComponent]
 })
