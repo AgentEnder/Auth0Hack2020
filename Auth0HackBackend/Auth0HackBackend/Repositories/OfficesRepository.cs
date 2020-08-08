@@ -76,9 +76,27 @@ namespace Auth0HackBackend.Repositories
         
         public OfficeClosureDTO CloseOffice(OfficeClosureDTO officeClosureDTO)
         {
-            OfficeClosure oc = OfficeClosureDTO.MapToBaseFunc(officeClosureDTO);
-            DbContext.OfficeClosures.Add(oc);
+            OfficeClosure oc = null;
+
+            if (officeClosureDTO.OfficeClosureId != Guid.Empty)
+            {
+                oc = DbContext.OfficeClosures.Find(officeClosureDTO.OfficeClosureId);
+            }
+            if (oc != null)
+            {
+                oc.Description = officeClosureDTO.Description;
+                oc.EndTime = officeClosureDTO.EndTime;
+                oc.OfficeId = oc.OfficeId;
+                oc.StartTime = oc.StartTime;
+            }
+            else 
+            {
+                oc = OfficeClosureDTO.MapToBaseFunc(officeClosureDTO);
+                oc.OfficeClosureId = Guid.NewGuid();
+                DbContext.OfficeClosures.Add(oc);                
+            }
             DbContext.SaveChanges();
+
             return OfficeClosureDTO.MapToDTOFunc(oc);
         }
 
