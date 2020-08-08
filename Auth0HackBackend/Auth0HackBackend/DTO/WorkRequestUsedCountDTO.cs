@@ -14,6 +14,6 @@ namespace Auth0HackBackend.DTO
     {
         public Guid WorkRequestId { get; set; }
         public int OfficeUsedCount { get; set; }
-        public int? SectionUsed { get; set; }        
+        public int? SectionUsedCount { get; set; }        
     }
 }

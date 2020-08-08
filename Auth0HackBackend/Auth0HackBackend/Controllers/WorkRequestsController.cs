@@ -30,7 +30,7 @@ namespace Auth0HackBackend.Controllers
             return Repository.GetWorkRequestMetadata();
         }
 
-        [HttpGet("self")] // .../api/workrequests/self
+        [HttpGet()]
         [Authorize]
         [ScopeAuthorize("read:WorkRequestsSelf")]
         public IQueryable<WorkRequestMetadataDTO> GetOwnWorkRequests()
@@ -71,10 +71,7 @@ namespace Auth0HackBackend.Controllers
             return null;
         }
 
-        public WorkRequestUsedCountDTO GetCountsForWorkRequest([FromBody] Guid workRequestId)
-        {
-            Repository.GetCountsForWorkRequest(workRequestId);
-        }
+        
 
     }
 }
