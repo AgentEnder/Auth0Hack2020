@@ -8,6 +8,7 @@ import { OfficeMetadata } from '../../core/models/office-metadata.model';
 import { OfficesService } from '../../core/services/offices.service';
 import { OfficeDetailModel } from 'src/app/core/models/office-detail.model';
 import { MatDialog } from '@angular/material/dialog';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
     selector: 'app-office-availability-calendar',
@@ -35,11 +36,16 @@ export class OfficeAvailabilityCalendarComponent implements OnInit {
 
     view: CalendarView = CalendarView.Month;
     activeDayIsOpen = false;
+    mobile = false;
 
     constructor(
         private officeService: OfficesService,
-        private dialogService: MatDialog
+        private dialogService: MatDialog,
+        private breakpoints: BreakpointObserver
     ) {
+        this.breakpoints.observe(Breakpoints.Handset).subscribe(x => {
+            this.mobile = x.matches;
+        });
     }
 
     ngOnInit() {
@@ -79,8 +85,12 @@ export class OfficeAvailabilityCalendarComponent implements OnInit {
     }
 
     showDialogDay(office, day) {
-        this.dialogService.open(this.template, {data: {
-            office, day
-        }});
+        this.dialogService.open(this.template, {
+            data: {
+                office, day
+            },
+            height: this.mobile ? '100%' : undefined,
+            width: this.mobile ? '100%' : '50%'
+        });
     }
 }
