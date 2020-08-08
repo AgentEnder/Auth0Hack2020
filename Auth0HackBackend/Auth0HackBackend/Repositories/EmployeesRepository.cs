@@ -31,13 +31,41 @@ namespace Auth0HackBackend.Repositories
         {
             var employee = await DbContext.Employees.FindAsync(employeeId);
             return EmployeeMetadataDTO.MapToDTOFunc(employee);
-        }
-
-        /*
-        public IQueryable<EmployeeMetadataDTO> ContactTraceByEmployee(Guid employeeId, DateTimeOffset startTime, DateTimeOffset endTime)
+        }        
+        public List<EmployeeContactTraceDTO> ContactTraceByEmployee(Guid employeeId, DateTimeOffset startTime, DateTimeOffset endTime)
         {
-            DbContext.Employees.
+            List<EmployeeContactTraceDTO> retObj = new List<EmployeeContactTraceDTO>();
+            IEnumerable<WorkRequest> empWR = DbContext.WorkRequests.Where(x => x.PersonId == employeeId && 
+                   x.ApprovalStatusId == ApprovalStatusMetadataDTO._APPROVED &&
+                   ((x.StartTime >= startTime && x.EndTime <= endTime) ||
+                    (x.EndTime >= startTime && x.EndTime <= endTime) ||
+                    (startTime >= x.StartTime && startTime <= x.EndTime) ||
+                    (endTime >= x.StartTime && endTime <= x.EndTime))
+                   ).OrderBy(x => x.StartTime);
+
+            foreach (WorkRequest wr in empWR) {
+                IEnumerable<WorkRequest> otherWRs = DbContext.WorkRequests.Where(x => x.PersonId != employeeId &&
+                    x.ApprovalStatusId == ApprovalStatusMetadataDTO._APPROVED &&
+                    ((x.StartTime >= wr.StartTime && x.EndTime <= wr.EndTime) ||
+                    (x.EndTime >= wr.StartTime && x.EndTime <= wr.EndTime) ||
+                    (wr.StartTime >= x.StartTime && wr.StartTime <= x.EndTime) ||
+                    (wr.EndTime >= x.StartTime && wr.EndTime <= x.EndTime)));
+                foreach (WorkRequest oWR in otherWRs)
+                {
+                    EmployeeContactTraceDTO ectDTO = new EmployeeContactTraceDTO();
+                    ectDTO.DateOfContact = new DateTimeOffset(wr.StartTime.Year, wr.StartTime.Month, wr.StartTime.Day, 0, 0, 0, wr.StartTime.Offset);
+                    ectDTO.EmployeeDTO = EmployeeMetadataDTO.MapToDTOFunc(oWR.Person);
+                    ectDTO.OfficeId = oWR.OfficeId;
+                    ectDTO.OfficeName = oWR.Office.OfficeName;
+                    ectDTO.SectionId = oWR.SectionId;
+                    ectDTO.SectionName = oWR.Section.SectionName;
+
+                    retObj.Add(ectDTO);
+                }
+            }
+
+            return retObj;            
         }
-        */
+        
     }
 }
