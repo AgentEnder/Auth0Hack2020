@@ -32,29 +32,33 @@ namespace Auth0HackBackend.Repositories
             return DbContext.Sections.Where(x => x.OfficeId == officeId).ToList();
         }
 
-        public List<SectionDetailDTO> GetSectionDetailsByOfficeId(Guid officeId, DateTimeOffset workDate)
+        public Task<SectionDetailDTO> GetSectionDetailsBySectionId(Section section, DateTimeOffset workDate, DateTimeOffset startTime, DateTimeOffset endTime)
+        {
+            SectionDetailDTO secDetail = SectionDetailDTO.MapToDTOFunc(section);
+            secDetail.SectionUsedCapacity = DbContext.WorkRequests.Count(
+            x => x.SectionId == section.SectionId && x.ApprovalStatus.StatusName == "Approved" &&
+                    ((x.StartTime >= startTime && x.EndTime <= endTime) ||
+                    (x.EndTime >= startTime && x.EndTime <= endTime) ||
+                    (startTime >= x.StartTime && startTime <= x.EndTime) ||
+                    (endTime >= x.StartTime && endTime <= x.EndTime)));
+
+            return Task.FromResult(secDetail);
+        }
+        public async Task<IEnumerable<SectionDetailDTO>> GetSectionDetailsByOfficeId(Guid officeId, DateTimeOffset workDate)
         {
             DateTimeOffset startTime = new DateTimeOffset(workDate.Year, workDate.Month, workDate.Day, 0, 0, 0, 0, workDate.Offset);
             DateTimeOffset endTime = startTime.AddDays(1);
             List<Section> sections = DbContext.Sections.Where(x => x.OfficeId == officeId).ToList();
-            List<SectionDetailDTO> sectionDetails = new List<SectionDetailDTO>();
+            List<Task<SectionDetailDTO>> sectionDetails = new List<Task<SectionDetailDTO>>();
             foreach (Section section in sections)
-            {
-                SectionDetailDTO secDetail = SectionDetailDTO.MapToDTOFunc(section);
-                secDetail.SectionUsedCapacity = DbContext.WorkRequests.Count(
-                x => x.SectionId == section.SectionId && x.ApprovalStatus.StatusName == "Approved" &&
-                        ((x.StartTime >= startTime && x.EndTime <= endTime) ||
-                (x.EndTime >= startTime && x.EndTime <= endTime) ||
-                (startTime >= x.StartTime && startTime <= x.EndTime) ||
-                (endTime >= x.StartTime && endTime <= x.EndTime)));
-                sectionDetails.Add(secDetail);
-                
+            {                
+                sectionDetails.Add(GetSectionDetailsBySectionId(section, workDate, startTime, endTime));
             }
 
-            return sectionDetails;
+            return await Task.WhenAll<SectionDetailDTO>(sectionDetails);
         }
 
-        public OfficeDetailDTO GetOfficeDetailById(Guid officeId, DateTimeOffset workDate)
+        public async Task<OfficeDetailDTO> GetOfficeDetailById(Guid officeId, DateTimeOffset workDate)
         {
             DateTimeOffset startTime = new DateTimeOffset(workDate.Year, workDate.Month, workDate.Day, 0, 0, 0, workDate.Offset);
             DateTimeOffset endTime = startTime.AddDays(1);
@@ -67,7 +71,7 @@ namespace Auth0HackBackend.Repositories
                 (startTime >= x.StartTime && startTime <= x.EndTime) ||
                 (endTime >= x.StartTime && endTime <= x.EndTime)));
 
-            officeDetail.Sections = GetSectionDetailsByOfficeId(officeId, workDate);
+            officeDetail.Sections = await GetSectionDetailsByOfficeId(officeId, workDate);
             officeDetail.SnapshotDate = workDate;
             
 

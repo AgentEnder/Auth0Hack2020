@@ -16,6 +16,12 @@ namespace Auth0HackBackend.Repositories
             DbContext = entities;
         }
 
+        public EmployeeMetadataDTO GetEmployeeByAuthId(string auth0Id)
+        {
+            var employee = DbContext.Employees.FirstOrDefault(x => x.Auth0Id == auth0Id);
+            return EmployeeMetadataDTO.MapToDTOFunc(employee);
+        }
+
         public IQueryable<EmployeeMetadataDTO> GetEmployeeMetadata()
         {
             return DbContext.Employees.Select(EmployeeMetadataDTO.MapToDTO);

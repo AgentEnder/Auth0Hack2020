@@ -13,7 +13,8 @@ export class UserSectionAvailabilityPageComponent implements OnInit {
 
     offices: Observable<OfficeDetailModel[]>;
     o: any = {
-        officeId: '240B663E-F7B7-4A3E-B234-AA5273F8CAFB'
+        //officeId: '240B663E-F7B7-4A3E-B234-AA5273F8CAFB'
+        officeId: 'CDB62A60-8F66-4CDE-8565-BD60CC7281D8'
     };
 
     constructor(
