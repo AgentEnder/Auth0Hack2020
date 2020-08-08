@@ -39,13 +39,25 @@ namespace Auth0HackBackend.Controllers
             return Repository.GetOfficeDetailById(officeId, workDate);
         }
 
-        [HttpGet("by-id/{id}/{startDate}/{endDate}")] // .../api/offices/by-id/{id}/{date}
+        [HttpGet("by-id/{id}/{startTime}/{endTime}")] // .../api/offices/by-id/{id}/{date}
         public List<OfficeDetailDTO> GetOfficeDetailByIdAndDateRange([FromRoute] Guid officeId, [FromRoute] DateTimeOffset startTime, DateTimeOffset endTime)
         {
             List<OfficeDetailDTO> retObj = new List<OfficeDetailDTO>();
             for (DateTimeOffset workDate = startTime; workDate < endTime; workDate = workDate.AddDays(1))
             {
                 retObj.Add(GetOfficeDetailById(officeId, workDate));
+            }
+            return retObj;
+        }
+
+        [HttpGet("/{startTime}/{endTime}")] // .../api/offices/by-id/{id}/{date}
+        public List<OfficeDetailDTO> GetOfficeDetailsByDate([FromRoute] Guid officeId, [FromRoute] DateTimeOffset workDate)
+        {
+            List<OfficeDetailDTO> retObj = new List<OfficeDetailDTO>();
+            IQueryable<OfficeMetadataDTO> offices = Repository.GetOfficeMetadata();
+            foreach (OfficeMetadataDTO office in offices)
+            {
+                retObj.Add(GetOfficeDetailById(office.OfficeId, workDate));
             }
             return retObj;
         }
