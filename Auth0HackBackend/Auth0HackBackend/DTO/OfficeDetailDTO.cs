@@ -23,6 +23,7 @@ namespace Auth0HackBackend.DTO
         public int OfficeSafeCapacity { get; set; }
         public int OfficeUsedCapacity { get; set; }
         public Point OfficeLocation { get; set; }
+        public DateTimeOffset SnapshotDate { get; set; }
         public List<SectionDetailDTO> Sections { get; set; }
 
         public static Expression<Func<Office, OfficeDetailDTO>> MapToDTO = (v) =>
