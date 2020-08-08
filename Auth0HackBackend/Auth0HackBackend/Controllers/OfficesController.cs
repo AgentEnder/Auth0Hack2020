@@ -51,7 +51,7 @@ namespace Auth0HackBackend.Controllers
             return await Task.WhenAll<OfficeDetailDTO>(retObj);
         }
 
-        [HttpGet("/{WorkDate}")] // .../api/offices/{workDate}
+        [HttpGet("{WorkDate}")] // .../api/offices/{workDate}
         public async Task<IEnumerable<OfficeDetailDTO>> GetOfficeDetailsByDate([FromRoute] DateTimeOffset WorkDate)
         {
             List<Task<OfficeDetailDTO>> retObj = new List<Task<OfficeDetailDTO>>();
@@ -63,7 +63,7 @@ namespace Auth0HackBackend.Controllers
             return await Task.WhenAll<OfficeDetailDTO>(retObj);
         }
         
-        [HttpPost("/close")] // .../api/offices/close/{id}/{startTime}/{endTime}
+        [HttpPost("close")] // .../api/offices/close/{id}/{startTime}/{endTime}
         [Authorize]
         [ScopeAuthorize("create:OfficeClosure")]
         public OfficeClosureDTO CloseOffice([FromBody] OfficeClosureDTO officeClosureDTO)
@@ -71,7 +71,7 @@ namespace Auth0HackBackend.Controllers
             return Repository.CloseOffice(officeClosureDTO);
         }
 
-        [HttpPost("/section/close")] // .../api/offices/close/{id}/{startTime}/{endTime}
+        [HttpPost("section/close")] // .../api/offices/close/{id}/{startTime}/{endTime}
         [Authorize]
         [ScopeAuthorize("create:SectionClosure")]
         public SectionClosureDTO SectionOffice([FromBody] SectionClosureDTO sectionClosureDTO)
@@ -79,5 +79,10 @@ namespace Auth0HackBackend.Controllers
             return Repository.CloseSection(sectionClosureDTO);
         }
 
+        [HttpGet("office-section-used-count/{workRequestId}")] // .../api/offices/office-section-used-count/{workRequestId}
+        public WorkRequestUsedCountDTO GetCountsForWorkRequest([FromBody] Guid workRequestId)
+        {
+            return Repository.GetCountsForWorkRequest(workRequestId);
+        }
     }
 }

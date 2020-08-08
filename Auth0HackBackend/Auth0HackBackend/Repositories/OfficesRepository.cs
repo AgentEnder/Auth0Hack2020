@@ -32,15 +32,49 @@ namespace Auth0HackBackend.Repositories
             return DbContext.Sections.Where(x => x.OfficeId == officeId).ToList();
         }
 
-        public Task<SectionDetailDTO> GetSectionDetailsBySectionId(Section section, DateTimeOffset workDate, DateTimeOffset startTime, DateTimeOffset endTime)
+        public WorkRequestUsedCountDTO GetCountsForWorkRequest(Guid workRequestId)
         {
-            SectionDetailDTO secDetail = SectionDetailDTO.MapToDTOFunc(section);
-            secDetail.SectionUsedCapacity = DbContext.WorkRequests.Count(
-            x => x.SectionId == section.SectionId && x.ApprovalStatus.StatusName == "Approved" &&
+            WorkRequestUsedCountDTO wrucDTO = new WorkRequestUsedCountDTO();
+            wrucDTO.WorkRequestId = workRequestId;
+            wrucDTO.SectionUsedCount = null;
+            WorkRequest wr = DbContext.WorkRequests.Find(workRequestId);
+            if (wr != null)
+            {
+                DateTimeOffset startTime = new DateTimeOffset(wr.StartTime.Year, wr.StartTime.Month, wr.StartTime.Day, 0, 0, 0, 0, wr.StartTime.Offset);
+                DateTimeOffset endTime = startTime.AddDays(1);
+                if (wr.SectionId != null)
+                {
+                    wrucDTO.SectionUsedCount = GetSectionCount(wr.SectionId.Value, wr.StartTime, startTime, endTime);
+                }
+                wrucDTO.OfficeUsedCount = GetOfficeCount(wr.OfficeId, wr.StartTime, startTime, endTime);
+            }
+
+            return wrucDTO;
+        }
+
+        private int GetSectionCount(Guid sectionId, DateTimeOffset workDate, DateTimeOffset startTime, DateTimeOffset endTime)
+        {
+            return DbContext.WorkRequests.Count(
+            x => x.SectionId == sectionId && x.ApprovalStatus.StatusName == "Approved" &&
                     ((x.StartTime >= startTime && x.EndTime <= endTime) ||
                     (x.EndTime >= startTime && x.EndTime <= endTime) ||
                     (startTime >= x.StartTime && startTime <= x.EndTime) ||
                     (endTime >= x.StartTime && endTime <= x.EndTime)));
+        }
+
+        private int GetOfficeCount(Guid officeId, DateTimeOffset workDate, DateTimeOffset startTime, DateTimeOffset endTime)
+        {
+            return DbContext.WorkRequests.Count(
+            x => x.OfficeId == officeId && x.ApprovalStatus.StatusName == "Approved" &&
+                    ((x.StartTime >= startTime && x.EndTime <= endTime) ||
+                    (x.EndTime >= startTime && x.EndTime <= endTime) ||
+                    (startTime >= x.StartTime && startTime <= x.EndTime) ||
+                    (endTime >= x.StartTime && endTime <= x.EndTime)));
+        }
+        public Task<SectionDetailDTO> GetSectionDetailsBySectionId(Section section, DateTimeOffset workDate, DateTimeOffset startTime, DateTimeOffset endTime)
+        {
+            SectionDetailDTO secDetail = SectionDetailDTO.MapToDTOFunc(section);
+            secDetail.SectionUsedCapacity = GetSectionCount(secDetail.SectionId, workDate, startTime, endTime);
 
             return Task.FromResult(secDetail);
         }

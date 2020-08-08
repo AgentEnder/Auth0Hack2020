@@ -70,5 +70,11 @@ namespace Auth0HackBackend.Controllers
             Repository.DenyWorkRequest(wra, User.getAuth0Id());
             return null;
         }
+
+        public WorkRequestUsedCountDTO GetCountsForWorkRequest([FromBody] Guid workRequestId)
+        {
+            Repository.GetCountsForWorkRequest(workRequestId);
+        }
+
     }
 }
