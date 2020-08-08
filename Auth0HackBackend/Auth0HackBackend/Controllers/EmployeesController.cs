@@ -29,10 +29,10 @@ namespace Auth0HackBackend.Controllers
             return Repository.GetEmployeeMetadata();
         }
 
-        [HttpGet("by-id/{EmployeeId}")] // .../api/employees/by-id/{EmployeeId}
-        public ValueTask<EmployeeMetadataDTO> GetEmployeeById([FromRoute] Guid EmployeeId)
+        [HttpGet("by-id/{employeeId}")] // .../api/employees/by-id/{employeeId}
+        public ValueTask<EmployeeMetadataDTO> GetEmployeeById([FromRoute] Guid employeeId)
         {
-            return Repository.GetEmployeeById(EmployeeId);
+            return Repository.GetEmployeeById(employeeId);
         }
 
         [HttpGet("current-user")] // .../api/employees/current-user        
@@ -47,5 +47,20 @@ namespace Auth0HackBackend.Controllers
                 return null;
             }
         }
+        /*
+        [HttpGet("contact-trace")] // .../api/employees/contact-trace/{employeeId}
+        public EmployeeMetadataDTO ContactTraceByEmployee([FromRoute] Guid employeeId, DateTimeOffset startTime, DateTimeOffset endTime)
+        {
+            try
+            {
+                return Repository.ContactTraceByEmployee(employeeId, startTime, endTime);
+            }
+            catch (NullReferenceException)
+            {
+                return null;
+            }
+        }
+        */
     }    
+    
 }

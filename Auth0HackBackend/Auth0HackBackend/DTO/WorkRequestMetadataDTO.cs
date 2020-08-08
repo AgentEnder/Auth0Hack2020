@@ -14,10 +14,11 @@ namespace Auth0HackBackend.DTO
     {
         public Guid WorkRequestId { get; set; }
         public EmployeeMetadataDTO Requestor { get; set; }
+
         public EmployeeMetadataDTO Approver { get; set; }
         public EmployeeMetadataDTO Person { get; set; }
         public OfficeMetadataDTO Office { get; set; }
-        public Section Section { get; set; }
+        public SectionMetadataDTO Section { get; set; }
         public ApprovalStatusMetadataDTO ApprovalStatus { get; set; }
         public DateTimeOffset? StartTime { get; set; }
         public DateTimeOffset? EndTime { get; set; }
@@ -32,7 +33,7 @@ namespace Auth0HackBackend.DTO
             Approver = v.Approver != null ? EmployeeMetadataDTO.MapToDTOFunc(v.Approver) : null,
             Person = v.Person != null ? EmployeeMetadataDTO.MapToDTOFunc(v.Person) : null,
             Office = v.Office != null ? OfficeMetadataDTO.MapToDTOFunc(v.Office) : null,
-            Section = v.Section,
+            Section = v.Section != null ? SectionMetadataDTO.MapToDTOFunc(v.Section) : null,
             ApprovalStatus = v.ApprovalStatus != null ? ApprovalStatusMetadataDTO.MapToDTOFunc(v.ApprovalStatus) : null,
             StartTime = v.StartTime,
             EndTime = v.EndTime,

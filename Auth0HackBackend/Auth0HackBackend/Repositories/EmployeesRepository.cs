@@ -32,5 +32,12 @@ namespace Auth0HackBackend.Repositories
             var employee = await DbContext.Employees.FindAsync(employeeId);
             return EmployeeMetadataDTO.MapToDTOFunc(employee);
         }
+
+        /*
+        public IQueryable<EmployeeMetadataDTO> ContactTraceByEmployee(Guid employeeId, DateTimeOffset startTime, DateTimeOffset endTime)
+        {
+            DbContext.Employees.
+        }
+        */
     }
 }
