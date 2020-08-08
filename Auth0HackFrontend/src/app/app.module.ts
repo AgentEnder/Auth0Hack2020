@@ -19,11 +19,17 @@ import { RandomUserService } from './core/services/random-user.service';
 import { NavbarComponent } from './layout/navbar/navbar.component';
 import { SidebarComponent } from './layout/sidebar/sidebar.component';
 
+import {MatExpansionModule} from '@angular/material/expansion';
+
 const Routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
     loadChildren: () => import('./home/home.module').then(x => x.HomePageModule)
+  },
+  {
+    path: 'admin',
+    loadChildren: () => import('./admin/admin.module').then(x => x.AdminModule)
   }
 ];
 
@@ -42,6 +48,7 @@ const Routes: Routes = [
     MatButtonModule,
     MatSidenavModule,
     MatListModule,
+    MatExpansionModule,
     LayoutModule,
     RouterModule.forRoot(Routes),
     BrowserAnimationsModule

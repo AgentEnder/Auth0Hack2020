@@ -1,18 +1,17 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { HomeComponent } from './home.component';
+import { AdminUsersPageComponent } from './users/users.component';
 
 const routes: Routes = [
     {
-        pathMatch: 'full',
-        path: '',
-        component: HomeComponent
+        path: 'users',
+        component: AdminUsersPageComponent
     }
 ];
 
 @NgModule({
     declarations: [
-        HomeComponent
+        AdminUsersPageComponent
     ],
     imports: [
         RouterModule.forChild(routes),
@@ -24,6 +23,6 @@ const routes: Routes = [
 
     ],
 })
-export class HomePageModule{
+export class AdminModule{
 
 }

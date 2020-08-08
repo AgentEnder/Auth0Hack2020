@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { tap, take } from 'rxjs/operators';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-sidebar',
@@ -13,15 +14,40 @@ export class SidebarComponent {
 
     topGap = 64;
 
-    links: {
-        path: string,
-        icon: string,
-        label: string
-    }[] = [
+    public routes: MenuItem[] = [
         {
             path: '/',
             icon: 'home',
             label: 'Home'
+        },
+        {
+            path: '/admin',
+            icon: 'admin_panel_settings',
+            label: 'Admin',
+            children: [
+                {
+                    path: '/admin/users',
+                    icon: 'face',
+                    label: 'Users'
+                },
+                {
+                    path: '/admin/offices',
+                    icon: 'apartment',
+                    label: 'Offices'
+                }
+            ]
+        },
+        {
+            path: '/safety',
+            icon: 'warning',
+            label: 'Safety',
+            children: [
+                {
+                    path: '/safety/occupancy',
+                    icon: 'business',
+                    label: 'Occupancy'
+                }
+            ]
         }
     ];
 
@@ -29,7 +55,7 @@ export class SidebarComponent {
         this.show = !this.show;
     }
 
-    constructor(private breakpoints: BreakpointObserver){
+    constructor(private breakpoints: BreakpointObserver, public activatedRoute: ActivatedRoute){
         breakpoints.observe([Breakpoints.Handset]).subscribe( ({ matches }) => {
             if (matches) { // Mobile
                 this.mode = 'over';
@@ -43,4 +69,11 @@ export class SidebarComponent {
             console.log('Mobile: ', matches);
         });
     }
+}
+
+export interface MenuItem{
+    icon: string;
+    label: string;
+    path?: string;
+    children?: MenuItem[];
 }
