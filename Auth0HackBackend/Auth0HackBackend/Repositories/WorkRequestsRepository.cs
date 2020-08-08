@@ -34,12 +34,32 @@ namespace Auth0HackBackend.Repositories
 
         public WorkRequestMetadataDTO SaveWorkRequest(WorkRequestMetadataDTO wr)
         {
-            WorkRequest newWR = WorkRequestMetadataDTO.MapToBaseFunc(wr);
-            newWR.WorkRequestId = Guid.NewGuid();
-            DbContext.WorkRequests.Add(newWR);
+            WorkRequest newWorkRequest = null;
+            bool newRequest = false;
+
+            if (wr.WorkRequestId != Guid.Empty) {
+                
+                newWorkRequest = DbContext.WorkRequests.Find(wr.WorkRequestId);
+            }                            
+            if (newWorkRequest != null) // Edit exsiting
+            {
+                newWorkRequest.ApproverId = wr.Approver.EmployeeId;
+                newWorkRequest.EndTime = wr.EndTime != null ? wr.EndTime.Value : newWorkRequest.EndTime;
+                newWorkRequest.OfficeId = wr.Office.OfficeId;
+                newWorkRequest.PersonId = wr.Person.EmployeeId;
+                newWorkRequest.RequestorId = wr.Requestor.EmployeeId;
+                newWorkRequest.SectionId = wr.Section.SectionId;
+                newWorkRequest.StartTime = wr.StartTime != null ? wr.StartTime.Value : newWorkRequest.StartTime;                
+            } else // Create new request
+            {
+                newWorkRequest = WorkRequestMetadataDTO.MapToBaseFunc(wr);
+                newWorkRequest.WorkRequestId = Guid.NewGuid();
+                DbContext.Add(newWorkRequest);
+            }
+            
             DbContext.SaveChanges();
 
-            return WorkRequestMetadataDTO.MapToDTOFunc(newWR);
+            return WorkRequestMetadataDTO.MapToDTOFunc(newWorkRequest);
         }
     }
 }
