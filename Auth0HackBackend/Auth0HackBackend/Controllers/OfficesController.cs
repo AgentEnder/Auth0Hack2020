@@ -61,12 +61,12 @@ namespace Auth0HackBackend.Controllers
             }
             return retObj;
         }
-        /*
-        [HttpGet("/close/{id}/{startTime}/{endTime}")] // .../api/offices/close/{id}/{startTime}/{endTime}
-        public OfficeClosure CloseOffice()
+                
+        [HttpPost("/close")] // .../api/offices/close/{id}/{startTime}/{endTime}
+        public OfficeClosureDTO CloseOffice([FromBody] OfficeClosureDTO officeClosureDTO)
         {
-
+            return Repository.CloseOffice(officeClosureDTO);
         }
-        */
+        
     }
 }

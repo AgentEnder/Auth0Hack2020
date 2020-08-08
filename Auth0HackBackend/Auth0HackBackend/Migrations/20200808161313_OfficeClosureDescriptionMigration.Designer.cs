@@ -4,15 +4,17 @@ using Auth0HackBackend.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetTopologySuite.Geometries;
 
 namespace Auth0HackBackend.Migrations
 {
     [DbContext(typeof(HackEntities))]
-    partial class HackEntitiesModelSnapshot : ModelSnapshot
+    [Migration("20200808161313_OfficeClosureDescriptionMigration")]
+    partial class OfficeClosureDescriptionMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -110,7 +112,7 @@ namespace Auth0HackBackend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Description")
+                    b.Property<string>("Descripton")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("EndTime")
