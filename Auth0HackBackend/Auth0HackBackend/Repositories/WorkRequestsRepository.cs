@@ -38,7 +38,6 @@ namespace Auth0HackBackend.Repositories
             bool newRequest = false;
 
             if (wr.WorkRequestId != Guid.Empty) {
-                
                 newWorkRequest = DbContext.WorkRequests.Find(wr.WorkRequestId);
             }                            
             if (newWorkRequest != null) // Edit exsiting

@@ -26,12 +26,12 @@ namespace Auth0HackBackend.DTO
         new WorkRequestMetadataDTO
         {
             WorkRequestId = v.WorkRequestId,
-            Requestor = EmployeeMetadataDTO.MapToDTOFunc(v.Requestor),
-            Approver = EmployeeMetadataDTO.MapToDTOFunc(v.Approver),
-            Person = EmployeeMetadataDTO.MapToDTOFunc(v.Person),
-            Office = OfficeMetadataDTO.MapToDTOFunc(v.Office),
+            Requestor = v.Requestor != null ? EmployeeMetadataDTO.MapToDTOFunc(v.Requestor) : null,
+            Approver = v.Approver != null ? EmployeeMetadataDTO.MapToDTOFunc(v.Approver) : null,
+            Person = v.Person != null ? EmployeeMetadataDTO.MapToDTOFunc(v.Person) : null,
+            Office = v.Office != null ? OfficeMetadataDTO.MapToDTOFunc(v.Office) : null,
             Section = v.Section,
-            ApprovalStatus = ApprovalStatusMetadataDTO.MapToDTOFunc(v.ApprovalStatus),
+            ApprovalStatus = v.ApprovalStatus != null ? ApprovalStatusMetadataDTO.MapToDTOFunc(v.ApprovalStatus) : null,
             StartTime = v.StartTime,
             EndTime = v.EndTime
         };

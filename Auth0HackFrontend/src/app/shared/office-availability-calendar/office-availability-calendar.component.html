@@ -61,8 +61,8 @@
 </ng-template>
 
 <ng-template #modalTemplate let-data>
-    <h2 matDialogTitle>{{data.day.date| date}} Availability</h2>
+    <h2 matDialogTitle>{{data.day.toDate()| date}} Availability</h2>
     <mat-dialog-content>
-        <app-building-availability [office]="data.office" [showCloseBtn]="false"></app-building-availability>
+        <app-building-availability [office]="data.office" [day]="data.day" [showCloseBtn]="false"></app-building-availability>
     </mat-dialog-content>
 </ng-template>

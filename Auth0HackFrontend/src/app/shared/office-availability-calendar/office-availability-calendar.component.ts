@@ -87,7 +87,8 @@ export class OfficeAvailabilityCalendarComponent implements OnInit {
     showDialogDay(office, day) {
         this.dialogService.open(this.template, {
             data: {
-                office, day
+                office,
+                day: moment(day.date)
             },
             height: this.mobile ? '100%' : undefined,
             width: this.mobile ? '100%' : '50%'

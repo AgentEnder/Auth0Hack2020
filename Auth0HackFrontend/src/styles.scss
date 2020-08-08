@@ -36,9 +36,15 @@ $accent-transparent: #ff408133;
     }
 }
 
+mat-sidenav {
+    mat-nav-list{
+        min-width: 200px;
+    }
+}
+
 a.mat-list-item.active {
-    border-left: 4px solid $accent;
-    background-color: $accent-transparent;
+    border-left: 4px solid $primary;
+    background-color: $primary-transparent;
 }
 
 .nav-section {

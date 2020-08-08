@@ -54,7 +54,7 @@
     </mat-form-field>
     <div class="d-flex justify-content-around">
         <button mat-stroked-button color="warn" (click)="submitMode = null; submitItem = null">Cancel</button>
-        <button mat-raised-button color="primary">Submit <mat-icon class="ml-1" [inline]="true">arrow_forward</mat-icon></button>
+        <button mat-raised-button color="primary" (click)="submit()">Submit <mat-icon class="ml-1" [inline]="true">arrow_forward</mat-icon></button>
     </div>
 </ng-template>
 
