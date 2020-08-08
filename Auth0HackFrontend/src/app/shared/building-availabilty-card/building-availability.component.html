@@ -15,29 +15,66 @@
         <img matCardAvatar [src]="getRandomImgSrc()"/>
     </mat-card-title-group>
     <mat-card-content>
-        <div class="d-flex justify-content-around w-100" *ngIf="!(office.sections && office.sections.length)">
-            <button *ngIf="showRequestBtn" mat-raised-button [color]="'primary'" [disabled]="office.officeUsedCapacity >= office.officeSafeCapacity" class="mr-2" style="min-width: 8rem;">Request</button>
-            <button *ngIf="showCloseBtn" mat-raised-button color="warn" style="min-width: 8rem;">Close</button>
-        </div>
-        <div class="py-2 w-100" *ngIf="office.sections && office.sections.length">
-            <mat-divider></mat-divider>
-        </div>
-        <mat-nav-list class="pt-2" *ngIf="office.sections && office.sections.length">
-            <mat-list-item *ngFor="let section of office.sections">
-                <mat-icon class="text-success" *ngIf="section.sectionUsedCapacity < section.sectionSafeCapacity">check_circle_outline</mat-icon>
-                <mat-icon class="text-danger" *ngIf="section.sectionUsedCapacity >= section.sectionSafeCapacity">error_outline</mat-icon>
-                <span class="mr-1">{{section.sectionName}}</span>
-                <app-percentage 
-                    [numerator]="section.sectionUsedCapacity"
-                    [denominator]="section.sectionSafeCapacity"
-                    [numeratorLabel]="'Used'"
-                    [denominatorLabel]="'Safe Capacity'"
-                    class="mr-auto"
-                >
-                </app-percentage>
-                <button *ngIf="showRequestBtn" mat-raised-button [color]="'primary'" [disabled]="section.sectionUsedCapacity >= section.sectionSafeCapacity" class="mr-2">Request</button>
-                <button *ngIf="showCloseBtn" mat-raised-button color="warn" >Close</button>
-            </mat-list-item>
-        </mat-nav-list>
+        <ng-container *ngIf="!submitMode; else submitForm">
+            <div class="d-flex justify-content-around w-100" *ngIf="!(office.sections && office.sections.length)">
+                <button *ngIf="showRequestBtn" mat-raised-button [color]="'primary'" [disabled]="office.officeUsedCapacity >= office.officeSafeCapacity" class="mr-2" style="min-width: 8rem;">Request</button>
+                <button *ngIf="showCloseBtn" mat-raised-button color="warn" style="min-width: 8rem;">Close</button>
+            </div>
+            <div class="py-2 w-100" *ngIf="office.sections && office.sections.length">
+                <mat-divider></mat-divider>
+            </div>
+            <mat-nav-list class="pt-2" *ngIf="office.sections && office.sections.length">
+                <mat-list-item *ngFor="let section of office.sections">
+                    <mat-icon class="text-success" *ngIf="section.sectionUsedCapacity < section.sectionSafeCapacity">check_circle_outline</mat-icon>
+                    <mat-icon class="text-danger" *ngIf="section.sectionUsedCapacity >= section.sectionSafeCapacity">error_outline</mat-icon>
+                    <span class="mr-1">{{section.sectionName}}</span>
+                    <app-percentage 
+                        [numerator]="section.sectionUsedCapacity"
+                        [denominator]="section.sectionSafeCapacity"
+                        [numeratorLabel]="'Used'"
+                        [denominatorLabel]="'Safe Capacity'"
+                        class="mr-auto"
+                    >
+                    </app-percentage>
+                    <ng-container *ngIf="!submitMode">
+                        <ng-container *ngTemplateOutlet="actionButtons; context: {$implicit: section}">
+                    </ng-container>
+                    </ng-container>
+                </mat-list-item>
+            </mat-nav-list>
+        </ng-container>
     </mat-card-content>
 </mat-card>
+
+<ng-template #submitForm>
+    <h2 *ngIf="submitItem['sectionName']">{{submitItem.sectionName}}</h2>
+    <mat-form-field class="w-100">
+        <mat-label>{{submitMode === 'closure' ? 'Reason for closure' : 'Reason for request'}}</mat-label>
+        <textarea class="w-100" rows="5" matInput [(ngModel)]="submitReason"></textarea>
+    </mat-form-field>
+    <div class="d-flex justify-content-around">
+        <button mat-stroked-button color="warn" (click)="submitMode = null; submitItem = null">Cancel</button>
+        <button mat-raised-button color="primary">Submit <mat-icon class="ml-1" [inline]="true">arrow_forward</mat-icon></button>
+    </div>
+</ng-template>
+
+<ng-template #actionButtons let-section>
+    <ng-container *ngIf="!submitMode">
+        <button *ngIf="showRequestBtn" 
+                mat-raised-button 
+                [color]="'primary'" 
+                [disabled]="section.sectionUsedCapacity >= section.sectionSafeCapacity" 
+                class="mr-2"
+                (click)="submitMode = 'request'; submitItem=section"
+        >
+            Request
+        </button>
+        <button *ngIf="showCloseBtn" 
+                mat-raised-button 
+                color="warn"
+                (click)="submitMode = 'closure'; submitItem=section" 
+        >
+            Close
+        </button>
+    </ng-container>
+</ng-template>

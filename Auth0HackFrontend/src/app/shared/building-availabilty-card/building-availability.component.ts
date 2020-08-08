@@ -11,6 +11,9 @@ export class BuildingAvailabilityComponent implements OnInit{
     @Input() public showCloseBtn = true;
 
     imgSeed: number;
+    submitMode: false | 'closure' | 'request' = false;
+    submitItem: any = null;
+    submitReason: string;
 
     ngOnInit() {
         this.imgSeed = Math.random();
