@@ -8,6 +8,7 @@ import { catchError, shareReplay, concatMap, tap } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
 import { env } from 'process';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
     providedIn: 'root'
@@ -44,7 +45,7 @@ auth0Client$ = (from(
   // Create a local property for login status
   loggedIn: boolean = null;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private httpClient: HttpClient) {
     // On initial load, check authentication state with authorization server
     // Set up local auth streams if user is already authenticated
     this.localAuthSetup();
@@ -136,4 +137,7 @@ auth0Client$ = (from(
     );
   }
 
+  getUserInfo() {
+    return this.httpClient.get(environment.apiUrl + '/api/employees/current-user');
+  }
 }

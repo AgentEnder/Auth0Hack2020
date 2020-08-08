@@ -22,5 +22,7 @@ namespace Auth0HackBackend.Model
         public ApprovalStatus ApprovalStatus { get; set; }
         public DateTimeOffset StartTime { get; set; }
         public DateTimeOffset EndTime { get; set; }
+        public string RequestorNotes { get; set; }
+        public string ApproverNotes { get; set; }
     }
 }

@@ -87,7 +87,7 @@ namespace Auth0HackBackend
             services.AddScoped(typeof(OfficesRepository));
             services.AddScoped(typeof(EmployeesRepository));
             services.AddScoped(typeof(WorkRequestsRepository));
-
+            services.AddSingleton(typeof(IConfiguration), Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

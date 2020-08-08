@@ -35,7 +35,6 @@ namespace Auth0HackBackend.Repositories
         public WorkRequestMetadataDTO SaveWorkRequest(WorkRequestMetadataDTO wr)
         {
             WorkRequest newWorkRequest = null;
-            bool newRequest = false;
 
             if (wr.WorkRequestId != Guid.Empty) {
                 newWorkRequest = DbContext.WorkRequests.Find(wr.WorkRequestId);

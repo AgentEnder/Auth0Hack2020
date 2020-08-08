@@ -21,6 +21,8 @@ namespace Auth0HackBackend.DTO
         public ApprovalStatusMetadataDTO ApprovalStatus { get; set; }
         public DateTimeOffset? StartTime { get; set; }
         public DateTimeOffset? EndTime { get; set; }
+        public string RequestorNotes { get; set; }
+        public string ApproverNotes { get; set; }
 
         public static Expression<Func<WorkRequest, WorkRequestMetadataDTO>> MapToDTO = (v) =>
         new WorkRequestMetadataDTO
@@ -33,7 +35,9 @@ namespace Auth0HackBackend.DTO
             Section = v.Section,
             ApprovalStatus = v.ApprovalStatus != null ? ApprovalStatusMetadataDTO.MapToDTOFunc(v.ApprovalStatus) : null,
             StartTime = v.StartTime,
-            EndTime = v.EndTime
+            EndTime = v.EndTime,
+            RequestorNotes = v.RequestorNotes,
+            ApproverNotes = v.ApproverNotes
         };
 
         public static Expression<Func<WorkRequestMetadataDTO, WorkRequest>> MapToBase = (v) =>
@@ -47,7 +51,9 @@ namespace Auth0HackBackend.DTO
             SectionId = v.Section.SectionId,
             ApprovalStatusId = v.ApprovalStatus.ApprovalStatusId,
             StartTime = v.StartTime.Value,
-            EndTime = v.EndTime.Value
+            EndTime = v.EndTime.Value,
+            RequestorNotes = v.RequestorNotes,
+            ApproverNotes = v.ApproverNotes
         };
 
         public static WorkRequestMetadataDTO MapToDTOFunc(WorkRequest wr) {

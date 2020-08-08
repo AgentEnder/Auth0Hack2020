@@ -34,32 +34,32 @@ namespace Auth0HackBackend.Controllers
         }
 
         [HttpGet("by-id/{OfficeId}/{WorkDate}")] // .../api/offices/by-id/{OfficeId}/{WorkDate}
-        public OfficeDetailDTO GetOfficeDetailById([FromRoute] Guid OfficeId, [FromRoute] DateTimeOffset WorkDate)
+        public async Task<OfficeDetailDTO> GetOfficeDetailById([FromRoute] Guid OfficeId, [FromRoute] DateTimeOffset WorkDate)
         {
-            return Repository.GetOfficeDetailById(OfficeId, WorkDate);
+            return await Repository.GetOfficeDetailById(OfficeId, WorkDate);
         }
 
         [HttpGet("by-id/{OfficeId}/{StartTime}/{EndTime}")] // .../api/offices/by-id/{id}/{date}
-        public List<OfficeDetailDTO> GetOfficeDetailByIdAndDateRange([FromRoute] Guid OfficeId, [FromRoute] DateTimeOffset StartTime, DateTimeOffset EndTime)
+        public async Task<IEnumerable<OfficeDetailDTO>> GetOfficeDetailByIdAndDateRange([FromRoute] Guid OfficeId, [FromRoute] DateTimeOffset StartTime, DateTimeOffset EndTime)
         {
-            List<OfficeDetailDTO> retObj = new List<OfficeDetailDTO>();
+            List<Task<OfficeDetailDTO>> retObj = new List<Task<OfficeDetailDTO>>();
             for (DateTimeOffset workDate = StartTime; workDate < EndTime; workDate = workDate.AddDays(1))
             {
                 retObj.Add(GetOfficeDetailById(OfficeId, workDate));
             }
-            return retObj;
+            return await Task.WhenAll<OfficeDetailDTO>(retObj);
         }
 
         [HttpGet("/{WorkDate}")] // .../api/offices/{workDate}
-        public List<OfficeDetailDTO> GetOfficeDetailsByDate([FromRoute] DateTimeOffset WorkDate)
+        public async Task<IEnumerable<OfficeDetailDTO>> GetOfficeDetailsByDate([FromRoute] DateTimeOffset WorkDate)
         {
-            List<OfficeDetailDTO> retObj = new List<OfficeDetailDTO>();
+            List<Task<OfficeDetailDTO>> retObj = new List<Task<OfficeDetailDTO>>();
             IQueryable<OfficeMetadataDTO> offices = Repository.GetOfficeMetadata();
             foreach (OfficeMetadataDTO office in offices)
             {
                 retObj.Add(GetOfficeDetailById(office.OfficeId, WorkDate));
             }
-            return retObj;
+            return await Task.WhenAll<OfficeDetailDTO>(retObj);
         }
                 
         [HttpPost("/close")] // .../api/offices/close/{id}/{startTime}/{endTime}

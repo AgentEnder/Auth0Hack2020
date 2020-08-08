@@ -20,9 +20,10 @@ export class AppComponent implements OnInit {
       this.user = x;
       this.randomUserService.getNRandomUsers(5).subscribe();
     });
+    this.auth.getUserInfo().subscribe();
   }
 
   login(){
-    this.auth.login();
+    this.auth.login()
   }
 }
