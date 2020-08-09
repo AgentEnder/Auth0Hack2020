@@ -56,6 +56,11 @@ export class SidebarComponent {
                     path: '/safety/contact-tracing',
                     icon: 'business',
                     label: 'Contact Tracing'
+                },
+                {
+                    path: '/safety/office-closures',
+                    icon: 'business',
+                    label: 'Closures'
                 }
             ]
         }

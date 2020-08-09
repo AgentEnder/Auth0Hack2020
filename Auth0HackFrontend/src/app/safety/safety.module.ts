@@ -4,17 +4,23 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { SharedModule } from '../shared/shared.module';
 import { ContactTracingComponent } from './contact-tracing/contact-tracing.component';
+import { OfficeClosuresComponent } from './office-closures/office-closures.component';
 
 const routes: Routes = [
     {
         component: ContactTracingComponent,
         path: 'contact-tracing'
+    },
+    {
+        component: OfficeClosuresComponent,
+        path: 'office-closures'
     }
 ];
 
 @NgModule({
     declarations: [
-        ContactTracingComponent
+        ContactTracingComponent,
+        OfficeClosuresComponent
     ],
     imports: [
         CommonModule,
