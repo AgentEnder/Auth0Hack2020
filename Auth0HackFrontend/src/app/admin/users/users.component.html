@@ -22,7 +22,7 @@
         <input matInput type="text" [(ngModel)]="selectedEmployee.title">        
     </mat-form-field>    
     <mat-checkbox [(ngModel)]="selectedEmployee.isApprover">Is Approver</mat-checkbox>
-    <div id="file-upload-container" (click)="fileInput.click()">
+    <div id="file-upload-container" (click)="fileInput.click()" appDragDrop>
         <div id="file-upload-container-label">
             <span>Click to select files</span>
         </div>

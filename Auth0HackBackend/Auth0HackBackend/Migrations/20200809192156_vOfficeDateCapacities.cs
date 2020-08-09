@@ -19,8 +19,8 @@ select o.OfficeId,
        wr.StartTime
 from Offices o
 left join Sections s on s.OfficeId = o.OfficeId
-left join WorkRequests WR on o.OfficeId = WR.OfficeId
-left join vWorkRequestCapacities vWRC on WR.WorkRequestId = vWRC.WorkRequestId
+inner join WorkRequests WR on o.OfficeId = WR.OfficeId and s.SectionId = wr.SectionId
+inner join vWorkRequestCapacities vWRC on WR.WorkRequestId = vWRC.WorkRequestId
 group by StartTime, s.SectionId, o.OfficeId, o.OfficeName, s.SectionName
 
 ");

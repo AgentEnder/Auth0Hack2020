@@ -128,7 +128,8 @@ namespace Auth0HackBackend.Repositories
             {
                 var dto = OfficeDetailDTO.MapToDTOFunc(office);
                 var capacities = DbContext.vOfficeDateCapacities.Where(x => x.StartTime == date && x.OfficeId == office.OfficeId);
-                dto.OfficeUsedCapacity = capacities.Select(x => x.OfficeUsedCapacity).FirstOrDefault();
+                dto.OfficeUsedCapacity = capacities.Select(x => x.OfficeUsedCapacity).Sum();
+                dto.Sections = dto.Sections.ToList();
                 foreach (var section in dto.Sections)
                 {
                     section.SectionUsedCapacity = capacities.Where(x => x.SectionId == section.SectionId).Select(x => x.SectionUsedCapacity).FirstOrDefault();
