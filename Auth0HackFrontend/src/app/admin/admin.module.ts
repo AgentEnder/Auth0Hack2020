@@ -12,6 +12,7 @@ import { MatListModule } from '@angular/material/list';
 
 import { AdminOfficesPagesComponent } from './offices/offices.component';
 import { AdminUsersPageComponent } from './users/users.component';
+import { SectionComponent } from './offices/section.component';
 
 const routes: Routes = [
     {
@@ -27,7 +28,8 @@ const routes: Routes = [
 @NgModule({
     declarations: [
         AdminUsersPageComponent,
-        AdminOfficesPagesComponent
+        AdminOfficesPagesComponent,
+        SectionComponent
     ],
     imports: [
         CommonModule,

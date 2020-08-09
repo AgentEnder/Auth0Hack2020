@@ -9,9 +9,12 @@ import { environment } from '../../../environments/environment';
 import { OfficeAvailabilityOverTime } from '../models/office-availability-over-time.model';
 import { OfficeDetailModel } from '../models/office-detail.model';
 import { SampleOfficeDetail } from './sample-data';
+import { OfficeMetadata } from '../models/office-metadata.model';
+import { SectionMetadata } from '../models/section-metadata.model';
 
 const OFFICE_AVAILABILITY_OVER_TIME = (start, end, officeId) => `/api/offices/by-id/${officeId}/${start}/${end}`;
-
+const OFFICE_ODATA = '/api/offices';
+const SECTION_ODATA = '/api/offices/sections';
 @Injectable({
     providedIn: 'root'
 })
@@ -19,6 +22,21 @@ export class OfficesService {
     baseUrl: string;
     constructor(private httpClient: HttpClient) {
         this.baseUrl = environment.apiUrl;
+    }
+
+    getOffices() {
+        const url = this.baseUrl + OFFICE_ODATA;
+        return this.httpClient.get<OfficeMetadata[]>(url);
+    }
+
+    getOfficesOdata(odata) {
+        const url = this.baseUrl + OFFICE_ODATA + odata;
+        return this.httpClient.get<OfficeMetadata[]>(url);
+    }
+
+    getSections(officeId) {
+        const url = this.baseUrl + SECTION_ODATA + '?$filter=officeId eq ' + officeId;
+        return this.httpClient.get<SectionMetadata[]>(url);
     }
 
     getOfficeDetails() {
@@ -43,5 +61,15 @@ export class OfficesService {
                 };
             })
         );
+    }
+
+    saveOffice(office: OfficeMetadata) {
+        const url = this.baseUrl + OFFICE_ODATA;
+        return this.httpClient.post<OfficeMetadata>(url, office);
+    }
+
+    saveSection(section: SectionMetadata) {
+        const url = this.baseUrl + SECTION_ODATA;
+        return this.httpClient.post<SectionMetadata>(url, section);
     }
 }

@@ -6,7 +6,7 @@
         <div mat-line>{{employee.title}}</div>                
     </mat-list-item>    
 </mat-nav-list>
-
+<button mat-button (click)="newEmployee()">Create new employee</button>
 
 <div *ngIf="selectedEmployee">
     <mat-form-field>
@@ -20,7 +20,7 @@
     <mat-form-field>
         <mat-label>Title</mat-label>
         <input matInput type="text" [(ngModel)]="selectedEmployee.title">        
-    </mat-form-field>
+    </mat-form-field>    
     <mat-checkbox [(ngModel)]="selectedEmployee.isApprover">Is Approver</mat-checkbox>
     <div id="file-upload-container" (click)="fileInput.click()">
         <div id="file-upload-container-label">

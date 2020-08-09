@@ -27,6 +27,13 @@ namespace Auth0HackBackend.Controllers
             return Repository.GetOfficeMetadata();
         }
 
+        [HttpGet("sections")] // .../api/offices/sections
+        [EnableQuery(EnsureStableOrdering = false)]
+        public IQueryable<SectionMetadataDTO> RetrieveSections()
+        {
+            return Repository.GetSectionMetadata();
+        }
+
         [HttpGet("by-id/{OfficeId}")] // .../api/offices/by-id/{OfficeId}
         public ValueTask<OfficeMetadataDTO> GetOfficeById([FromRoute] Guid OfficeId)
         {
@@ -89,7 +96,7 @@ namespace Auth0HackBackend.Controllers
             return Repository.UpdateOrCreateOffice(officeDetailDTO);
         }
 
-        [HttpPost("section")] // .../api/offices/section
+        [HttpPost("sections")] // .../api/offices/section
         [ScopeAuthorize("create:OfficeAndSection")]
         public SectionMetadataDTO UpdateOrCreateSection([FromBody] SectionMetadataDTO sectionDetailDTO)
         {

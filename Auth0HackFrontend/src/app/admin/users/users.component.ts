@@ -44,11 +44,14 @@ export class AdminUsersPageComponent implements OnInit{
 
     editEmployee(event) {
         this.selectedEmployee = event;
-        console.log(this.selectedEmployee);
     }
     
+    newEmployee() {        
+        this.selectedEmployee = {} as EmployeeMetadata;
+        this.selectedEmployee.employeeId = '{00000000-0000-0000-0000-000000000000}';
+    }
     setPreviewUrl = (url) => {
-        this.selectedEmployee.avatar = url;        
+        this.selectedEmployee.avatar = url;
     }
 
     public uploadFile = (files, callback: (dataUrl: string) => void) => {
@@ -78,9 +81,12 @@ export class AdminUsersPageComponent implements OnInit{
 
     saveChanges(event) {
         this.loading++;
+        console.log(this.selectedEmployee);
         console.log(this.selectedEmployee.avatar);
         this.employeeService.saveEmployee(this.selectedEmployee).subscribe(x => {
             this.loading--;
+            this.selectedEmployee = x as EmployeeMetadata;
+            this.fetchEmployees();
         });
     }
 }
