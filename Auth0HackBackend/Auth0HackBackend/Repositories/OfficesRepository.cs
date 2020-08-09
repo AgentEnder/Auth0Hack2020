@@ -1,5 +1,6 @@
 ﻿using Auth0HackBackend.DTO;
 using Auth0HackBackend.Model;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -88,13 +89,13 @@ namespace Auth0HackBackend.Repositories
             DateTimeOffset startTime = new DateTimeOffset(workDate.Year, workDate.Month, workDate.Day, 0, 0, 0, 0, workDate.Offset);
             DateTimeOffset endTime = startTime.AddDays(1);
             List<Section> sections = DbContext.Sections.Where(x => x.OfficeId == officeId).ToList();
-            List<Task<SectionDetailDTO>> sectionDetails = new List<Task<SectionDetailDTO>>();
+            List<SectionDetailDTO> sectionDetails = new List<SectionDetailDTO>();
             foreach (Section section in sections)
             {                
-                sectionDetails.Add(GetSectionDetailsBySectionId(section, workDate, startTime, endTime));
+                sectionDetails.Add(await GetSectionDetailsBySectionId(section, workDate, startTime, endTime));
             }
 
-            return await Task.WhenAll<SectionDetailDTO>(sectionDetails);
+            return sectionDetails;
         }
 
         public async Task<OfficeDetailDTO> GetOfficeDetailById(Guid officeId, DateTimeOffset workDate)
@@ -115,7 +116,28 @@ namespace Auth0HackBackend.Repositories
             
 
             return officeDetail;
-        }      
+        }
+
+        public async Task<IQueryable<OfficeDetailDTO>> GetOfficeDetailsByDate(DateTimeOffset date)
+        {
+            var offices = DbContext.Offices.Include(x=>x.Sections).ToList();
+
+            List<OfficeDetailDTO> dtos = new List<OfficeDetailDTO>();
+
+            foreach (var office in offices)
+            {
+                var dto = OfficeDetailDTO.MapToDTOFunc(office);
+                var capacities = DbContext.vOfficeDateCapacities.Where(x => x.StartTime == date && x.OfficeId == office.OfficeId);
+                dto.OfficeUsedCapacity = capacities.Select(x => x.OfficeUsedCapacity).FirstOrDefault();
+                foreach (var section in dto.Sections)
+                {
+                    section.SectionUsedCapacity = capacities.Where(x => x.SectionId == section.SectionId).Select(x => x.SectionUsedCapacity).FirstOrDefault();
+                }
+                dtos.Add(dto);
+            }
+
+            return dtos.AsQueryable();
+        }
         
         public OfficeClosureDTO CloseOffice(OfficeClosureDTO officeClosureDTO)
         {

@@ -5,8 +5,8 @@ import * as moment from 'moment';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
-import { WorkRequestMetadataDTO } from '../models/work-request.model';
 import { WorkRequestApproval } from '../models/work-request-approval.model';
+import { WorkRequestMetadataDTO } from '../models/work-request.model';
 
 const CREATE_REQUEST = '/api/workrequests/';
 const DETAILS = '/api/workrequests/details';
@@ -45,8 +45,8 @@ export class RequestsService {
             section: {
                 sectionId
             },
-            endTime,
-            startTime,
+            endTime: moment.utc(endTime).toISOString(),
+            startTime: moment.utc(startTime).toISOString(),
             requestorNotes: notes
         };
 
@@ -57,7 +57,7 @@ export class RequestsService {
         return this.httpClient.get<any[]>(this.baseUrl + DETAILS + options).pipe(
             map(
                 x => x.map(y => {
-                    y.startTime = moment(y.startTime);
+                    y.startTime = moment.utc(y.startTime);
                     return y;
                 })
             )

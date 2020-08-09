@@ -59,7 +59,7 @@ export class SidebarComponent {
                 },
                 {
                     path: '/safety/office-closures',
-                    icon: 'business',
+                    icon: 'location_disabled',
                     label: 'Closures'
                 }
             ]

@@ -15,6 +15,8 @@ import { SectionMetadata } from '../models/section-metadata.model';
 const OFFICE_AVAILABILITY_OVER_TIME = (start, end, officeId) => `/api/offices/by-id/${officeId}/${start}/${end}`;
 const OFFICE_ODATA = '/api/offices';
 const SECTION_ODATA = '/api/offices/sections';
+const OFFICE_AVAILABILITY_BY_DATE = (start) => `/api/offices/${start}`;
+
 @Injectable({
     providedIn: 'root'
 })
@@ -41,6 +43,10 @@ export class OfficesService {
 
     getOfficeDetails() {
         return of(SampleOfficeDetail).pipe(map(x => [x, x, x, x, x, x, x, x, x, x, x]));
+    }
+
+    getOfficeDetailsByDate(date: Moment) {
+        return this.httpClient.get<OfficeDetailModel[]>(this.baseUrl + OFFICE_AVAILABILITY_BY_DATE(date.toISOString()));
     }
 
     getOfficeAvailabilityOverTime(startDate: Moment, endDate: Moment, officeId) {
