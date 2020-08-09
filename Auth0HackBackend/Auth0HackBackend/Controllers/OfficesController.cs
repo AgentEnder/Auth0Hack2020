@@ -76,5 +76,24 @@ namespace Auth0HackBackend.Controllers
             return Repository.CloseSection(sectionClosureDTO);
         }
 
+        [HttpGet("office-section-used-count/{workRequestId}")] // .../api/offices/office-section-used-count/{workRequestId}
+        public WorkRequestUsedCountDTO GetCountsForWorkRequest([FromBody] Guid workRequestId)
+        {
+            return Repository.GetCountsForWorkRequest(workRequestId);
+        }
+
+        [HttpPost("")] // .../api/offices
+        [ScopeAuthorize("create:OfficeAndSection")]
+        public OfficeMetadataDTO UpdateOrCreateOffice([FromBody] OfficeMetadataDTO officeDetailDTO)
+        {
+            return Repository.UpdateOrCreateOffice(officeDetailDTO);
+        }
+
+        [HttpPost("")] // .../api/offices/section
+        [ScopeAuthorize("create:OfficeAndSection")]
+        public SectionMetadataDTO UpdateOrCreateSection([FromBody] SectionMetadataDTO sectionDetailDTO)
+        {
+            return Repository.UpdateOrCreateSection(sectionDetailDTO);
+        }
     }
 }

@@ -22,11 +22,19 @@ namespace Auth0HackBackend.Controllers
             Repository = EmployeesRepository;
         }
 
-        [HttpGet()] // .../api/Employees
+        [HttpGet()] // .../api/employees
         [EnableQuery(EnsureStableOrdering = false)]
         public IQueryable<EmployeeMetadataDTO> RetrieveEmployees()
         {
             return Repository.GetEmployeeMetadata();
+        }
+
+        [HttpPost("")] // .../api/employees
+        [Authorize]
+        [ScopeAuthorize("create:Employee")]
+        public EmployeeMetadataDTO UpdateOrCreateEmployee([FromBody] EmployeeMetadataDTO employeeDTO)
+        {
+            return Repository.UpdateOrCreateEmployee(employeeDTO);
         }
 
         [HttpGet("by-id/{employeeId}")] // .../api/employees/by-id/{employeeId}

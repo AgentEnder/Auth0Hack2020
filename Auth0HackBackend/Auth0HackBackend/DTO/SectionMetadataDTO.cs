@@ -13,16 +13,20 @@ namespace Auth0HackBackend.DTO
     public class SectionMetadataDTO
     {
         public Guid SectionId { get; set; }
+        public Guid OfficeId { get; set; }        
         public string SectionName { get; set; }
+        public string OfficeName { get; set; }
         public string SectionDescription { get; set; }
         public int SectionMaxCapacity { get; set; }
-        public int SectionSafeCapacity { get; set; }        
+        public int SectionSafeCapacity { get; set; }  
 
         public static Expression<Func<Section, SectionMetadataDTO>> MapToDTO = (v) =>
         new SectionMetadataDTO
         {
             SectionId = v.SectionId,
             SectionName = v.SectionName,
+            OfficeId = v.OfficeId,
+            OfficeName = v.Office.OfficeName,
             SectionMaxCapacity = v.SectionMaxCapacity,
             SectionSafeCapacity = v.SectionSafeCapacity,
             SectionDescription = v.SectionDescription
@@ -33,6 +37,7 @@ namespace Auth0HackBackend.DTO
         {
             SectionId = v.SectionId,
             SectionName = v.SectionName,
+            OfficeId = v.OfficeId,            
             SectionMaxCapacity = v.SectionMaxCapacity,
             SectionSafeCapacity = v.SectionSafeCapacity,
             SectionDescription = v.SectionDescription

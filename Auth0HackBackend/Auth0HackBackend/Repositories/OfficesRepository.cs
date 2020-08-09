@@ -32,15 +32,49 @@ namespace Auth0HackBackend.Repositories
             return DbContext.Sections.Where(x => x.OfficeId == officeId).ToList();
         }
 
-        public Task<SectionDetailDTO> GetSectionDetailsBySectionId(Section section, DateTimeOffset workDate, DateTimeOffset startTime, DateTimeOffset endTime)
+        public WorkRequestUsedCountDTO GetCountsForWorkRequest(Guid workRequestId)
         {
-            SectionDetailDTO secDetail = SectionDetailDTO.MapToDTOFunc(section);
-            secDetail.SectionUsedCapacity = DbContext.WorkRequests.Count(
-            x => x.SectionId == section.SectionId && x.ApprovalStatus.StatusName == "Approved" &&
+            WorkRequestUsedCountDTO wrucDTO = new WorkRequestUsedCountDTO();
+            wrucDTO.WorkRequestId = workRequestId;
+            wrucDTO.SectionUsedCount = null;
+            WorkRequest wr = DbContext.WorkRequests.Find(workRequestId);
+            if (wr != null)
+            {
+                DateTimeOffset startTime = new DateTimeOffset(wr.StartTime.Year, wr.StartTime.Month, wr.StartTime.Day, 0, 0, 0, 0, wr.StartTime.Offset);
+                DateTimeOffset endTime = startTime.AddDays(1);
+                if (wr.SectionId != null)
+                {
+                    wrucDTO.SectionUsedCount = GetSectionCount(wr.SectionId.Value, wr.StartTime, startTime, endTime);
+                }
+                wrucDTO.OfficeUsedCount = GetOfficeCount(wr.OfficeId, wr.StartTime, startTime, endTime);
+            }
+
+            return wrucDTO;
+        }
+
+        private int GetSectionCount(Guid sectionId, DateTimeOffset workDate, DateTimeOffset startTime, DateTimeOffset endTime)
+        {
+            return DbContext.WorkRequests.Count(
+            x => x.SectionId == sectionId && x.ApprovalStatus.StatusName == "Approved" &&
                     ((x.StartTime >= startTime && x.EndTime <= endTime) ||
                     (x.EndTime >= startTime && x.EndTime <= endTime) ||
                     (startTime >= x.StartTime && startTime <= x.EndTime) ||
                     (endTime >= x.StartTime && endTime <= x.EndTime)));
+        }
+
+        private int GetOfficeCount(Guid officeId, DateTimeOffset workDate, DateTimeOffset startTime, DateTimeOffset endTime)
+        {
+            return DbContext.WorkRequests.Count(
+            x => x.OfficeId == officeId && x.ApprovalStatus.StatusName == "Approved" &&
+                    ((x.StartTime >= startTime && x.EndTime <= endTime) ||
+                    (x.EndTime >= startTime && x.EndTime <= endTime) ||
+                    (startTime >= x.StartTime && startTime <= x.EndTime) ||
+                    (endTime >= x.StartTime && endTime <= x.EndTime)));
+        }
+        public Task<SectionDetailDTO> GetSectionDetailsBySectionId(Section section, DateTimeOffset workDate, DateTimeOffset startTime, DateTimeOffset endTime)
+        {
+            SectionDetailDTO secDetail = SectionDetailDTO.MapToDTOFunc(section);
+            secDetail.SectionUsedCapacity = GetSectionCount(secDetail.SectionId, workDate, startTime, endTime);
 
             return Task.FromResult(secDetail);
         }
@@ -112,5 +146,60 @@ namespace Auth0HackBackend.Repositories
             return SectionClosureDTO.MapToDTOFunc(sc);
         }
 
+        public OfficeMetadataDTO UpdateOrCreateOffice(OfficeMetadataDTO officeDTO)
+        {
+            Office newOffice = null;
+
+            if (officeDTO.OfficeId != Guid.Empty)
+            {
+                newOffice = DbContext.Offices.Find(officeDTO.OfficeId);
+            }
+            if (newOffice != null) // Edit existing
+            {
+                newOffice.OfficeStreet = officeDTO.OfficeStreet;
+                newOffice.OfficeCity = officeDTO.OfficeCity;
+                newOffice.OfficeState = officeDTO.OfficeState;
+                newOffice.OfficeZip = officeDTO.OfficeZip;
+                newOffice.OfficeMaxCapacity = officeDTO.OfficeMaxCapacity;
+                newOffice.OfficeSafeCapacity = officeDTO.OfficeSafeCapacity;                
+            } else // Create new office
+            {
+                newOffice = OfficeMetadataDTO.MapToBaseFunc(officeDTO);
+                newOffice.OfficeId = Guid.NewGuid();
+                DbContext.Offices.Add(newOffice);
+            }
+
+            DbContext.SaveChanges();
+
+            return OfficeMetadataDTO.MapToDTOFunc(newOffice);
+        }
+
+        public SectionMetadataDTO UpdateOrCreateSection(SectionMetadataDTO SectionDTO)
+        {
+            Section newSection = null;
+
+            if (SectionDTO.SectionId != Guid.Empty)
+            {
+                newSection = DbContext.Sections.Find(SectionDTO.SectionId);
+            }
+            if (newSection != null) // Edit existing
+            {
+                newSection.OfficeId = SectionDTO.OfficeId;
+                newSection.SectionDescription = SectionDTO.SectionDescription;
+                newSection.SectionName = SectionDTO.SectionName;                
+                newSection.SectionMaxCapacity = SectionDTO.SectionMaxCapacity;
+                newSection.SectionSafeCapacity = SectionDTO.SectionSafeCapacity;
+            }
+            else // Create new Section
+            {
+                newSection = SectionMetadataDTO.MapToBaseFunc(SectionDTO);
+                newSection.SectionId = Guid.NewGuid();
+                DbContext.Sections.Add(newSection);
+            }
+
+            DbContext.SaveChanges();
+
+            return SectionMetadataDTO.MapToDTOFunc(newSection);
+        }
     }
 }
