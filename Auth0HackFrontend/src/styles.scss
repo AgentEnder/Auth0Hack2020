@@ -4,16 +4,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import "~bootstrap/dist/css/bootstrap.min.css";
+@import "~angular-calendar/css/angular-calendar.css";
 
-@import '~@syncfusion/ej2-base/styles/material.css';
-@import '~@syncfusion/ej2-buttons/styles/material.css';
-@import '~@syncfusion/ej2-calendars/styles/material.css';
-@import '~@syncfusion/ej2-dropdowns/styles/material.css';
-@import '~@syncfusion/ej2-inputs/styles/material.css';
-@import '~@syncfusion/ej2-lists/styles/material.css';
-@import '~@syncfusion/ej2-popups/styles/material.css';
-@import '~@syncfusion/ej2-navigations/styles/material.css';
-@import '~@syncfusion/ej2-angular-schedule/styles/material.css';
 
 $primary: #3f51b5;
 $primary-transparent: #3f51b533;
@@ -44,9 +36,15 @@ $accent-transparent: #ff408133;
     }
 }
 
+mat-sidenav {
+    mat-nav-list{
+        min-width: 200px;
+    }
+}
+
 a.mat-list-item.active {
-    border-left: 4px solid $accent;
-    background-color: $accent-transparent;
+    border-left: 4px solid $primary;
+    background-color: $primary-transparent;
 }
 
 .nav-section {
@@ -74,3 +72,14 @@ app-sidebar {
     font-size: 80%;
     color: lightslategray;
 }
+
+.office-availability-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+table {
+    width: 100%;
+  }

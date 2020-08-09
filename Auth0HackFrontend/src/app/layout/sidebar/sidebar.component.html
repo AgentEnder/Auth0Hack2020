@@ -1,5 +1,5 @@
 <mat-sidenav-container class="example-container">
-  <mat-sidenav #sidenav [mode]="mode" [opened]="show" [fixedInViewport]="true" [fixedTopGap]="topGap">
+  <mat-sidenav #sidenav [mode]="mode" [opened]="show" [fixedInViewport]="true" [fixedTopGap]="topGap" >
     <mat-nav-list *ngFor="let route of routes">
         <ng-container *ngIf="route.children && route.children.length; else singleItemTemplate">
             <mat-expansion-panel 

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Auth0HackBackend.DTO;
 using Auth0HackBackend.Repositories;
 using Microsoft.AspNet.OData;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,25 +14,61 @@ namespace Auth0HackBackend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OfficesController : ControllerBase
+    public class EmployeesController : ControllerBase
     {
-        OfficesRepository Repository { get; }
-        public OfficesController(OfficesRepository officesRepository)
+        EmployeesRepository Repository { get; }
+        public EmployeesController(EmployeesRepository EmployeesRepository)
         {
-            Repository = officesRepository;
+            Repository = EmployeesRepository;
         }
 
-        [HttpGet()] // .../api/offices
+        [HttpGet()] // .../api/employees
         [EnableQuery(EnsureStableOrdering = false)]
-        public IQueryable<OfficeMetadataDTO> RetrieveOffices()
+        public IQueryable<EmployeeMetadataDTO> RetrieveEmployees()
         {
-            return Repository.GetOfficeMetadata();
+            return Repository.GetEmployeeMetadata();
         }
 
-        [HttpGet("by-id/{id}")] // .../api/offices/by-id/{id}
-        public ValueTask<OfficeMetadataDTO> GetOfficeById([FromRoute] Guid officeId)
+        [HttpPost("")] // .../api/employees
+        [Authorize]
+        [ScopeAuthorize("create:Employee")]
+        public EmployeeMetadataDTO UpdateOrCreateEmployee([FromBody] EmployeeMetadataDTO employeeDTO)
         {
-            return Repository.GetOfficeById(officeId);
+            return Repository.UpdateOrCreateEmployee(employeeDTO);
         }
-    }
+
+        [HttpGet("by-id/{employeeId}")] // .../api/employees/by-id/{employeeId}
+        public ValueTask<EmployeeMetadataDTO> GetEmployeeById([FromRoute] Guid employeeId)
+        {
+            return Repository.GetEmployeeById(employeeId);
+        }
+
+        [HttpGet("current-user")] // .../api/employees/current-user        
+        public EmployeeMetadataDTO GetCurrentUser()
+        {
+            try
+            {
+                return Repository.GetEmployeeByAuthId(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
+            }
+            catch (NullReferenceException)
+            {
+                return null;
+            }
+        }
+        /*
+        [HttpGet("contact-trace")] // .../api/employees/contact-trace/{employeeId}
+        public EmployeeMetadataDTO ContactTraceByEmployee([FromRoute] Guid employeeId, DateTimeOffset startTime, DateTimeOffset endTime)
+        {
+            try
+            {
+                return Repository.ContactTraceByEmployee(employeeId, startTime, endTime);
+            }
+            catch (NullReferenceException)
+            {
+                return null;
+            }
+        }
+        */
+    }    
+    
 }

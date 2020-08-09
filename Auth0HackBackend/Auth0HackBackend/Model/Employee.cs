@@ -13,6 +13,8 @@ namespace Auth0HackBackend.Model
         public string LastName { get; set; }
         public string Title { get; set; }
         public string Email { get; set; }
+        public bool isApprover { get; set; }
+        public string Avatar { get; set; }
         public virtual ICollection<WorkRequest> Requests { get; set; }
         public virtual ICollection<WorkRequest> Approvals { get; set; }
         public virtual ICollection<WorkRequest> PersonalWorkRequests { get; set; }

@@ -8,7 +8,7 @@ namespace Auth0HackBackend.Model
     public class WorkRequest
     {
         public Guid WorkRequestId { get; set; }
-        public Guid RequestorId { get; set; }
+        public Guid? RequestorId { get; set; }
         public virtual Employee Requestor { get; set; }
         public Guid PersonId { get; set; }
         public virtual Employee Person { get; set; }
@@ -22,5 +22,7 @@ namespace Auth0HackBackend.Model
         public ApprovalStatus ApprovalStatus { get; set; }
         public DateTimeOffset StartTime { get; set; }
         public DateTimeOffset EndTime { get; set; }
+        public string RequestorNotes { get; set; }
+        public string ApproverNotes { get; set; }
     }
 }

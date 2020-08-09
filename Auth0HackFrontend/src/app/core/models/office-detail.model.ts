@@ -1,3 +1,5 @@
+import { Moment } from 'moment';
+
 import { SectionDetailModel } from './section-detail.model';
 
 export interface OfficeDetailModel {
@@ -11,5 +13,8 @@ export interface OfficeDetailModel {
     officeMaxCapacity: number;
     officeSafeCapacity: number;
     officeUsedCapacity: number;
+    Latitude?: number;
+    Longitude?: number;
+    snapshotDate?: Moment;
     sections: SectionDetailModel[];
 }

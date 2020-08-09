@@ -1,13 +1,68 @@
-<ejs-schedule 
-    width="100%" 
-    height="650px" 
-    [(currentView)]="currentView"
-    (navigating)="fetchAvailabilityForMonth($event)"
->
-    <ng-template #cellTemplate let-data>
-        <div class="templatewrap" [innerHTML]="getCellContent(data.date)"></div>
-    </ng-template>
-    <e-views>
-        <e-view option="Month"></e-view>
-    </e-views>
-</ejs-schedule>
+<div class="d-flex justify-content-center">
+  <div class="mat-elevation-z2 m-3 d-flex align-items-center">
+    <button
+      mat-button
+      mwlCalendarPreviousView
+      [view]="view"
+      [(viewDate)]="viewDate"
+      (viewDateChange)="closeOpenMonthViewDay()"
+    >
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <button mat-button mwlCalendarToday [(viewDate)]="viewDate">
+      {{ viewDate | calendarDate: view + "ViewTitle":"en" }}
+    </button>
+    <button
+      mat-button
+      mwlCalendarNextView
+      [view]="view"
+      [(viewDate)]="viewDate"
+      (viewDateChange)="closeOpenMonthViewDay()"
+    >
+      <mat-icon>arrow_forward</mat-icon>
+    </button>
+  </div>
+</div>
+
+<mwl-calendar-month-view [cellTemplate]="calendarCell" [viewDate]="viewDate">
+</mwl-calendar-month-view>
+
+<ng-template #calendarCell let-day="day">
+  <ng-container *ngIf="getOfficeForDay(day) as office; else loader">
+    <div class="float-right">
+      <span class="cal-day-number">
+        {{ day.date | calendarDate: "monthViewDayNumber":"en" }}
+      </span>
+    </div>
+    <div class="office-availability-cell" (click)="showDialogDay(office, day)">
+      <div style="font-size: 250%;">
+        <app-percentage
+          [numerator]="office.officeUsedCapacity"
+          [denominator]="office.officeSafeCapacity"
+          [numeratorLabel]="'Used'"
+          [denominatorLabel]="'Safe Capacity'"
+        >
+        </app-percentage>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #loader>
+    <div class="float-right">
+      <span class="cal-day-number">
+        {{ day.date | calendarDate: "monthViewDayNumber":"en" }}
+      </span>
+    </div>
+    <div class="d-flex align-items-center justify-content-center">
+      <div style="font-size: 250%">
+        <mat-spinner *ngIf="loading" [diameter]="32"></mat-spinner>
+      </div>
+    </div>
+  </ng-template>
+</ng-template>
+
+<ng-template #modalTemplate let-data>
+    <h2 matDialogTitle>{{data.day.toDate()| date}} Availability</h2>
+    <mat-dialog-content>
+        <app-building-availability [office]="data.office" [day]="data.day" [showCloseBtn]="false"></app-building-availability>
+    </mat-dialog-content>
+</ng-template>

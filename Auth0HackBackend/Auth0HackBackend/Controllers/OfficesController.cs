@@ -27,10 +27,73 @@ namespace Auth0HackBackend.Controllers
             return Repository.GetOfficeMetadata();
         }
 
-        [HttpGet("by-id/{id}")] // .../api/offices/by-id/{id}
-        public ValueTask<OfficeMetadataDTO> GetOfficeById([FromRoute] Guid officeId)
+        [HttpGet("by-id/{OfficeId}")] // .../api/offices/by-id/{OfficeId}
+        public ValueTask<OfficeMetadataDTO> GetOfficeById([FromRoute] Guid OfficeId)
         {
-            return Repository.GetOfficeById(officeId);
+            return Repository.GetOfficeById(OfficeId);
+        }
+
+        [HttpGet("by-id/{OfficeId}/{WorkDate}")] // .../api/offices/by-id/{OfficeId}/{WorkDate}
+        public async Task<OfficeDetailDTO> GetOfficeDetailById([FromRoute] Guid OfficeId, [FromRoute] DateTimeOffset WorkDate)
+        {
+            return await Repository.GetOfficeDetailById(OfficeId, WorkDate);
+        }
+
+        [HttpGet("by-id/{OfficeId}/{StartTime}/{EndTime}")] // .../api/offices/by-id/{id}/{date}
+        public async Task<IEnumerable<OfficeDetailDTO>> GetOfficeDetailByIdAndDateRange([FromRoute] Guid OfficeId, [FromRoute] DateTimeOffset StartTime, DateTimeOffset EndTime)
+        {
+            List<Task<OfficeDetailDTO>> retObj = new List<Task<OfficeDetailDTO>>();
+            for (DateTimeOffset workDate = StartTime; workDate < EndTime; workDate = workDate.AddDays(1))
+            {
+                retObj.Add(GetOfficeDetailById(OfficeId, workDate));
+            }
+            return await Task.WhenAll<OfficeDetailDTO>(retObj);
+        }
+
+        [HttpGet("{WorkDate}")] // .../api/offices/{workDate}
+        public async Task<IEnumerable<OfficeDetailDTO>> GetOfficeDetailsByDate([FromRoute] DateTimeOffset WorkDate)
+        {
+            List<Task<OfficeDetailDTO>> retObj = new List<Task<OfficeDetailDTO>>();
+            IQueryable<OfficeMetadataDTO> offices = Repository.GetOfficeMetadata();
+            foreach (OfficeMetadataDTO office in offices)
+            {
+                retObj.Add(GetOfficeDetailById(office.OfficeId, WorkDate));
+            }
+            return await Task.WhenAll<OfficeDetailDTO>(retObj);
+        }
+                
+        [HttpPost("close")] // .../api/offices/close/{id}/{startTime}/{endTime}
+        [ScopeAuthorize("create:OfficeClosure")]
+        public OfficeClosureDTO CloseOffice([FromBody] OfficeClosureDTO officeClosureDTO)
+        {
+            return Repository.CloseOffice(officeClosureDTO);
+        }
+
+        [HttpPost("section/close")] // .../api/offices/close/{id}/{startTime}/{endTime}
+        [ScopeAuthorize("create:SectionClosure")]
+        public SectionClosureDTO CloseSection([FromBody] SectionClosureDTO sectionClosureDTO)
+        {
+            return Repository.CloseSection(sectionClosureDTO);
+        }
+
+        [HttpGet("office-section-used-count/{workRequestId}")] // .../api/offices/office-section-used-count/{workRequestId}
+        public WorkRequestUsedCountDTO GetCountsForWorkRequest([FromBody] Guid workRequestId)
+        {
+            return Repository.GetCountsForWorkRequest(workRequestId);
+        }
+
+        [HttpPost("")] // .../api/offices
+        [ScopeAuthorize("create:OfficeAndSection")]
+        public OfficeMetadataDTO UpdateOrCreateOffice([FromBody] OfficeMetadataDTO officeDetailDTO)
+        {
+            return Repository.UpdateOrCreateOffice(officeDetailDTO);
+        }
+
+        [HttpPost("")] // .../api/offices/section
+        [ScopeAuthorize("create:OfficeAndSection")]
+        public SectionMetadataDTO UpdateOrCreateSection([FromBody] SectionMetadataDTO sectionDetailDTO)
+        {
+            return Repository.UpdateOrCreateSection(sectionDetailDTO);
         }
     }
 }
