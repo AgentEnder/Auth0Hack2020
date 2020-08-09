@@ -21,9 +21,14 @@ export class SidebarComponent {
             label: 'Home'
         },
         {
-            path: 'user/available-space',
+            path: '/user/available-space',
             icon: 'business_center',
             label: 'Availability'
+        },
+        {
+            path: '/user/pending-requests',
+            icon: 'pending_actions',
+            label: 'Pending Requests'
         },
         {
             path: '/admin',

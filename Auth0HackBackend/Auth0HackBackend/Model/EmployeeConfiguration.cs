@@ -26,7 +26,7 @@ namespace Auth0HackBackend.Model
 
             builder.HasMany(x => x.Requests)
                 .WithOne(y => y.Requestor)
-                .HasForeignKey(z => z.RequestorId).OnDelete(DeleteBehavior.NoAction);
+                .HasForeignKey(z => z.RequestorId).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

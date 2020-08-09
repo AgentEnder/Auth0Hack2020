@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 
 import { MatButtonModule } from '@angular/material/button';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -14,14 +15,12 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { AppComponent } from './app.component';
 import { AuthInterceptorService } from './core/services/auth-interceptor.service';
+import { AuthGuard } from './core/services/auth.guard';
 import { AuthService } from './core/services/auth.service';
+import { OfficesService } from './core/services/offices.service';
 import { RandomUserService } from './core/services/random-user.service';
 import { NavbarComponent } from './layout/navbar/navbar.component';
 import { SidebarComponent } from './layout/sidebar/sidebar.component';
-
-import {MatExpansionModule} from '@angular/material/expansion';
-import { OfficesService } from './core/services/offices.service';
-import { AuthGuard } from './core/services/auth.guard';
 
 const Routes: Routes = [
   {
