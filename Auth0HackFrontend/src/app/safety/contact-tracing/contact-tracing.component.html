@@ -10,7 +10,7 @@ Contact tracing works?
       (ngModelChange)="filterComplete($event)"
       [matAutocomplete]="auto"
     />
-    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="firstLastName">
       <mat-option *ngFor="let employee of filteredOptions" [value]="employee">
         {{ employee.lastName }}, {{ employee.firstName }}
       </mat-option>

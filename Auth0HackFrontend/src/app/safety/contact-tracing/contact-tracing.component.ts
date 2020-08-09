@@ -1,10 +1,12 @@
-import { Component, OnInit } from "@angular/core";
-import { EmployeeMetadata } from 'src/app/core/models/employee-metadata.model';
-import { EmployeesService } from 'src/app/core/services/employee.service';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+
 import { Observable } from 'rxjs';
-import { map, startWith} from 'rxjs/operators';
+import { map, startWith } from 'rxjs/operators';
+
+import { EmployeeMetadata } from '../../core/models/employee-metadata.model';
+import { EmployeesService } from '../../core/services/employee.service';
 
 @Component({
     templateUrl: './contact-tracing.component.html'
@@ -51,5 +53,7 @@ export class ContactTracingComponent implements OnInit {
         return this.employeeList.filter(x => x.lastName.toLowerCase().indexOf(filterValue) >= 0
                || x.firstName.toLowerCase().indexOf(filterValue) >= 0);
       }
+
+      firstLastName = (emp: EmployeeMetadata) => `${emp.lastName}, ${emp.firstName}`
 
 }
