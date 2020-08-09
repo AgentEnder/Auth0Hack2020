@@ -6,14 +6,15 @@ using Auth0HackBackend.DTO;
 using Auth0HackBackend.Extensions;
 using Auth0HackBackend.Repositories;
 using Microsoft.AspNet.OData;
+using Microsoft.AspNet.OData.Query;
+using Microsoft.AspNet.OData.Routing;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Auth0HackBackend.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+    [Route("/api/[controller]")]
     public class WorkRequestsController : ControllerBase
     {        
         WorkRequestsRepository Repository { get; }
@@ -23,11 +24,19 @@ namespace Auth0HackBackend.Controllers
         }
 
         [HttpGet()] // .../api/WorkRequests
-        [EnableQuery(EnsureStableOrdering = false)] 
-        [ScopeAuthorize("read:WorkRequestsAll")]
-        public IQueryable<WorkRequestMetadataDTO> RetrieveWorkRequests()
+        [EnableQuery(AllowedQueryOptions = AllowedQueryOptions.All)]
+        //[ScopeAuthorize("read:WorkRequestsAll")]
+        public IQueryable<WorkRequestMetadataDTO> RetrieveRequests()
         {
             return Repository.GetWorkRequestMetadata();
+        }
+        
+        [HttpGet("details")] // .../api/WorkRequests
+        [EnableQuery(AllowedQueryOptions = AllowedQueryOptions.All)]
+        //[ScopeAuthorize("read:WorkRequestsAll")]
+        public IQueryable<WorkRequestDetailDTO> RetrieveRequestDetails()
+        {
+            return Repository.GetWorkRequestDetailDTOs();
         }
 
         [HttpGet("self")] // .../api/workrequests/self

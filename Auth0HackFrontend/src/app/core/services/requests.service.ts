@@ -1,9 +1,14 @@
-import { Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+
+import * as moment from 'moment';
+import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+
 import { WorkRequestMetadataDTO } from '../models/work-request.model';
 
-const SUBMIT_REQUEST = '/api/workrequests/';
+const CREATE_REQUEST = '/api/workrequests/';
+const DETAILS = '/api/workrequests/details';
 
 @Injectable({
     providedIn: 'root'
@@ -42,7 +47,17 @@ export class RequestsService {
             requestorNotes: notes
         };
 
-        return this.httpClient.post(this.baseUrl + SUBMIT_REQUEST, body);
+        return this.httpClient.post(this.baseUrl + CREATE_REQUEST, body);
     }
 
+    public getAllRequests() {
+        return this.httpClient.get<any[]>(this.baseUrl + DETAILS).pipe(
+            map(
+                x => x.map(y => {
+                    y.startTime = moment(y.startTime)
+                    return y;
+                })
+            )
+        );
+    }
 }

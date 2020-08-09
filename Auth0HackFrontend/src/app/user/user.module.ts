@@ -12,6 +12,7 @@ import {
 import { PendingRequestsComponent } from './pending-requests/pending-requests.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { MatButtonModule } from '@angular/material/button';
 
 const routes: Routes = [
     {
@@ -35,6 +36,7 @@ const routes: Routes = [
         SharedModule,
         MatTabsModule,
         MatTableModule,
+        MatButtonModule,
         MatPaginatorModule,
         MatSortModule
     ],

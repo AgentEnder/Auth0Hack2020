@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Auth0HackBackend.DTO;
 using Auth0HackBackend.Repositories;
 using Microsoft.AspNet.OData;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -51,7 +50,7 @@ namespace Auth0HackBackend.Controllers
             return await Task.WhenAll<OfficeDetailDTO>(retObj);
         }
 
-        [HttpGet("/{WorkDate}")] // .../api/offices/{workDate}
+        [HttpGet("{WorkDate}")] // .../api/offices/{workDate}
         public async Task<IEnumerable<OfficeDetailDTO>> GetOfficeDetailsByDate([FromRoute] DateTimeOffset WorkDate)
         {
             List<Task<OfficeDetailDTO>> retObj = new List<Task<OfficeDetailDTO>>();
@@ -62,19 +61,17 @@ namespace Auth0HackBackend.Controllers
             }
             return await Task.WhenAll<OfficeDetailDTO>(retObj);
         }
-        
-        [HttpPost("/close")] // .../api/offices/close/{id}/{startTime}/{endTime}
-        [Authorize]
+                
+        [HttpPost("close")] // .../api/offices/close/{id}/{startTime}/{endTime}
         [ScopeAuthorize("create:OfficeClosure")]
         public OfficeClosureDTO CloseOffice([FromBody] OfficeClosureDTO officeClosureDTO)
         {
             return Repository.CloseOffice(officeClosureDTO);
         }
 
-        [HttpPost("/section/close")] // .../api/offices/close/{id}/{startTime}/{endTime}
-        [Authorize]
+        [HttpPost("section/close")] // .../api/offices/close/{id}/{startTime}/{endTime}
         [ScopeAuthorize("create:SectionClosure")]
-        public SectionClosureDTO SectionOffice([FromBody] SectionClosureDTO sectionClosureDTO)
+        public SectionClosureDTO CloseSection([FromBody] SectionClosureDTO sectionClosureDTO)
         {
             return Repository.CloseSection(sectionClosureDTO);
         }

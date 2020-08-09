@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ namespace Auth0HackBackend.DTO
 {
     public class WorkRequestMetadataDTO
     {
+        [Key]
         public Guid WorkRequestId { get; set; }
         public EmployeeMetadataDTO Requestor { get; set; }
 

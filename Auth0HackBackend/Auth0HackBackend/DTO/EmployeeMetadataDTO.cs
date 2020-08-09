@@ -39,6 +39,10 @@ namespace Auth0HackBackend.DTO
         };
 
         public static EmployeeMetadataDTO MapToDTOFunc(Employee e) {
+            if (e == null)
+            {
+                return null;
+            }
             return MapToDTO.Compile().Invoke(e);
         }
 
