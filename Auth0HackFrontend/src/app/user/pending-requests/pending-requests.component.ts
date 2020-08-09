@@ -9,7 +9,8 @@ import { ODataDataSource } from '@agentender/odata-data-source';
 import { environment } from '../../../environments/environment';
 import { MatTableDataSource } from '@angular/material/table';
 import { RequestsService } from 'src/app/core/services/requests.service';
-import { WorkRequestMetadataDTO } from 'src/app/core/models/work-request.model';
+import { WorkRequestMetadataDTO, WorkRequestDetailDTO } from 'src/app/core/models/work-request.model';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
     templateUrl: './pending-requests.component.html'
@@ -18,14 +19,19 @@ export class PendingRequestsComponent implements OnInit {
 
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
+    @ViewChild('acceptForm') modalTemplate;
+
 
     dataSource;
+
+    selectedRow: WorkRequestDetailDTO;
 
     displayedColumns: string[] = ['Office', 'Section', 'StartTime', 'Employee', 'Actions'];
 
     constructor(
         // private httpClient: HttpClient
-        private requestsService: RequestsService
+        private requestsService: RequestsService,
+        private dialog: MatDialog
     ) { }
 
     ngOnInit() {
@@ -33,7 +39,7 @@ export class PendingRequestsComponent implements OnInit {
         // this.dataSource = new ODataDataSource(this.httpClient, resourcePath);
         // this.dataSource.sort = this.sort;
         // this.dataSource.paginator = this.paginator;
-        this.requestsService.getAllRequests().subscribe( x => {
+        this.requestsService.getAllRequests('?$filter=contains(approvalStatus/statusName, \'Submitted\')').subscribe( x => {
             this.dataSource = new MatTableDataSource(x);
             this.dataSource.sort = this.sort;
             this.dataSource.paginator = this.paginator;
@@ -41,21 +47,34 @@ export class PendingRequestsComponent implements OnInit {
     }
 
     getAcceptColor(row) {
-        const section = row.sectionSafeCapacity
-                    ? row.sectionUsedCapacity / row.sectionSafeCapacity
+        const section = row.section.sectionSafeCapacity
+                    ? row.sectionUsedCapacity / row.section.sectionSafeCapacity
                     : 1;
-        const office = row.officeSafeCapacity
-                    ? row.officeUsedCapacity / row.officeSafeCapacity
+        const office = row.office.officeSafeCapacity
+                    ? row.officeUsedCapacity / row.office.officeSafeCapacity
                     : 1;
-
-        return section >= 1 || office >= 1 ? 'danger' : 'primary';
+        return section >= 1 || office >= 1 ? 'warn' : 'primary';
     }
 
     acceptRequest(row: WorkRequestMetadataDTO) {
+        this.requestsService.acceptRequest({
+            approverNotes: row.approverNotes,
+            workRequestId: row.workRequestId
+        }).subscribe(x => {
 
+        });
     }
 
     rejectRequest(row: WorkRequestMetadataDTO) {
-        
+        this.requestsService.rejectRequest({
+            approverNotes: row.approverNotes,
+            workRequestId: row.workRequestId
+        }).subscribe(x => {
+        });
+    }
+
+    openDialog(row) {
+        this.selectedRow = row;
+        this.dialog.open(this.modalTemplate);
     }
 }

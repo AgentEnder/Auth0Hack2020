@@ -82,4 +82,13 @@ app-sidebar {
 
 table {
     width: 100%;
-  }
+}
+
+.percentage-card {
+    margin: 1rem;
+    padding: 1rem;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

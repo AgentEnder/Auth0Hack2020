@@ -16,3 +16,20 @@ export interface WorkRequestMetadataDTO {
     requestorNotes?: string;
     approverNotes?: string;
 }
+
+export interface WorkRequestDetailDTO {
+    workRequestId?: string;
+    requestor: EmployeeMetadata;
+    approver: EmployeeMetadata;
+    person: EmployeeMetadata;
+    office: OfficeMetadata;
+    officeUsedCapacity: number;
+    section: SectionMetadata;
+    sectionUsedCapacity: number;
+    approvalStatus: ApprovalStatusMetadata;
+    startTime?: string;
+    endTime?: string;
+    requestorNotes?: string;
+    approverNotes?: string;
+}
+
