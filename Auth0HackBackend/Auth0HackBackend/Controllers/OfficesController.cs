@@ -63,7 +63,7 @@ namespace Auth0HackBackend.Controllers
             return await Task.WhenAll<OfficeDetailDTO>(retObj);
         }
         
-        [HttpPost("close")] // .../api/offices/close/{id}/{startTime}/{endTime}
+        [HttpPost("close")] // .../api/offices/close
         [Authorize]
         [ScopeAuthorize("create:OfficeClosure")]
         public OfficeClosureDTO CloseOffice([FromBody] OfficeClosureDTO officeClosureDTO)
@@ -71,7 +71,7 @@ namespace Auth0HackBackend.Controllers
             return Repository.CloseOffice(officeClosureDTO);
         }
 
-        [HttpPost("section/close")] // .../api/offices/close/{id}/{startTime}/{endTime}
+        [HttpPost("section/close")] // .../api/offices/section/close
         [Authorize]
         [ScopeAuthorize("create:SectionClosure")]
         public SectionClosureDTO SectionOffice([FromBody] SectionClosureDTO sectionClosureDTO)
@@ -83,6 +83,22 @@ namespace Auth0HackBackend.Controllers
         public WorkRequestUsedCountDTO GetCountsForWorkRequest([FromBody] Guid workRequestId)
         {
             return Repository.GetCountsForWorkRequest(workRequestId);
+        }
+
+        [HttpPost("")] // .../api/offices
+        [Authorize]
+        [ScopeAuthorize("create:OfficeClosure")]
+        public OfficeMetadataDTO UpdateOrCreateOffice([FromBody] OfficeMetadataDTO officeDetailDTO)
+        {
+            return Repository.UpdateOrCreateOffice(officeDetailDTO);
+        }
+
+        [HttpPost("")] // .../api/offices/section
+        [Authorize]
+        [ScopeAuthorize("create:OfficeClosure")]
+        public SectionMetadataDTO UpdateOrCreateSection([FromBody] SectionMetadataDTO sectionDetailDTO)
+        {
+            return Repository.UpdateOrCreateSection(sectionDetailDTO);
         }
     }
 }

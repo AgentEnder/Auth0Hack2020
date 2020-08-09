@@ -146,5 +146,60 @@ namespace Auth0HackBackend.Repositories
             return SectionClosureDTO.MapToDTOFunc(sc);
         }
 
+        public OfficeMetadataDTO UpdateOrCreateOffice(OfficeMetadataDTO officeDTO)
+        {
+            Office newOffice = null;
+
+            if (officeDTO.OfficeId != Guid.Empty)
+            {
+                newOffice = DbContext.Offices.Find(officeDTO.OfficeId);
+            }
+            if (newOffice != null) // Edit existing
+            {
+                newOffice.OfficeStreet = officeDTO.OfficeStreet;
+                newOffice.OfficeCity = officeDTO.OfficeCity;
+                newOffice.OfficeState = officeDTO.OfficeState;
+                newOffice.OfficeZip = officeDTO.OfficeZip;
+                newOffice.OfficeMaxCapacity = officeDTO.OfficeMaxCapacity;
+                newOffice.OfficeSafeCapacity = officeDTO.OfficeSafeCapacity;                
+            } else // Create new office
+            {
+                newOffice = OfficeMetadataDTO.MapToBaseFunc(officeDTO);
+                newOffice.OfficeId = Guid.NewGuid();
+                DbContext.Offices.Add(newOffice);
+            }
+
+            DbContext.SaveChanges();
+
+            return OfficeMetadataDTO.MapToDTOFunc(newOffice);
+        }
+
+        public SectionMetadataDTO UpdateOrCreateSection(SectionMetadataDTO SectionDTO)
+        {
+            Section newSection = null;
+
+            if (SectionDTO.SectionId != Guid.Empty)
+            {
+                newSection = DbContext.Sections.Find(SectionDTO.SectionId);
+            }
+            if (newSection != null) // Edit existing
+            {
+                newSection.OfficeId = SectionDTO.OfficeId;
+                newSection.SectionDescription = SectionDTO.SectionDescription;
+                newSection.SectionName = SectionDTO.SectionName;                
+                newSection.SectionMaxCapacity = SectionDTO.SectionMaxCapacity;
+                newSection.SectionSafeCapacity = SectionDTO.SectionSafeCapacity;
+            }
+            else // Create new Section
+            {
+                newSection = SectionMetadataDTO.MapToBaseFunc(SectionDTO);
+                newSection.SectionId = Guid.NewGuid();
+                DbContext.Sections.Add(newSection);
+            }
+
+            DbContext.SaveChanges();
+
+            return SectionMetadataDTO.MapToDTOFunc(newSection);
+        }
     }
 }
