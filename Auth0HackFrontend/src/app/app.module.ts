@@ -21,6 +21,7 @@ import { OfficesService } from './core/services/offices.service';
 import { RandomUserService } from './core/services/random-user.service';
 import { NavbarComponent } from './layout/navbar/navbar.component';
 import { SidebarComponent } from './layout/sidebar/sidebar.component';
+import { EmployeesService } from './core/services/employee.service';
 
 const Routes: Routes = [
   {
@@ -68,7 +69,9 @@ const Routes: Routes = [
       multi: true
     },
     RandomUserService,
+    EmployeesService,
     OfficesService
+    
   ],
   bootstrap: [AppComponent]
 })

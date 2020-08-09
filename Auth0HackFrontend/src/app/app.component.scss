@@ -1,0 +1,82 @@
+#file-upload-container {
+    margin: 20px auto;
+    border: 2px dashed #1C8ADB;
+    border-radius: 10px;
+}
+#file-upload-container-label {
+    padding: 4em;
+    text-align: center;
+}
+#file-upload-container:hover, .drag-over {
+    cursor: pointer;
+    background-color: #9ecbec !important;
+    opacity: 0.8;
+}
+.drag-default {
+    background: #f5fcff;
+    opacity: 1;
+}
+.progress-percentage {
+    background-color: #65759f;
+    border-radius: 5px;
+    bottom: 0;
+    content: '';
+    display: block;
+    left: 0;
+    right: 0;
+    top: 0;
+    width: 50%;
+    height: 10px;
+}
+.upload-item-progress-bar:after {
+    display: none;
+}
+.upload-items, .upload-button-container {
+    width: 50%;
+    margin: 20px auto;
+}
+.upload-items button {
+    background: transparent;
+    border: none;
+    margin-left: 1em;
+}
+.upload-item {
+    border-bottom: 1px solid lightgrey;
+}
+.file-name {
+    width: 85%;
+    display: inline-block;
+}
+.icon-pulse:before{
+      -webkit-animation: pulse 2s ease-in;
+      -moz-animation: pulse 2s ease-in;
+       animation: pulse 2s ease-in;
+      -webkit-animation-iteration-count: infinite;
+      -moz-animation-iteration-count: infinite;
+      animation-iteration-count: infinite;    
+}
+  
+@keyframes pulse {
+    0% {
+      -webkit-transform: scale(1);
+      opacity: 0.0;
+   }
+   25% {
+      -webkit-transform: scale(1.35);
+      opacity: 0.1;
+   }
+   50% {
+      -webkit-transform: scale(1.7);
+      opacity: 0.3;
+   }
+   75% {
+      -webkit-transform: scale(2.05);
+      opacity: 0.5;
+   }
+   100% {
+      -webkit-transform: scale(2.4);
+      opacity: 0.0;
+   }
+}
+
+
