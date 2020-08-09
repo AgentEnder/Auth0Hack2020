@@ -11,6 +11,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { RequestsService } from 'src/app/core/services/requests.service';
 import { WorkRequestMetadataDTO, WorkRequestDetailDTO } from 'src/app/core/models/work-request.model';
 import { MatDialog } from '@angular/material/dialog';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 
 @Component({
     templateUrl: './pending-requests.component.html'
@@ -76,5 +77,27 @@ export class PendingRequestsComponent implements OnInit {
     openDialog(row) {
         this.selectedRow = row;
         this.dialog.open(this.modalTemplate);
+    }
+
+    onTabChange(event: MatTabChangeEvent) {
+        if (event.tab.textLabel === 'Pending') {
+            this.requestsService.getAllRequests('?$filter=contains(approvalStatus/statusName, \'Submitted\')').subscribe( x => {
+                this.dataSource = new MatTableDataSource(x);
+                this.dataSource.sort = this.sort;
+                this.dataSource.paginator = this.paginator;
+            });
+        } else if (event.tab.textLabel === 'Accepted') {
+            this.requestsService.getAllRequests('?$filter=contains(approvalStatus/statusName, \'Approved\')').subscribe( x => {
+                this.dataSource = new MatTableDataSource(x);
+                this.dataSource.sort = this.sort;
+                this.dataSource.paginator = this.paginator;
+            });
+        } else if (event.tab.textLabel === 'Rejected') {
+            this.requestsService.getAllRequests('?$filter=contains(approvalStatus/statusName, \'Denied\')').subscribe( x => {
+                this.dataSource = new MatTableDataSource(x);
+                this.dataSource.sort = this.sort;
+                this.dataSource.paginator = this.paginator;
+            });
+        }
     }
 }

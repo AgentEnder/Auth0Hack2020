@@ -1,4 +1,4 @@
-<mat-tab-group>
+<mat-tab-group (selectedTabChange)="onTabChange($event)">
   <mat-tab label="Pending">
     <ng-container *ngTemplateOutlet="tableTemplate"></ng-container>
   </mat-tab>
