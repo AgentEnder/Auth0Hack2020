@@ -16,6 +16,8 @@ namespace Auth0HackBackend.DTO
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Title { get; set; }
+        public string Email { get; set; }
+        public string Avatar { get; set; }
         public bool isApprover { get; set; }
 
         public static Expression<Func<Employee, EmployeeMetadataDTO>> MapToDTO = (v) =>
@@ -25,7 +27,9 @@ namespace Auth0HackBackend.DTO
             FirstName = v.FirstName,
             LastName = v.LastName,
             Title = v.Title,
-            isApprover = v.isApprover
+            Email = v.Email,
+            isApprover = v.isApprover,
+            Avatar = v.Avatar
         };
 
         public static Expression<Func<EmployeeMetadataDTO, Employee>> MapToBase = (v) =>
@@ -35,7 +39,9 @@ namespace Auth0HackBackend.DTO
             FirstName = v.FirstName,
             LastName = v.LastName,
             Title = v.Title,
-            isApprover = v.isApprover
+            Email = v.Email,
+            isApprover = v.isApprover,
+            Avatar = v.Avatar
         };
 
         public static EmployeeMetadataDTO MapToDTOFunc(Employee e) {

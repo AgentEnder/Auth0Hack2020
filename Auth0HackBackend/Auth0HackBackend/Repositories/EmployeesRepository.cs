@@ -31,7 +31,36 @@ namespace Auth0HackBackend.Repositories
         {
             var employee = await DbContext.Employees.FindAsync(employeeId);
             return EmployeeMetadataDTO.MapToDTOFunc(employee);
-        }        
+        }
+
+        public EmployeeMetadataDTO UpdateOrCreateEmployee(EmployeeMetadataDTO employeeDTO)
+        {
+            Employee newEmployee = null;
+
+            if (employeeDTO.EmployeeId != Guid.Empty)
+            {
+                newEmployee = DbContext.Employees.Find(employeeDTO.EmployeeId);
+            }
+            if (newEmployee != null) // Edit existing
+            {
+                newEmployee.Avatar = employeeDTO.Avatar;
+                newEmployee.Email = employeeDTO.Email;
+                newEmployee.FirstName = employeeDTO.FirstName;
+                newEmployee.isApprover = employeeDTO.isApprover;
+                newEmployee.LastName = employeeDTO.LastName;
+                newEmployee.Title = employeeDTO.Title;                
+            }
+            else // Create new Employee
+            {
+                newEmployee = EmployeeMetadataDTO.MapToBaseFunc(employeeDTO);
+                newEmployee.EmployeeId = Guid.NewGuid();
+                DbContext.Employees.Add(newEmployee);
+            }
+
+            DbContext.SaveChanges();
+
+            return EmployeeMetadataDTO.MapToDTOFunc(newEmployee);
+        }
         public List<EmployeeContactTraceDTO> ContactTraceByEmployee(Guid employeeId, DateTimeOffset startTime, DateTimeOffset endTime)
         {
             List<EmployeeContactTraceDTO> retObj = new List<EmployeeContactTraceDTO>();

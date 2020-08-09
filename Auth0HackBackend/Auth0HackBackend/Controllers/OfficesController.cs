@@ -87,7 +87,7 @@ namespace Auth0HackBackend.Controllers
 
         [HttpPost("")] // .../api/offices
         [Authorize]
-        [ScopeAuthorize("create:OfficeClosure")]
+        [ScopeAuthorize("create:OfficeAndSection")]
         public OfficeMetadataDTO UpdateOrCreateOffice([FromBody] OfficeMetadataDTO officeDetailDTO)
         {
             return Repository.UpdateOrCreateOffice(officeDetailDTO);
@@ -95,7 +95,7 @@ namespace Auth0HackBackend.Controllers
 
         [HttpPost("")] // .../api/offices/section
         [Authorize]
-        [ScopeAuthorize("create:OfficeClosure")]
+        [ScopeAuthorize("create:OfficeAndSection")]
         public SectionMetadataDTO UpdateOrCreateSection([FromBody] SectionMetadataDTO sectionDetailDTO)
         {
             return Repository.UpdateOrCreateSection(sectionDetailDTO);

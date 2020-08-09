@@ -47,7 +47,7 @@ namespace Auth0HackBackend.Repositories
             if (wr.WorkRequestId != Guid.Empty) {
                 newWorkRequest = DbContext.WorkRequests.Find(wr.WorkRequestId);
             }                            
-            if (newWorkRequest != null) // Edit exsiting
+            if (newWorkRequest != null) // Edit existing
             {
                 newWorkRequest.ApproverId = wr.Approver.EmployeeId;
                 newWorkRequest.EndTime = wr.EndTime != null ? wr.EndTime.Value : newWorkRequest.EndTime;
