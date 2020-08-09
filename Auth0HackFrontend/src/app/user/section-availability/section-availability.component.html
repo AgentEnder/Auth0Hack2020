@@ -1,4 +1,4 @@
-<mat-tab-group>
+<mat-tab-group class="last-tab-far-right" #tabs="matTabGroup">
     <mat-tab label="Availability by Date">
         <div class="container-fluid">
             <div class="row">
@@ -11,6 +11,21 @@
     <mat-tab label="Availability by Office">
         <ng-template matTabContent>
             <app-office-availability-calendar [office]="o"></app-office-availability-calendar>
+        </ng-template>
+    </mat-tab>
+    <mat-tab disabled class="test">
+        <ng-template mat-tab-label>
+            <ng-container *ngIf="tabs.selectedIndex == 0">
+                <mat-form-field [appearance]="'outline'" class="no-padding-bottom" (click)="picker.open()">
+                    <mat-label>Choose a date</mat-label>
+                    <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDay" (dateChange)="loadNewData()">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </ng-container>
+        </ng-template>
+        <ng-template mat-tab-content>
+            "No content"
         </ng-template>
     </mat-tab>
 </mat-tab-group>

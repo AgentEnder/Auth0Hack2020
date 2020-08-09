@@ -4,15 +4,17 @@ using Auth0HackBackend.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetTopologySuite.Geometries;
 
 namespace Auth0HackBackend.Migrations
 {
     [DbContext(typeof(HackEntities))]
-    partial class HackEntitiesModelSnapshot : ModelSnapshot
+    [Migration("20200809192156_vOfficeDateCapacities")]
+    partial class vOfficeDateCapacities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

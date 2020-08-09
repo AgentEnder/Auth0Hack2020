@@ -27,5 +27,9 @@ export class UserSectionAvailabilityPageComponent implements OnInit {
         this.offices = this.officesService.getOfficeDetails();
     }
 
+    loadNewData() {
+        this.offices = this.officesService.getOfficeDetailsByDate(this.selectedDay)
+    }
+
 
 }
