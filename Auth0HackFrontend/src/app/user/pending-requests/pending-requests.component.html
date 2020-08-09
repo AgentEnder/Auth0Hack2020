@@ -47,8 +47,8 @@
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let row"> 
           <div class="text-right">
-            <button mat-raised-button color="primary">Accept</button>
-            <button mat-raised-button color="warn" class="ml-4">Reject</button>
+            <button mat-raised-button [color]="getAcceptColor(row)" (click)="acceptRequest(row)">Accept</button>
+            <button mat-raised-button color="warn" class="ml-4" (click)="rejectRequest(row)" >Reject</button>
           </div>
         </td>
       </ng-container>

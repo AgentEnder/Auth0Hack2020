@@ -9,6 +9,7 @@ import { ODataDataSource } from '@agentender/odata-data-source';
 import { environment } from '../../../environments/environment';
 import { MatTableDataSource } from '@angular/material/table';
 import { RequestsService } from 'src/app/core/services/requests.service';
+import { WorkRequestMetadataDTO } from 'src/app/core/models/work-request.model';
 
 @Component({
     templateUrl: './pending-requests.component.html'
@@ -37,5 +38,24 @@ export class PendingRequestsComponent implements OnInit {
             this.dataSource.sort = this.sort;
             this.dataSource.paginator = this.paginator;
         });
+    }
+
+    getAcceptColor(row) {
+        const section = row.sectionSafeCapacity
+                    ? row.sectionUsedCapacity / row.sectionSafeCapacity
+                    : 1;
+        const office = row.officeSafeCapacity
+                    ? row.officeUsedCapacity / row.officeSafeCapacity
+                    : 1;
+
+        return section >= 1 || office >= 1 ? 'danger' : 'primary';
+    }
+
+    acceptRequest(row: WorkRequestMetadataDTO) {
+
+    }
+
+    rejectRequest(row: WorkRequestMetadataDTO) {
+        
     }
 }

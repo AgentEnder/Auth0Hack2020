@@ -89,7 +89,7 @@ namespace Auth0HackBackend.Controllers
             return Repository.UpdateOrCreateOffice(officeDetailDTO);
         }
 
-        [HttpPost("")] // .../api/offices/section
+        [HttpPost("section")] // .../api/offices/section
         [ScopeAuthorize("create:OfficeAndSection")]
         public SectionMetadataDTO UpdateOrCreateSection([FromBody] SectionMetadataDTO sectionDetailDTO)
         {
