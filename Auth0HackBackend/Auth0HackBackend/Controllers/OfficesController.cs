@@ -47,14 +47,9 @@ namespace Auth0HackBackend.Controllers
         }
 
         [HttpGet("by-id/{OfficeId}/{StartTime}/{EndTime}")] // .../api/offices/by-id/{id}/{date}
-        public async Task<IEnumerable<OfficeDetailDTO>> GetOfficeDetailByIdAndDateRange([FromRoute] Guid OfficeId, [FromRoute] DateTimeOffset StartTime, DateTimeOffset EndTime)
-        {
-            List<OfficeDetailDTO> retObj = new List<OfficeDetailDTO>();
-            for (DateTimeOffset workDate = StartTime; workDate < EndTime; workDate = workDate.AddDays(1))
-            {
-                retObj.Add( await GetOfficeDetailById(OfficeId, workDate));
-            }
-            return retObj;
+        public List<OfficeCountsDTO> GetOfficeDetailByIdAndDateRange([FromRoute] Guid officeId, [FromRoute] DateTimeOffset startTime, DateTimeOffset endTime)
+        {            
+            return GetOfficeDetailByIdAndDateRange(officeId, startTime, endTime);
         }
 
         [HttpGet("{WorkDate}")] // .../api/offices/{workDate}

@@ -98,6 +98,15 @@ namespace Auth0HackBackend.Repositories
             return sectionDetails;
         }
 
+        public List<OfficeCountsDTO> GetOfficeDetailByIdAndDateRange(Guid officeId, DateTimeOffset startDate, DateTimeOffset endDate)
+        {
+            return DbContext.WorkRequests.Where(x => x.StartTime >= startDate && x.StartTime <= endDate).GroupBy(x => new { x.OfficeId, x.StartTime })
+                                        .Select(g => new OfficeCountsDTO { 
+                                            OfficeId = g.Key.OfficeId, 
+                                            StartTime = g.Key.StartTime,
+                                            ApprovedCount = g.Count() }).ToList();
+        }
+
         public async Task<OfficeDetailDTO> GetOfficeDetailById(Guid officeId, DateTimeOffset workDate)
         {
             DateTimeOffset startTime = new DateTimeOffset(workDate.Year, workDate.Month, workDate.Day, 0, 0, 0, workDate.Offset);

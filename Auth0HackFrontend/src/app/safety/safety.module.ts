@@ -10,6 +10,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 const routes: Routes = [
     {
@@ -31,8 +35,12 @@ const routes: Routes = [
         CommonModule,
         FormsModule,
         MatAutocompleteModule,
-        MatFormFieldModule,
+        MatButtonModule,
+        MatCheckboxModule,
         MatInputModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatListModule,
         MatDatepickerModule,
         SharedModule,
         RouterModule.forChild(routes)

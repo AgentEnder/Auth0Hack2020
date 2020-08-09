@@ -1,5 +1,6 @@
 ﻿using Auth0HackBackend.DTO;
 using Auth0HackBackend.Model;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,26 +65,40 @@ namespace Auth0HackBackend.Repositories
         public List<EmployeeContactTraceDTO> ContactTraceByEmployee(Guid employeeId, DateTimeOffset startTime, DateTimeOffset endTime)
         {
             List<EmployeeContactTraceDTO> retObj = new List<EmployeeContactTraceDTO>();
-            IEnumerable<WorkRequest> empWR = DbContext.WorkRequests.Where(x => x.PersonId == employeeId && 
+            List<WorkRequest> empWR = DbContext.WorkRequests.Where(x => x.PersonId == employeeId && 
                    x.ApprovalStatusId == ApprovalStatusMetadataDTO._APPROVED &&
                    ((x.StartTime >= startTime && x.EndTime <= endTime) ||
                     (x.EndTime >= startTime && x.EndTime <= endTime) ||
                     (startTime >= x.StartTime && startTime <= x.EndTime) ||
                     (endTime >= x.StartTime && endTime <= x.EndTime))
-                   ).OrderBy(x => x.StartTime);
+                   ).Include(x => x.Person)
+                    .Include(x => x.Office)
+                    .Include(x => x.Section)
+                    .OrderBy(x => x.StartTime).ToList();
 
             foreach (WorkRequest wr in empWR) {
-                IEnumerable<WorkRequest> otherWRs = DbContext.WorkRequests.Where(x => x.PersonId != employeeId &&
+                List<WorkRequest> otherWRs = DbContext.WorkRequests.Where(x => x.PersonId != employeeId &&
                     x.ApprovalStatusId == ApprovalStatusMetadataDTO._APPROVED &&
+                    x.OfficeId == wr.OfficeId && x.SectionId == wr.SectionId &&
                     ((x.StartTime >= wr.StartTime && x.EndTime <= wr.EndTime) ||
                     (x.EndTime >= wr.StartTime && x.EndTime <= wr.EndTime) ||
                     (wr.StartTime >= x.StartTime && wr.StartTime <= x.EndTime) ||
-                    (wr.EndTime >= x.StartTime && wr.EndTime <= x.EndTime)));
+                    (wr.EndTime >= x.StartTime && wr.EndTime <= x.EndTime)))
+                    .Include(x => x.Person)
+                    .Include(x => x.Office)
+                    .Include(x => x.Section).ToList();
                 foreach (WorkRequest oWR in otherWRs)
                 {
                     EmployeeContactTraceDTO ectDTO = new EmployeeContactTraceDTO();
                     ectDTO.DateOfContact = new DateTimeOffset(wr.StartTime.Year, wr.StartTime.Month, wr.StartTime.Day, 0, 0, 0, wr.StartTime.Offset);
-                    ectDTO.EmployeeDTO = EmployeeMetadataDTO.MapToDTOFunc(oWR.Person);
+                    ectDTO.EmployeeDTO = new EmployeeMetadataDTO
+                    {
+                        EmployeeId = oWR.PersonId,
+                        Email = oWR.Person.Email,
+                        FirstName = oWR.Person.FirstName,
+                        LastName = oWR.Person.LastName,
+                        Title = oWR.Person.Title
+                    };
                     ectDTO.OfficeId = oWR.OfficeId;
                     ectDTO.OfficeName = oWR.Office.OfficeName;
                     ectDTO.SectionId = oWR.SectionId;
