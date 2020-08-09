@@ -35,11 +35,11 @@ export class ContactTracingComponent implements OnInit {
         this.employeeService.getEmployeeList('?$orderby=LastName,FirstName').subscribe(x => {
             this.employeeList = x;
             this.loading--;
+            this.filteredOptions = [...this.employeeList]
         });
     }
 
     filterComplete(event) {
-        debugger;
         this.filteredOptions = this._filter(event || '');
     }
 

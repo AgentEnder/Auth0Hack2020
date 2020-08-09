@@ -1,17 +1,27 @@
 Contact tracing works?
 <div>
-    <mat-form-field class="example-full-width">
+  <mat-form-field class="example-full-width">
     <mat-label>Employee</mat-label>
-    <input type="text"
-           placeholder="Pick an Employee"
-           matInput
-           [(ngModel)]="selectedEmployee"
-           (valueChanges)="filterComplete($event)"
-           [matAutocomplete]="auto">
+    <input
+      type="text"
+      placeholder="Pick an Employee"
+      matInput
+      [(ngModel)]="selectedEmployee"
+      (ngModelChange)="filterComplete($event)"
+      [matAutocomplete]="auto"
+    />
     <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
       <mat-option *ngFor="let employee of filteredOptions" [value]="employee">
-        {{employee.lastName}}, {{employee.firstName}}
+        {{ employee.lastName }}, {{ employee.firstName }}
       </mat-option>
     </mat-autocomplete>
   </mat-form-field>
+</div>
+<div>
+  <mat-date-range-input [rangePicker]="picker">
+    <input matStartDate placeholder="Start date" />
+    <input matEndDate placeholder="End date" />
+  </mat-date-range-input>
+
+  <mat-date-range-picker #picker></mat-date-range-picker>
 </div>

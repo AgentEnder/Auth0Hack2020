@@ -51,7 +51,7 @@ export class SectionComponent implements OnInit{
             console.log(this.sections);
         });
     }
-    
+
     newSection() {
         this.selectedSection = {} as SectionMetadata;
         this.selectedSection.officeId = this.officeId;

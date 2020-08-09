@@ -9,6 +9,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 const routes: Routes = [
     {
@@ -32,6 +33,7 @@ const routes: Routes = [
         MatAutocompleteModule,
         MatFormFieldModule,
         MatInputModule,
+        MatDatepickerModule,
         SharedModule,
         RouterModule.forChild(routes)
     ],
