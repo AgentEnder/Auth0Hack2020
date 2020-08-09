@@ -53,9 +53,9 @@ export class SidebarComponent {
             label: 'Safety',
             children: [
                 {
-                    path: '/safety/occupancy',
+                    path: '/safety/contact-tracing',
                     icon: 'business',
-                    label: 'Occupancy'
+                    label: 'Contact Tracing'
                 }
             ]
         }

@@ -18,12 +18,11 @@ export class AppComponent implements OnInit {
   ngOnInit(){
     this.auth.userProfile$.subscribe(x => {
       this.user = x;
-      //this.randomUserService.getNRandomUsers(5).subscribe();
     });
     this.auth.getUserInfo().subscribe();
   }
 
   login(){
-    this.auth.login()
+    this.auth.login();
   }
 }

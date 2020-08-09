@@ -15,7 +15,7 @@ interface ImageInfo {
 export class AdminUsersPageComponent implements OnInit{
     editEmployeeFormGroup: FormGroup;
     mobile = false;
-    loading = 0;    
+    loading = 0;
     data: EmployeeMetadata[];
     selectedEmployee: EmployeeMetadata;
     imageDims: ImageInfo = { } as ImageInfo;

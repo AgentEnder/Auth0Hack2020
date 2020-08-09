@@ -1,25 +1,33 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { AdminUsersPageComponent } from './users/users.component';
-import { MatListModule } from '@angular/material/list';
-import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
+import { RouterModule, Routes } from '@angular/router';
+
 import { MatButtonModule } from '@angular/material/button';
-import {MatCheckboxModule} from '@angular/material/checkbox';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
+
+import { AdminOfficesPagesComponent } from './offices/offices.component';
+import { AdminUsersPageComponent } from './users/users.component';
 
 const routes: Routes = [
     {
         path: 'users',
         component: AdminUsersPageComponent
+    },
+    {
+        path: 'offices',
+        component: AdminOfficesPagesComponent
     }
 ];
 
 @NgModule({
     declarations: [
-        AdminUsersPageComponent
+        AdminUsersPageComponent,
+        AdminOfficesPagesComponent
     ],
     imports: [
         CommonModule,

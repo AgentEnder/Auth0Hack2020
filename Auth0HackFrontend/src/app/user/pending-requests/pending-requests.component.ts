@@ -62,7 +62,8 @@ export class PendingRequestsComponent implements OnInit {
             approverNotes: row.approverNotes,
             workRequestId: row.workRequestId
         }).subscribe(x => {
-
+            this.dialog.closeAll();
+            this.onTabChange();
         });
     }
 
@@ -71,6 +72,8 @@ export class PendingRequestsComponent implements OnInit {
             approverNotes: row.approverNotes,
             workRequestId: row.workRequestId
         }).subscribe(x => {
+            this.dialog.closeAll();
+            this.onTabChange();
         });
     }
 
@@ -79,7 +82,9 @@ export class PendingRequestsComponent implements OnInit {
         this.dialog.open(this.modalTemplate);
     }
 
-    onTabChange(event: MatTabChangeEvent) {
+    tabChangeEventCache = null
+    onTabChange(event: MatTabChangeEvent = this.tabChangeEventCache) {
+        this.tabChangeEventCache = event;
         if (event.tab.textLabel === 'Pending') {
             this.requestsService.getAllRequests('?$filter=contains(approvalStatus/statusName, \'Submitted\')').subscribe( x => {
                 this.dataSource = new MatTableDataSource(x);

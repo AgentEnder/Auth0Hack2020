@@ -38,6 +38,11 @@ const Routes: Routes = [
     path: 'user',
     loadChildren: () => import('./user/user.module').then(x => x.UserPagesModule),
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'safety',
+    loadChildren: () => import('./safety/safety.module').then(x => x.SafetyModule),
+    canActivate: [AuthGuard]
   }
 ];
 
@@ -71,7 +76,7 @@ const Routes: Routes = [
     RandomUserService,
     EmployeesService,
     OfficesService
-    
+
   ],
   bootstrap: [AppComponent]
 })
