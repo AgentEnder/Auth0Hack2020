@@ -1,4 +1,17 @@
 Contact tracing works?
-<div class="d-flex h-100 w-100 p-5 justify-content-center align-items-center">
-    <img src="assets/undraw_under_construction.svg"/>
+<div>
+    <mat-form-field class="example-full-width">
+    <mat-label>Employee</mat-label>
+    <input type="text"
+           placeholder="Pick an Employee"
+           matInput
+           [(ngModel)]="selectedEmployee"
+           (valueChanges)="filterComplete($event)"
+           [matAutocomplete]="auto">
+    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+      <mat-option *ngFor="let employee of filteredOptions" [value]="employee">
+        {{employee.lastName}}, {{employee.firstName}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
 </div>

@@ -5,6 +5,10 @@ import { Routes, RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 import { ContactTracingComponent } from './contact-tracing/contact-tracing.component';
 import { OfficeClosuresComponent } from './office-closures/office-closures.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
 
 const routes: Routes = [
     {
@@ -24,6 +28,10 @@ const routes: Routes = [
     ],
     imports: [
         CommonModule,
+        FormsModule,
+        MatAutocompleteModule,
+        MatFormFieldModule,
+        MatInputModule,
         SharedModule,
         RouterModule.forChild(routes)
     ],

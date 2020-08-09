@@ -55,9 +55,9 @@ namespace Auth0HackBackend.Controllers
                 return null;
             }
         }
-        /*
-        [HttpGet("contact-trace")] // .../api/employees/contact-trace/{employeeId}
-        public EmployeeMetadataDTO ContactTraceByEmployee([FromRoute] Guid employeeId, DateTimeOffset startTime, DateTimeOffset endTime)
+        
+        [HttpGet("contact-trace/{employeeId}/{startTime}/{endTime}")] // .../api/employees/contact-trace/{employeeId}
+        public List<EmployeeContactTraceDTO> ContactTraceByEmployee([FromRoute] Guid employeeId, [FromRoute] DateTimeOffset startTime, [FromRoute] DateTimeOffset endTime)
         {
             try
             {
@@ -68,7 +68,7 @@ namespace Auth0HackBackend.Controllers
                 return null;
             }
         }
-        */
+        
     }    
     
 }
