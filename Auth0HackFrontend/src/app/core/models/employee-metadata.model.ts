@@ -5,4 +5,5 @@ export interface EmployeeMetadata {
     title?: string;
     isApprover?: boolean;
     avatar?: string;
+    email?: string;
 }
