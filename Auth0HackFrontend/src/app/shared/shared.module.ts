@@ -23,6 +23,7 @@ import {
 } from './office-availability-calendar/office-availability-calendar.component';
 import { PercentageComponent } from './percentage/percentage.component';
 import { FormsModule } from '@angular/forms';
+import { DragDropDirective } from './directives/drag-drop.directive';
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
@@ -32,7 +33,8 @@ export function momentAdapterFactory() {
     declarations: [
         BuildingAvailabilityComponent,
         PercentageComponent,
-        OfficeAvailabilityCalendarComponent
+        OfficeAvailabilityCalendarComponent,
+        DragDropDirective
     ],
     imports: [
         CommonModule,
@@ -51,7 +53,8 @@ export function momentAdapterFactory() {
     exports: [
         BuildingAvailabilityComponent,
         PercentageComponent,
-        OfficeAvailabilityCalendarComponent
+        OfficeAvailabilityCalendarComponent,
+        DragDropDirective
     ],
     providers: [
     ]

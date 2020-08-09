@@ -12,6 +12,7 @@ import { MatListModule } from '@angular/material/list';
 
 import { AdminOfficesPagesComponent } from './offices/offices.component';
 import { AdminUsersPageComponent } from './users/users.component';
+import { SharedModule } from '../shared/shared.module';
 
 const routes: Routes = [
     {
@@ -31,6 +32,7 @@ const routes: Routes = [
     ],
     imports: [
         CommonModule,
+        SharedModule,
         FormsModule,
         MatButtonModule,
         MatCheckboxModule,
