@@ -27,6 +27,6 @@ export class EmployeesService {
 
     saveEmployee(employee: EmployeeMetadata) {
         const url = this.baseUrl + EMPLOYEES;
-        return this.httpClient.post<EmployeeMetadata[]>(url, employee);
+        return this.httpClient.post<EmployeeMetadata>(url, employee);
     }
 }

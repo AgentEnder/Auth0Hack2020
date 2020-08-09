@@ -1,0 +1,25 @@
+<mat-nav-list>
+    <div mat-subheader>Sections</div>
+    <mat-list-item *ngFor="let section of sections" (click)="editSection(section)">
+        <mat-icon mat-list-icon>building</mat-icon>
+        <div mat-line>{{section.sectionName}}</div>        
+    </mat-list-item>    
+</mat-nav-list>
+<button mat-button (click)="newSection()">Create new section</button>
+<div *ngIf="selectedSection">
+    <div>
+        <mat-form-field>
+            <mat-label>Section Name</mat-label>
+            <input matInput type="text" [(ngModel)]="selectedSection.sectionName">
+        </mat-form-field>        
+        <mat-form-field>
+            <mat-label>Safe Capacity</mat-label>
+            <input matInput type="number" [(ngModel)]="selectedSection.sectionSafeCapacity">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Max Capacity</mat-label>
+            <input matInput type="number" [(ngModel)]="selectedSection.sectionMaxCapacity">
+        </mat-form-field>
+        <button mat-button (click)="saveChanges(selectedSection)">Save</button>
+    </div>
+</div>

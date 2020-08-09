@@ -26,7 +26,7 @@ namespace Auth0HackBackend.DTO
             SectionId = v.SectionId,
             SectionName = v.SectionName,
             OfficeId = v.OfficeId,
-            OfficeName = v.Office.OfficeName,
+            OfficeName = v.Office != null ? v.Office.OfficeName : "",
             SectionMaxCapacity = v.SectionMaxCapacity,
             SectionSafeCapacity = v.SectionSafeCapacity,
             SectionDescription = v.SectionDescription

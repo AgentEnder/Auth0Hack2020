@@ -10,9 +10,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 
-import { AdminOfficesPagesComponent } from './offices/offices.component';
-import { AdminUsersPageComponent } from './users/users.component';
 import { SharedModule } from '../shared/shared.module';
+import { AdminOfficesPagesComponent } from './offices/offices.component';
+import { SectionComponent } from './offices/section.component';
+import { AdminUsersPageComponent } from './users/users.component';
 
 const routes: Routes = [
     {
@@ -28,7 +29,8 @@ const routes: Routes = [
 @NgModule({
     declarations: [
         AdminUsersPageComponent,
-        AdminOfficesPagesComponent
+        AdminOfficesPagesComponent,
+        SectionComponent
     ],
     imports: [
         CommonModule,
