@@ -36,7 +36,7 @@ namespace Auth0HackBackend
                 .SetBasePath(env.ContentRootPath)
                 .AddConfiguration(configuration)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile("appsettings.secrets.json", optional: false, reloadOnChange: true);
+                .AddJsonFile("appsettings.secrets.json", optional: true, reloadOnChange: true);
 
             Configuration = builder.Build();
         }
