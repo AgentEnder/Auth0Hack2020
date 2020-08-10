@@ -68,9 +68,10 @@ namespace Auth0HackBackend.Repositories
             return DbContext.WorkRequests.Where(x => x.PersonId == EmployeeId).Select(WorkRequestMetadataDTO.MapToDTO);
         }
 
-        public WorkRequestMetadataDTO SaveWorkRequest(WorkRequestMetadataDTO wr)
+        public WorkRequestMetadataDTO SaveWorkRequest(WorkRequestMetadataDTO wr, string auth0Id)
         {
             WorkRequest newWorkRequest = null;
+            wr.Approver.EmployeeId = EmpRepository.GetEmployeeByAuthId(auth0Id).EmployeeId;
 
             if (wr.WorkRequestId != Guid.Empty)
             {

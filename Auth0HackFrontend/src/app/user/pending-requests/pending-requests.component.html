@@ -53,7 +53,7 @@
 
       <ng-container matColumnDef="Employee">
         <th mat-header-cell *matHeaderCellDef mat-sort-header="person.lastName">Employee</th>
-        <td mat-cell *matCellDef="let row"> {{ row?.person.firstName }}, {{ row?.person.lastName }}</td>
+        <td mat-cell *matCellDef="let row"> {{ row?.person.lastName }}, {{ row?.person.firstName }}</td>
       </ng-container>
 
       <ng-container matColumnDef="Actions">
