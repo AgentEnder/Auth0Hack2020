@@ -111,7 +111,7 @@ namespace Auth0HackBackend.Repositories
         {
             DateTimeOffset startTime = new DateTimeOffset(workDate.Year, workDate.Month, workDate.Day, 0, 0, 0, workDate.Offset);
             DateTimeOffset endTime = startTime.AddDays(1);
-            var office = DbContext.Offices.Find(officeId);
+            var office = DbContext.Offices.Include(x=>x.Sections).FirstOrDefault(x=>x.OfficeId == officeId);
             OfficeDetailDTO officeDetail = OfficeDetailDTO.MapToDTOFunc(office);
             officeDetail.OfficeUsedCapacity = DbContext.WorkRequests.Count(
                 x => x.OfficeId == officeId && x.ApprovalStatus.StatusName == "Approved" &&

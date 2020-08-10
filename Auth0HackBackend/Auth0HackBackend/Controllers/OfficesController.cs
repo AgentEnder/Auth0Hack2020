@@ -49,7 +49,7 @@ namespace Auth0HackBackend.Controllers
         [HttpGet("by-id/{OfficeId}/{StartTime}/{EndTime}")] // .../api/offices/by-id/{id}/{date}
         public List<OfficeCountsDTO> GetOfficeDetailByIdAndDateRange([FromRoute] Guid officeId, [FromRoute] DateTimeOffset startTime, DateTimeOffset endTime)
         {            
-            return GetOfficeDetailByIdAndDateRange(officeId, startTime, endTime);
+            return Repository.GetOfficeDetailByIdAndDateRange(officeId, startTime, endTime);
         }
 
         [HttpGet("{WorkDate}")] // .../api/offices/{workDate}

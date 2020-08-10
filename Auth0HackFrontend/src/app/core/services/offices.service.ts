@@ -11,16 +11,19 @@ import { OfficeDetailModel } from '../models/office-detail.model';
 import { SampleOfficeDetail } from './sample-data';
 import { OfficeMetadata } from '../models/office-metadata.model';
 import { SectionMetadata } from '../models/section-metadata.model';
+import { OfficeCounts } from '../models/office-counts.model';
 
 const OFFICE_AVAILABILITY_OVER_TIME = (start, end, officeId) => `/api/offices/by-id/${officeId}/${start}/${end}`;
 const OFFICE_ODATA = '/api/offices';
 const SECTION_ODATA = '/api/offices/sections';
 const OFFICE_AVAILABILITY_BY_DATE = (start) => `/api/offices/${start}`;
+const OFFICE_DETAIL_BY_DATE = (start, officeId) => `/api/offices/by-id/${officeId}/${start}`;
 
 @Injectable({
     providedIn: 'root'
 })
 export class OfficesService {
+
     baseUrl: string;
     constructor(private httpClient: HttpClient) {
         this.baseUrl = environment.apiUrl;
@@ -55,18 +58,22 @@ export class OfficesService {
             endDate.toISOString(),
             officeId
         );
-        return this.httpClient.get<OfficeDetailModel[]>(url).pipe(
-            map((x: OfficeDetailModel[]): OfficeAvailabilityOverTime => {
+        return this.httpClient.get<OfficeCounts[]>(url).pipe(
+            map((x: OfficeCounts[]): OfficeAvailabilityOverTime => {
                 return {
                     startDate,
                     endDate,
                     days: x.map(y => ({
-                       date: y.snapshotDate,
-                       offices: [y]
+                       date: y.startTime,
+                       count: y.approvedCount
                     }))
                 };
             })
         );
+    }
+
+    fetchOfficeDetailsForDay(momentDate: Moment, officeId: string) {
+        return this.httpClient.get<OfficeDetailModel>(this.baseUrl + OFFICE_DETAIL_BY_DATE(momentDate.toISOString(), officeId));
     }
 
     saveOffice(office: OfficeMetadata) {

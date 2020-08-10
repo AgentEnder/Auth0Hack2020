@@ -85,7 +85,7 @@ export class PendingRequestsComponent implements OnInit {
     tabChangeEventCache = null
     onTabChange(event: MatTabChangeEvent = this.tabChangeEventCache) {
         this.tabChangeEventCache = event;
-        if (event.tab.textLabel === 'Pending') {
+        if (!event || event.tab.textLabel === 'Pending') {
             this.requestsService.getAllRequests('?$filter=contains(approvalStatus/statusName, \'Submitted\')').subscribe( x => {
                 this.dataSource = new MatTableDataSource(x);
                 this.dataSource.sort = this.sort;

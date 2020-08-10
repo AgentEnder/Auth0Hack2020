@@ -1,4 +1,22 @@
-<div class="d-flex justify-content-center">
+<div class="d-flex justify-content-around">
+  <div class="mat-elevation-z2 mx-5 my-1 d-flex align-items-center">
+    <mat-form-field class="example-full-width m-2">
+      <mat-label>Office</mat-label>
+      <input
+        type="text"
+        placeholder="Pick an Employee"
+        matInput
+        [(ngModel)]="selectedOffice"
+        (ngModelChange)="filterComplete($event)"
+        [matAutocomplete]="auto"
+      />
+      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="getOfficeName">
+        <mat-option *ngFor="let office of filteredOffices" [value]="office">
+          {{ office.officeName }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </div>
   <div class="mat-elevation-z2 m-3 d-flex align-items-center">
     <button
       mat-button
@@ -28,17 +46,17 @@
 </mwl-calendar-month-view>
 
 <ng-template #calendarCell let-day="day">
-  <ng-container *ngIf="getOfficeForDay(day) as office; else loader">
-    <div class="float-right">
+  <ng-container *ngIf="!loading; else loader">
+    <div class="float-right" *ngIf="shouldShow(day)">
       <span class="cal-day-number">
         {{ day.date | calendarDate: "monthViewDayNumber":"en" }}
       </span>
     </div>
-    <div class="office-availability-cell" (click)="showDialogDay(office, day)">
+    <div class="office-availability-cell" (click)="showDialogDay(day)" *ngIf="shouldShow(day) && selectedOffice">
       <div style="font-size: 250%;">
         <app-percentage
-          [numerator]="office.officeUsedCapacity"
-          [denominator]="office.officeSafeCapacity"
+          [numerator]="getOfficeUsedForDay(day) || 0"
+          [denominator]="selectedOffice.officeSafeCapacity"
           [numeratorLabel]="'Used'"
           [denominatorLabel]="'Safe Capacity'"
         >
@@ -63,6 +81,11 @@
 <ng-template #modalTemplate let-data>
     <h2 matDialogTitle>{{data.day.toDate()| date}} Availability</h2>
     <mat-dialog-content>
-        <app-building-availability [office]="data.office" [day]="data.day" [showCloseBtn]="false"></app-building-availability>
+        <div *ngIf="!dateDataLoading">
+          <app-building-availability [office]="dateData" [day]="data.day" [showCloseBtn]="false"></app-building-availability>
+        </div>
+        <ng-template>
+          <mat-spinner></mat-spinner>
+        </ng-template>
     </mat-dialog-content>
 </ng-template>

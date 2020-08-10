@@ -7,6 +7,6 @@ export interface OfficeAvailabilityOverTime {
     endDate: Moment;
     days: {
         date: Moment
-        offices: OfficeDetailModel[]
+        count: number
     }[];
 }
