@@ -38,10 +38,15 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
+- task: CmdLine@2
+  inputs:
+    script: |
+      dir
+
 - task: AzureRmWebAppDeployment@4
   inputs:
     ConnectionType: 'AzureRM'
     azureSubscription: 'Azure subscription 1(7d9053ab-e019-44cc-9cfb-94cce526877a)'
     appType: 'webApp'
     WebAppName: 'Auth0Hack2020API'
-    packageForLinux: '$(System.DefaultWorkingDirectory)/*.zip'
+    packageForLinux: '$(Build.ArtifactStagingDirectory)/**/*.zip'

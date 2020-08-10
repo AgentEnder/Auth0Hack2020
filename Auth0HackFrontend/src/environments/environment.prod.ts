@@ -7,5 +7,5 @@ export const environment = {
     audience: 'https://auth0hack2020api.azurewebsites.net'
   },
 
-  apiUrl: 'https://localhost:44310'
+  apiUrl: 'https://auth0hack2020api.azurewebsites.net/'
 };
