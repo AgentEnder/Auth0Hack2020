@@ -193,6 +193,7 @@ namespace Auth0HackBackend.Repositories
             }
             if (newOffice != null) // Edit existing
             {
+                newOffice.OfficeName = officeDTO.OfficeName;
                 newOffice.OfficeStreet = officeDTO.OfficeStreet;
                 newOffice.OfficeCity = officeDTO.OfficeCity;
                 newOffice.OfficeState = officeDTO.OfficeState;
