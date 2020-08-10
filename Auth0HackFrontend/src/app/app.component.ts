@@ -16,10 +16,6 @@ export class AppComponent implements OnInit {
   constructor(public auth: AuthService, private randomUserService: RandomUserService) {}
 
   ngOnInit(){
-    this.auth.userProfile$.subscribe(x => {
-      this.user = x;
-    });
-    this.auth.getUserInfo().subscribe();
   }
 
   login(){
