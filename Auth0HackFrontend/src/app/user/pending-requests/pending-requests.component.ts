@@ -44,6 +44,10 @@ export class PendingRequestsComponent implements OnInit {
             this.dataSource = new MatTableDataSource(x);
             this.dataSource.sort = this.sort;
             this.dataSource.paginator = this.paginator;
+            this.dataSource.sortingDataAccessor = (item, property) => {
+                if (property.includes('.')) { return property.split('.').reduce((o,i)=>o[i], item) }
+                return item[property];
+            };
         });
     }
 
@@ -90,18 +94,30 @@ export class PendingRequestsComponent implements OnInit {
                 this.dataSource = new MatTableDataSource(x);
                 this.dataSource.sort = this.sort;
                 this.dataSource.paginator = this.paginator;
+                this.dataSource.sortingDataAccessor = (item, property) => {
+                    if (property.includes('.')) { return property.split('.').reduce((o,i)=>o[i], item) }
+                    return item[property];
+                };
             });
         } else if (event.tab.textLabel === 'Accepted') {
             this.requestsService.getAllRequests('?$filter=contains(approvalStatus/statusName, \'Approved\')').subscribe( x => {
                 this.dataSource = new MatTableDataSource(x);
                 this.dataSource.sort = this.sort;
                 this.dataSource.paginator = this.paginator;
+                this.dataSource.sortingDataAccessor = (item, property) => {
+                    if (property.includes('.')) { return property.split('.').reduce((o,i)=>o[i], item) }
+                    return item[property];
+                };
             });
         } else if (event.tab.textLabel === 'Rejected') {
             this.requestsService.getAllRequests('?$filter=contains(approvalStatus/statusName, \'Denied\')').subscribe( x => {
                 this.dataSource = new MatTableDataSource(x);
                 this.dataSource.sort = this.sort;
                 this.dataSource.paginator = this.paginator;
+                this.dataSource.sortingDataAccessor = (item, property) => {
+                    if (property.includes('.')) { return property.split('.').reduce((o,i)=>o[i], item) }
+                    return item[property];
+                };
             });
         }
     }
