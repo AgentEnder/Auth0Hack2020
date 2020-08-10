@@ -31,6 +31,23 @@ export class SidebarComponent {
             label: 'Pending Requests'
         },
         {
+            path: '/safety',
+            icon: 'warning',
+            label: 'Safety',
+            children: [
+                {
+                    path: '/safety/contact-tracing',
+                    icon: 'business',
+                    label: 'Contact Tracing'
+                },
+                {
+                    path: '/safety/office-closures',
+                    icon: 'location_disabled',
+                    label: 'Closures'
+                }
+            ]
+        },
+        {
             path: '/admin',
             icon: 'admin_panel_settings',
             label: 'Admin',
@@ -47,23 +64,6 @@ export class SidebarComponent {
                 }
             ]
         },
-        {
-            path: '/safety',
-            icon: 'warning',
-            label: 'Safety',
-            children: [
-                {
-                    path: '/safety/contact-tracing',
-                    icon: 'business',
-                    label: 'Contact Tracing'
-                },
-                {
-                    path: '/safety/office-closures',
-                    icon: 'location_disabled',
-                    label: 'Closures'
-                }
-            ]
-        }
     ];
 
     public toggleSidenav(){
