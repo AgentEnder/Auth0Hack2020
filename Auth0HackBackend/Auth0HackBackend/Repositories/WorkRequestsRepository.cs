@@ -71,7 +71,7 @@ namespace Auth0HackBackend.Repositories
         public WorkRequestMetadataDTO SaveWorkRequest(WorkRequestMetadataDTO wr, string auth0Id)
         {
             WorkRequest newWorkRequest = null;
-            wr.Approver.EmployeeId = EmpRepository.GetEmployeeByAuthId(auth0Id).EmployeeId;
+            wr.Person.EmployeeId = EmpRepository.GetEmployeeByAuthId(auth0Id).EmployeeId;
 
             if (wr.WorkRequestId != Guid.Empty)
             {
