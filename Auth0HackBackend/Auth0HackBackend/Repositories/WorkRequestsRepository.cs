@@ -1,5 +1,6 @@
 ﻿using Auth0HackBackend.DTO;
 using Auth0HackBackend.Model;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +30,12 @@ namespace Auth0HackBackend.Repositories
                    select new WorkRequestDetailDTO
                    {
                        Section = SectionMetadataDTO.MapToDTOFunc(request.Section),
-                       ApprovalStatus = ApprovalStatusMetadataDTO.MapToDTOFunc(request.ApprovalStatus),
+                       ApprovalStatus = new ApprovalStatusMetadataDTO
+                       {
+                           ApprovalStatusId = request.ApprovalStatus.ApprovalStatusId,
+                           IsFinal = request.ApprovalStatus.IsFinal,
+                           StatusName = request.ApprovalStatus.StatusName
+                       },
                        Approver = EmployeeMetadataDTO.MapToDTOFunc(request.Approver),
                        Person = EmployeeMetadataDTO.MapToDTOFunc(request.Person),
                        Requestor = EmployeeMetadataDTO.MapToDTOFunc(request.Requestor),
@@ -62,9 +68,10 @@ namespace Auth0HackBackend.Repositories
             return DbContext.WorkRequests.Where(x => x.PersonId == EmployeeId).Select(WorkRequestMetadataDTO.MapToDTO);
         }
 
-        public WorkRequestMetadataDTO SaveWorkRequest(WorkRequestMetadataDTO wr)
+        public WorkRequestMetadataDTO SaveWorkRequest(WorkRequestMetadataDTO wr, string auth0Id)
         {
             WorkRequest newWorkRequest = null;
+            wr.Approver.EmployeeId = EmpRepository.GetEmployeeByAuthId(auth0Id).EmployeeId;
 
             if (wr.WorkRequestId != Guid.Empty)
             {
@@ -97,8 +104,8 @@ namespace Auth0HackBackend.Repositories
             WorkRequest wr = DbContext.WorkRequests.Find(wra.WorkRequestId);
             if (wr != null)
             {
-                wr.ApprovalStatus.ApprovalStatusId = approvalStatusId;
-                wr.Approver.EmployeeId = EmpRepository.GetEmployeeByAuthId(auth0Id).EmployeeId;
+                wr.ApprovalStatusId = approvalStatusId;
+                wr.ApproverId = EmpRepository.GetEmployeeByAuthId(auth0Id).EmployeeId;
                 wr.ApproverNotes = wra.ApproverNotes;
             }
 

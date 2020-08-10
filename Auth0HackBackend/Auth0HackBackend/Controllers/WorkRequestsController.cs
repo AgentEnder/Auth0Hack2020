@@ -39,7 +39,7 @@ namespace Auth0HackBackend.Controllers
             return Repository.GetWorkRequestDetailDTOs();
         }
 
-        [HttpGet()]
+        [HttpGet("self")]
         [Authorize]
         [ScopeAuthorize("read:WorkRequestsSelf")]
         public IQueryable<WorkRequestMetadataDTO> GetOwnWorkRequests()
@@ -59,7 +59,7 @@ namespace Auth0HackBackend.Controllers
         [ScopeAuthorize("create:WorkRequests")]
         public WorkRequestMetadataDTO SaveWorkRequest([FromBody] WorkRequestMetadataDTO wr)
         {
-            return Repository.SaveWorkRequest(wr);
+            return Repository.SaveWorkRequest(wr, User.getAuth0Id());
         }
 
         [HttpPost("approve")] // .../api/WorkRequests/approve

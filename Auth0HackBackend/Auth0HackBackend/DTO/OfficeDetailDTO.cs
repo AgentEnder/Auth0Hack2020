@@ -34,12 +34,13 @@ namespace Auth0HackBackend.DTO
             OfficeSafeCapacity = v.OfficeSafeCapacity,
             OfficeCity = v.OfficeCity,
             OfficeId = v.OfficeId,
-            Latitude = v.OfficeLocation.Y,
-            Longitude = v.OfficeLocation.X,
+            Latitude = v.OfficeLocation == null ? default : v.OfficeLocation.Y,
+            Longitude = v.OfficeLocation == null ? default : v.OfficeLocation.X,
             OfficeName = v.OfficeName,
             OfficeState = v.OfficeState,
             OfficeStreet = v.OfficeStreet,
-            OfficeZip = v.OfficeZip
+            OfficeZip = v.OfficeZip,
+            Sections = v.Sections.AsQueryable().Select(SectionDetailDTO.MapToDTO)
         };
 
         public static Expression<Func<OfficeDetailDTO, Office>> MapToBase = (v) =>

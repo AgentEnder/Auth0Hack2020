@@ -17,13 +17,29 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 })
 export class OfficeAvailabilityCalendarComponent implements OnInit {
 
-    @Input() public office: OfficeMetadata;
+    _selectedOffice: OfficeMetadata;
+    set selectedOffice(v: OfficeMetadata){
+        this._selectedOffice = v;
+        if ('officeId' in v) {
+            this.fetchMonthlyAvailability();
+        }
+    };
 
+    get selectedOffice() {
+        return this._selectedOffice;
+    }
+    
     @ViewChild('modalTemplate') template: TemplateRef<any>;
-
+    
     public selectedDate: moment.Moment = moment();
+    month: moment.Moment = moment(this.selectedDate);
+    public dateData: OfficeDetailModel;
+    public dateDataLoading = false;
+    
     data: OfficeAvailabilityOverTime;
     loading = 0;
+    officeList: OfficeMetadata[];
+    filteredOffices: OfficeMetadata[];
 
     public get viewDate() {
         return this.selectedDate.toDate();
@@ -49,7 +65,8 @@ export class OfficeAvailabilityCalendarComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.fetchMonthlyAvailability();
+        // this.fetchMonthlyAvailability();
+        this.fetchOffices();
     }
 
     closeOpenMonthViewDay() {
@@ -58,20 +75,25 @@ export class OfficeAvailabilityCalendarComponent implements OnInit {
 
     fetchMonthlyAvailability() {
         const start = moment(this.selectedDate).startOf('month');
+        this.month = start;
         const end = moment(this.selectedDate).endOf('month');
         this.data = null;
         this.loading++;
         this.officeService.getOfficeAvailabilityOverTime(
             start,
             end,
-            this.office.officeId
+            this.selectedOffice.officeId
         ).subscribe(x => {
             this.data = x;
             this.loading--;
         });
     }
 
-    getOfficeForDay(day): OfficeDetailModel {
+    shouldShow(day) {
+        return moment(day.date).month() === this.month.month();
+    }
+
+    getOfficeUsedForDay(day): number {
         if (!this.data || !this.data.days) {
             return null;
         }
@@ -81,17 +103,43 @@ export class OfficeAvailabilityCalendarComponent implements OnInit {
             const searchDay = moment(day.date).startOf('day');
             return dataDay.isSame(searchDay, 'day');
         });
-        return o && o.offices && o.offices[0];
+        return o && o.count;
     }
 
-    showDialogDay(office, day) {
+    showDialogDay( day ) {
+        const momentDate = moment(day.date);
+        this.dateDataLoading = true;
+        this.officeService.fetchOfficeDetailsForDay(momentDate, this.selectedOffice.officeId).subscribe(x => {
+            this.dateData = x;
+            this.dateDataLoading = false;
+        });
+
         this.dialogService.open(this.template, {
             data: {
-                office,
-                day: moment(day.date)
+                day: momentDate
             },
             height: this.mobile ? '100%' : undefined,
             width: this.mobile ? '100%' : '50%'
         });
     }
+
+    fetchOffices() {
+        this.officeService.getOfficesOdata('?$orderby=officeName').subscribe(x => {
+            this.officeList = x;
+            this.filteredOffices = [...this.officeList];
+        });
+    }
+
+    filterComplete(event) {
+        if (typeof(event) === 'string'){
+            this.filteredOffices = this._filter(event || '');
+        }
+    }
+
+    private _filter(value: string): OfficeMetadata[] {
+        const filterValue = value.toLowerCase();
+        return this.officeList.filter(x => x.officeName.toLowerCase().indexOf(filterValue) >= 0);
+    }
+
+    getOfficeName = (office: OfficeMetadata) => office && `${office.officeName}`;
 }

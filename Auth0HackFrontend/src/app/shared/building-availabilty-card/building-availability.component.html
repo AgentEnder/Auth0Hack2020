@@ -25,8 +25,8 @@
             </div>
             <mat-nav-list class="pt-2" *ngIf="office.sections && office.sections.length">
                 <mat-list-item *ngFor="let section of office.sections">
-                    <mat-icon class="text-success" *ngIf="section.sectionUsedCapacity < section.sectionSafeCapacity">check_circle_outline</mat-icon>
-                    <mat-icon class="text-danger" *ngIf="section.sectionUsedCapacity >= section.sectionSafeCapacity">error_outline</mat-icon>
+                    <mat-icon class="text-success mr-2" *ngIf="section.sectionUsedCapacity < section.sectionSafeCapacity">check_circle_outline</mat-icon>
+                    <mat-icon class="text-danger mr-2" *ngIf="section.sectionUsedCapacity >= section.sectionSafeCapacity">error_outline</mat-icon>
                     <span class="mr-1">{{section.sectionName}}</span>
                     <app-percentage 
                         [numerator]="section.sectionUsedCapacity"

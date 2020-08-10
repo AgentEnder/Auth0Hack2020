@@ -6,6 +6,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
@@ -17,6 +18,7 @@ import { AppComponent } from './app.component';
 import { AuthInterceptorService } from './core/services/auth-interceptor.service';
 import { AuthGuard } from './core/services/auth.guard';
 import { AuthService } from './core/services/auth.service';
+import { EmployeesService } from './core/services/employee.service';
 import { OfficesService } from './core/services/offices.service';
 import { RandomUserService } from './core/services/random-user.service';
 import { NavbarComponent } from './layout/navbar/navbar.component';
@@ -37,6 +39,11 @@ const Routes: Routes = [
     path: 'user',
     loadChildren: () => import('./user/user.module').then(x => x.UserPagesModule),
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'safety',
+    loadChildren: () => import('./safety/safety.module').then(x => x.SafetyModule),
+    canActivate: [AuthGuard]
   }
 ];
 
@@ -56,6 +63,7 @@ const Routes: Routes = [
     MatSidenavModule,
     MatListModule,
     MatExpansionModule,
+    MatMomentDateModule,
     LayoutModule,
     RouterModule.forRoot(Routes),
     BrowserAnimationsModule
@@ -68,7 +76,9 @@ const Routes: Routes = [
       multi: true
     },
     RandomUserService,
+    EmployeesService,
     OfficesService
+
   ],
   bootstrap: [AppComponent]
 })

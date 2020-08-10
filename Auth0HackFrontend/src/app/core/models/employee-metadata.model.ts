@@ -3,4 +3,7 @@ export interface EmployeeMetadata {
     firstName?: string;
     lastName?: string;
     title?: string;
+    isApprover?: boolean;
+    avatar?: string;
+    email?: string;
 }

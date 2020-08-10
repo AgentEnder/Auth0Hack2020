@@ -27,6 +27,7 @@ namespace Auth0HackBackend.Model
         public DbSet<SectionClosure> SectionClosures { get; set; }
         public DbSet<WorkRequest> WorkRequests { get; set; }
         public DbSet<vWorkRequestCapacity> vWorkRequestCapacities { get; set; }
+        public DbSet<vOfficeDateCapacity> vOfficeDateCapacities { get; set; }
                 
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -39,7 +40,8 @@ namespace Auth0HackBackend.Model
             builder.ApplyConfiguration(new SectionConfiguration());
             builder.ApplyConfiguration(new SectionClosureConfiguration());
             builder.ApplyConfiguration(new WorkRequestConfiguration());
-            builder.Entity<vWorkRequestCapacity>().HasKey(x => x.WorkRequestId);
+            builder.Entity<vWorkRequestCapacity>().ToView("vWorkRequestCapacities").HasKey(x => x.WorkRequestId);
+            builder.Entity<vOfficeDateCapacity>().ToView("vOfficeDateCapacities").HasKey(x => new { x.OfficeId, x.SectionId, x.StartTime });
         }
     }
 }

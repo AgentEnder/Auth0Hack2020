@@ -240,6 +240,23 @@ namespace Auth0HackBackend.Migrations
                     b.ToTable("WorkRequests");
                 });
 
+            modelBuilder.Entity("Auth0HackBackend.Model.vWorkRequestCapacity", b =>
+                {
+                    b.Property<Guid>("WorkRequestId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("OfficeUsedCapacity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SectionUsedCapacity")
+                        .HasColumnType("int");
+
+                    b.HasKey("WorkRequestId");
+
+                    b.ToTable("vWorkRequestCapacities");
+                });
+
             modelBuilder.Entity("Auth0HackBackend.Model.Section", b =>
                 {
                     b.HasOne("Auth0HackBackend.Model.Office", "Office")

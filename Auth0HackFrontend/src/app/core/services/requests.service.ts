@@ -5,10 +5,13 @@ import * as moment from 'moment';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
+import { WorkRequestApproval } from '../models/work-request-approval.model';
 import { WorkRequestMetadataDTO } from '../models/work-request.model';
 
 const CREATE_REQUEST = '/api/workrequests/';
 const DETAILS = '/api/workrequests/details';
+const ACCEPT_REQUEST = '/api/workrequests/approve';
+const DENY_REQUEST = '/api/workrequests/deny';
 
 @Injectable({
     providedIn: 'root'
@@ -42,22 +45,30 @@ export class RequestsService {
             section: {
                 sectionId
             },
-            endTime,
-            startTime,
+            endTime: moment.utc(endTime).toISOString(),
+            startTime: moment.utc(startTime).toISOString(),
             requestorNotes: notes
         };
 
         return this.httpClient.post(this.baseUrl + CREATE_REQUEST, body);
     }
 
-    public getAllRequests() {
-        return this.httpClient.get<any[]>(this.baseUrl + DETAILS).pipe(
+    public getAllRequests(options = '') {
+        return this.httpClient.get<any[]>(this.baseUrl + DETAILS + options).pipe(
             map(
                 x => x.map(y => {
-                    y.startTime = moment(y.startTime)
+                    y.startTime = moment.utc(y.startTime);
                     return y;
                 })
             )
         );
+    }
+
+    public acceptRequest(row: WorkRequestApproval) {
+        return this.httpClient.post<WorkRequestMetadataDTO>(this.baseUrl + ACCEPT_REQUEST, row);
+    }
+
+    public rejectRequest(row: WorkRequestApproval) {
+        return this.httpClient.post<WorkRequestMetadataDTO>(this.baseUrl + DENY_REQUEST, row);
     }
 }

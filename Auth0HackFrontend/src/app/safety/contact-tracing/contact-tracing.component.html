@@ -1,0 +1,41 @@
+<h2>Contact tracing</h2>
+<div>
+  <mat-form-field class="example-full-width">
+    <mat-label>Employee</mat-label>
+    <input
+      type="text"
+      placeholder="Pick an Employee"
+      matInput
+      [(ngModel)]="selectedEmployee"
+      (ngModelChange)="filterComplete($event)"
+      [matAutocomplete]="auto"
+    />
+    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="firstLastName">
+      <mat-option *ngFor="let employee of filteredOptions" [value]="employee">
+        {{ employee.lastName }}, {{ employee.firstName }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</div>
+<div>
+  <mat-form-field>
+    <mat-label>Enter a date range</mat-label>
+    <mat-date-range-input [rangePicker]="picker" (click)="picker.open()">
+      <input [(ngModel)]="startDate" matStartDate placeholder="Start date" />
+      <input [(ngModel)]="endDate" matEndDate placeholder="End date" />
+    </mat-date-range-input>
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker="matDateRangePicker"></mat-date-range-picker>
+  </mat-form-field>
+</div>
+<button mat-button (click)="performContactTrace()">Perform Contact Trace</button>
+
+<mat-nav-list>
+    <div mat-subheader>Contacts Trace Results</div>
+    <mat-list-item *ngFor="let ct of contractTraceList" >
+        <mat-icon mat-list-icon>group_work</mat-icon>
+        <div mat-line>{{ct.dateOfContact | date}}</div>
+        <div mat-line>{{ct.employeeDTO.lastName}}, {{ct.employeeDTO.firstName}}</div> 
+        <div mat-line>{{ct.officeName}} - {{ct.sectionName}}</div>
+    </mat-list-item>    
+</mat-nav-list>

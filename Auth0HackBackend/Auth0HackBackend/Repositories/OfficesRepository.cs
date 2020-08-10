@@ -1,5 +1,6 @@
 ﻿using Auth0HackBackend.DTO;
 using Auth0HackBackend.Model;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,11 @@ namespace Auth0HackBackend.Repositories
         public IQueryable<OfficeMetadataDTO> GetOfficeMetadata()
         {
             return DbContext.Offices.Select(OfficeMetadataDTO.MapToDTO);
+        }
+
+        public IQueryable<SectionMetadataDTO> GetSectionMetadata()
+        {
+            return DbContext.Sections.Select(SectionMetadataDTO.MapToDTO);
         }
 
         public async ValueTask<OfficeMetadataDTO> GetOfficeById(Guid officeId)
@@ -83,20 +89,29 @@ namespace Auth0HackBackend.Repositories
             DateTimeOffset startTime = new DateTimeOffset(workDate.Year, workDate.Month, workDate.Day, 0, 0, 0, 0, workDate.Offset);
             DateTimeOffset endTime = startTime.AddDays(1);
             List<Section> sections = DbContext.Sections.Where(x => x.OfficeId == officeId).ToList();
-            List<Task<SectionDetailDTO>> sectionDetails = new List<Task<SectionDetailDTO>>();
+            List<SectionDetailDTO> sectionDetails = new List<SectionDetailDTO>();
             foreach (Section section in sections)
             {                
-                sectionDetails.Add(GetSectionDetailsBySectionId(section, workDate, startTime, endTime));
+                sectionDetails.Add(await GetSectionDetailsBySectionId(section, workDate, startTime, endTime));
             }
 
-            return await Task.WhenAll<SectionDetailDTO>(sectionDetails);
+            return sectionDetails;
+        }
+
+        public List<OfficeCountsDTO> GetOfficeDetailByIdAndDateRange(Guid officeId, DateTimeOffset startDate, DateTimeOffset endDate)
+        {
+            return DbContext.WorkRequests.Where(x => x.StartTime >= startDate && x.StartTime <= endDate).GroupBy(x => new { x.OfficeId, x.StartTime })
+                                        .Select(g => new OfficeCountsDTO { 
+                                            OfficeId = g.Key.OfficeId, 
+                                            StartTime = g.Key.StartTime,
+                                            ApprovedCount = g.Count() }).ToList();
         }
 
         public async Task<OfficeDetailDTO> GetOfficeDetailById(Guid officeId, DateTimeOffset workDate)
         {
             DateTimeOffset startTime = new DateTimeOffset(workDate.Year, workDate.Month, workDate.Day, 0, 0, 0, workDate.Offset);
             DateTimeOffset endTime = startTime.AddDays(1);
-            var office = DbContext.Offices.Find(officeId);
+            var office = DbContext.Offices.Include(x=>x.Sections).FirstOrDefault(x=>x.OfficeId == officeId);
             OfficeDetailDTO officeDetail = OfficeDetailDTO.MapToDTOFunc(office);
             officeDetail.OfficeUsedCapacity = DbContext.WorkRequests.Count(
                 x => x.OfficeId == officeId && x.ApprovalStatus.StatusName == "Approved" &&
@@ -110,7 +125,29 @@ namespace Auth0HackBackend.Repositories
             
 
             return officeDetail;
-        }      
+        }
+
+        public async Task<IQueryable<OfficeDetailDTO>> GetOfficeDetailsByDate(DateTimeOffset date)
+        {
+            var offices = DbContext.Offices.Include(x=>x.Sections).ToList();
+
+            List<OfficeDetailDTO> dtos = new List<OfficeDetailDTO>();
+
+            foreach (var office in offices)
+            {
+                var dto = OfficeDetailDTO.MapToDTOFunc(office);
+                var capacities = DbContext.vOfficeDateCapacities.Where(x => x.StartTime == date && x.OfficeId == office.OfficeId);
+                dto.OfficeUsedCapacity = capacities.Select(x => x.OfficeUsedCapacity).Sum();
+                dto.Sections = dto.Sections.ToList();
+                foreach (var section in dto.Sections)
+                {
+                    section.SectionUsedCapacity = capacities.Where(x => x.SectionId == section.SectionId).Select(x => x.SectionUsedCapacity).FirstOrDefault();
+                }
+                dtos.Add(dto);
+            }
+
+            return dtos.AsQueryable();
+        }
         
         public OfficeClosureDTO CloseOffice(OfficeClosureDTO officeClosureDTO)
         {
@@ -156,6 +193,7 @@ namespace Auth0HackBackend.Repositories
             }
             if (newOffice != null) // Edit existing
             {
+                newOffice.OfficeName = officeDTO.OfficeName;
                 newOffice.OfficeStreet = officeDTO.OfficeStreet;
                 newOffice.OfficeCity = officeDTO.OfficeCity;
                 newOffice.OfficeState = officeDTO.OfficeState;

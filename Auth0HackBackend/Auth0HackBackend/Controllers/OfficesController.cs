@@ -27,6 +27,13 @@ namespace Auth0HackBackend.Controllers
             return Repository.GetOfficeMetadata();
         }
 
+        [HttpGet("sections")] // .../api/offices/sections
+        [EnableQuery(EnsureStableOrdering = false)]
+        public IQueryable<SectionMetadataDTO> RetrieveSections()
+        {
+            return Repository.GetSectionMetadata();
+        }
+
         [HttpGet("by-id/{OfficeId}")] // .../api/offices/by-id/{OfficeId}
         public ValueTask<OfficeMetadataDTO> GetOfficeById([FromRoute] Guid OfficeId)
         {
@@ -40,26 +47,15 @@ namespace Auth0HackBackend.Controllers
         }
 
         [HttpGet("by-id/{OfficeId}/{StartTime}/{EndTime}")] // .../api/offices/by-id/{id}/{date}
-        public async Task<IEnumerable<OfficeDetailDTO>> GetOfficeDetailByIdAndDateRange([FromRoute] Guid OfficeId, [FromRoute] DateTimeOffset StartTime, DateTimeOffset EndTime)
-        {
-            List<Task<OfficeDetailDTO>> retObj = new List<Task<OfficeDetailDTO>>();
-            for (DateTimeOffset workDate = StartTime; workDate < EndTime; workDate = workDate.AddDays(1))
-            {
-                retObj.Add(GetOfficeDetailById(OfficeId, workDate));
-            }
-            return await Task.WhenAll<OfficeDetailDTO>(retObj);
+        public List<OfficeCountsDTO> GetOfficeDetailByIdAndDateRange([FromRoute] Guid officeId, [FromRoute] DateTimeOffset startTime, DateTimeOffset endTime)
+        {            
+            return Repository.GetOfficeDetailByIdAndDateRange(officeId, startTime, endTime);
         }
 
         [HttpGet("{WorkDate}")] // .../api/offices/{workDate}
-        public async Task<IEnumerable<OfficeDetailDTO>> GetOfficeDetailsByDate([FromRoute] DateTimeOffset WorkDate)
+        public async Task<IQueryable<OfficeDetailDTO>> GetOfficeDetailsByDate([FromRoute] DateTimeOffset WorkDate)
         {
-            List<Task<OfficeDetailDTO>> retObj = new List<Task<OfficeDetailDTO>>();
-            IQueryable<OfficeMetadataDTO> offices = Repository.GetOfficeMetadata();
-            foreach (OfficeMetadataDTO office in offices)
-            {
-                retObj.Add(GetOfficeDetailById(office.OfficeId, WorkDate));
-            }
-            return await Task.WhenAll<OfficeDetailDTO>(retObj);
+            return await Repository.GetOfficeDetailsByDate(WorkDate);
         }
                 
         [HttpPost("close")] // .../api/offices/close/{id}/{startTime}/{endTime}
@@ -89,7 +85,7 @@ namespace Auth0HackBackend.Controllers
             return Repository.UpdateOrCreateOffice(officeDetailDTO);
         }
 
-        [HttpPost("")] // .../api/offices/section
+        [HttpPost("sections")] // .../api/offices/section
         [ScopeAuthorize("create:OfficeAndSection")]
         public SectionMetadataDTO UpdateOrCreateSection([FromBody] SectionMetadataDTO sectionDetailDTO)
         {
